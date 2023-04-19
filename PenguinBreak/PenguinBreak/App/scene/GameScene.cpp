@@ -60,7 +60,6 @@ void GameScene::Update()
 	DebugText::Get()->Print(100.0f, 100.0f, 10, "Game");
 
 	lightGroup->Update();
-	//
 }
 
 void GameScene::Draw()
