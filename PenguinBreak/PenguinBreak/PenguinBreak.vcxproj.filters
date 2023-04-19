@@ -93,6 +93,9 @@
     <Filter Include="HLSL\OBJ\FBX">
       <UniqueIdentifier>{0e6adcd5-ab8c-48bc-9914-c12b5a7f2a47}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Player">
+      <UniqueIdentifier>{5dfc0fd6-ebe4-48ce-ab6f-f34d2fb0cb4a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
@@ -368,6 +371,9 @@
     </ClInclude>
     <ClInclude Include="App\scene\BaseScene.h">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="App\player\Player.h">
+      <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

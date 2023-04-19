@@ -285,6 +285,7 @@
     <None Include="Resources\shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="App\player\Player.h" />
     <ClInclude Include="App\scene\BaseScene.h" />
     <ClInclude Include="App\scene\GameScene.h" />
     <ClInclude Include="App\scene\ResultScene.h" />

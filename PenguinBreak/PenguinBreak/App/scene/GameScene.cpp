@@ -48,7 +48,6 @@ void GameScene::Update()
 		sceneManager_->SetNextScene(scene);
 	}
 
-	//”n
 	//FBXŠÖ˜A
 	m_fbx->SetRotation({30.0f,180.0f,0.0f});
 	m_fbx->Update();
