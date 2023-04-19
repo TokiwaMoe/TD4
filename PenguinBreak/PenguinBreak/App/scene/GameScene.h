@@ -6,6 +6,7 @@
 #include"BaseScene.h"
 #include<LightGroup.h>
 #include"FBXObject3d.h"
+#include"Player.h"
 extern const int window_width;
 extern const int window_height;
 
@@ -48,4 +49,6 @@ private://定義
 	//ゴール時の演出ハンドサイン
 	std::unique_ptr<Model> m_model;		  //ペンギンモデル
 	std::unique_ptr<FBXObject3d>  m_fbx;//ペンギンFBX
+
+	Player* player = nullptr;
 };
