@@ -37,6 +37,10 @@ void GameScene::Init()
 	m_fbx->Initialize();
 	m_fbx->SetModel(m_model.get());
 	m_fbx->SetScale(Vec3(0.025f, 0.025f, 0.025f));
+
+	//プレイヤー
+	player = new Player();
+	player->Initialize();
 }
 
 void GameScene::Update()
@@ -48,7 +52,6 @@ void GameScene::Update()
 		sceneManager_->SetNextScene(scene);
 	}
 
-
 	//FBX関連
 	m_fbx->SetRotation({30.0f,180.0f,0.0f});
 	m_fbx->Update();
@@ -57,6 +60,7 @@ void GameScene::Update()
 		m_fbx->PlayAnimation(true);
 	}
 
+	player->Update();
 
 	DebugText::Get()->Print(100.0f, 100.0f, 10, "Game");
 
@@ -66,6 +70,7 @@ void GameScene::Update()
 void GameScene::Draw()
 {
 	m_fbx->Draw(true);
+	player->Draw();
 }
 
 void GameScene::ShadowDraw()
