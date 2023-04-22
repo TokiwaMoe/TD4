@@ -7,6 +7,7 @@
 #include<LightGroup.h>
 #include"FBXObject3d.h"
 #include"Player.h"
+#include"../stage/Stage.h"
 extern const int window_width;
 extern const int window_height;
 
@@ -51,4 +52,5 @@ private://’è‹`
 	std::unique_ptr<FBXObject3d>  m_fbx;//ƒyƒ“ƒMƒ“FBX
 
 	Player* player = nullptr;
+	Stage* stage = nullptr;
 };
