@@ -25,7 +25,7 @@ public:
 
 	void Update();
 
-	void Move();
+	void Move();//マウス
 
 	void Draw();
 
@@ -50,4 +50,7 @@ public:
 	// プレイヤー座標
 	Vec2 position = { 0,0 };
 	int  direction = 0;
+	//マウスの判定用
+	Sphere circle;
+	Ray ray;
 };
