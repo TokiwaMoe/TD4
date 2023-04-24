@@ -362,8 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-#libフォルダーはいらない
+# libフォルダーはいらない
 lib/
 
-#libフォルダーはいらない
-Resources/
+# Resourcesフォルダーはいる
+!/PenguinBreak/PenguinBreak/Resources/*

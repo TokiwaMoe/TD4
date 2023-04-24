@@ -41,6 +41,9 @@ void GameScene::Init()
 	//ƒvƒŒƒCƒ„[
 	player = new Player();
 	player->Initialize();
+
+	stage = Stage::GetInstance();
+	stage->Init();
 }
 
 void GameScene::Update()
@@ -70,6 +73,7 @@ void GameScene::Update()
 void GameScene::Draw()
 {
 	m_fbx->Draw(true);
+	stage->Draw();
 	player->Draw();
 }
 
