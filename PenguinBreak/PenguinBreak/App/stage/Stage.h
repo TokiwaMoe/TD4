@@ -1,5 +1,4 @@
-
-﻿#pragma once
+#pragma once
 #include "Sprite.h"
 #include <vector>
 #include "./../../Library/Helper/LoadJson.h"
