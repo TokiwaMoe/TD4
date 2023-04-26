@@ -21,8 +21,9 @@ public: //サブクラス
 	// 道のタイプ
 	enum RoadType
 	{
-		ROAD, //道
-		GOAL  //ゴール
+		ROAD,  //道
+		START, //スタート
+		GOAL,  //ゴール
 	};
 
 	class Road
@@ -49,9 +50,15 @@ private: //メンバ変数
 	std::vector<Road> boxes;
 
 public: //メンバ関数
+	// 初期化
 	void Init();
+	// 描画
 	void Draw(float offsetX = 0.0f, float offsetY = 0.0f);
+
+	// ステージの書き込み
+	void WriteStage(const std::string& stageName);
 private:
+	// ステージの読み込み
 	JsonData* LoadStage(const std::string& jsonFile);
 
 };
