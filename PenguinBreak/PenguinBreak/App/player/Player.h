@@ -44,7 +44,6 @@ public:
 	};
 	//2d
 	SpriteData player;
-	SpriteData colCenter;
 	// X,Y,Z軸回りのローカル回転角
 	Vec2 rotation = { 0,0 };
 	// プレイヤー座標
