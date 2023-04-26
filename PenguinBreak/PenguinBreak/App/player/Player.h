@@ -44,11 +44,11 @@ public:
 	};
 	//2d
 	SpriteData player;
-
+	SpriteData colCenter;
 	// X,Y,Z軸回りのローカル回転角
 	Vec2 rotation = { 0,0 };
 	// プレイヤー座標
-	Vec2 position = { 0,0 };
+	Vec2 position = { 50,50 };
 	int  direction = 0;
 	//マウスの判定用
 	Sphere circle;
