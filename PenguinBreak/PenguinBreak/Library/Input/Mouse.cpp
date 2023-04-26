@@ -47,6 +47,13 @@ void Mouse::Update()
 
 	// マウスの入力
 	result = m_devMouse->GetDeviceState(sizeof(m_mouseState), &m_mouseState);
+	
+	POINT p;
+	// マウス座標(スクリーン座標)を取得する
+	GetCursorPos(&p);
+	ScreenToClient(Window::Get()->GetHwnd(), &p);
+	MousePos.x = (float)p.x;
+	MousePos.y = (float)p.y;
 }
 
 bool Mouse::PushMouseLeft()
