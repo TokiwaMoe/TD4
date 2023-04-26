@@ -1,6 +1,7 @@
 #pragma once
 #include<dinput.h>
 #include<wrl.h>
+#include "Vec.h"
 #include"Window.h"
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -58,9 +59,15 @@ public://メンバ関数
 	/// </summary>
 	/// <returns>マウス移動量</returns>
 	MouseMove GetMouseMove();
+	/// <summary>
+	/// マウスの座標を取得
+	/// </summary>
+	/// <returns>マウス座標</returns>
+	Vec2 GetMousePos() { return MousePos; }
 private:
 	ComPtr<IDirectInput8> m_dinput = nullptr;
 	ComPtr<IDirectInputDevice8> m_devMouse;
 	DIMOUSESTATE2 m_mouseState = {};
 	DIMOUSESTATE2 m_mouseStatePre = {};
+	Vec2 MousePos = {};//マウスの座標
 };
