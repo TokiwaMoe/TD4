@@ -37,6 +37,8 @@ public:
 
 	void collide2Stage(Stage *stage);
 
+	int CollisionCount(Stage *stage);
+
 	bool OutStage(Vec2 position, Stage *stage, int num);
 
 	void Draw();
