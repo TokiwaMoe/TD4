@@ -63,7 +63,7 @@ public: //メンバ関数
 		return boxes[num].size;
 	}
 
-	Vec2 GetStartPos() { return boxes[START].pos; }
+	Vec2 GetStartPos() { return boxes[ROAD].pos; }
 
 	// ステージの書き込み
 	void WriteStage(const std::string& stageName);
