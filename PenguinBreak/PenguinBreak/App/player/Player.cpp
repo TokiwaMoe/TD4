@@ -65,7 +65,10 @@ void Player::collide2Stage(Stage *stage)
 		if (OutStage(position, stage, 0) && OutStage(position, stage, 1) && OutStage(position, stage, 2))
 		{
 			DebugText::Get()->Print(100.0f, 500.0f, 2, "out stage");
-			position = { stage->GetInstance()->GetStartPos().x - radius.x + 5.0f, stage->GetInstance()->GetStartPos().y + radius.y + 5.0f};
+			position = {
+				stage->GetInstance()->GetStartPos().x + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f),
+				stage->GetInstance()->GetStartPos().y + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)
+			};
 		}
 	}
 }
