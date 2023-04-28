@@ -85,4 +85,9 @@ public://マウス
 	/// </summary>
 	/// <returns>マウス移動量</returns>
 	Mouse::MouseMove GetMouseMove();
+	/// <summary>
+	/// マウスの座標を取得
+	/// </summary>
+	/// <returns>マウス座標</returns>
+	Vec2 GetMousePos();
 };

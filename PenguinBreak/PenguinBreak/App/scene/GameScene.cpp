@@ -66,6 +66,12 @@ void GameScene::Update()
 		m_fbx->PlayAnimation(true);
 	}
 
+	// ステージ出力（デバッグ実行用）
+	if (Input::Get()->KeybordTrigger(DIK_1))
+	{
+		stage->WriteStage("write_test");
+	}
+
 	player->Update();
 
 	DebugText::Get()->Print(100.0f, 100.0f, 10, "Game");

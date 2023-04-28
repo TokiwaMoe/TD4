@@ -40,9 +40,6 @@ void Stage::Init()
 	auto file = LoadStage("stage1");
 	boxes.clear();
 	boxes = file->objects;
-	//boxes.push_back(Road(Vec2(100.0f, window_height / 2.0f - ROAD_WIDTH / 2.0f), Vec2(window_width - 200.0f, ROAD_WIDTH)));
-	//boxes.push_back(Road(Vec2(window_width - 200.0f, window_height / 2.0f - ROAD_WIDTH / 2.0f), Vec2(100.0f, -ROAD_WIDTH)));
-	//boxes.back().type = RoadType::GOAL;
 }
 
 void Stage::Draw(float offsetX, float offsetY)
@@ -50,13 +47,17 @@ void Stage::Draw(float offsetX, float offsetY)
 	for (auto& i : boxes)
 	{
 		Vec4 color = Vec4();
-		if (i.type == RoadType::GOAL)
+		switch (i.type)
 		{
+		case RoadType::START:
+			color = Vec4(0.0f, 0.0f, 1.0f, 1.0f);
+			break;
+		case RoadType::GOAL:
 			color = Vec4(1.0f, 0.0f, 0.0f, 1.0f);
-		}
-		else
-		{
+			break;
+		default:
 			color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+			break;
 		}
 
 		Sprite::Get()->Draw(i.sprite, i.pos + Vec2(offsetX, offsetY), i.size.x, i.size.y, Vec2(), color);
@@ -111,4 +112,40 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 	}
 
 	return levelData;
+}
+
+void Stage::WriteStage(const std::string& stageName)
+{
+	using namespace std;
+	using json = nlohmann::json;
+
+	//連結してフルパスを得る
+	const string fullpath = string("Resources/levels/") + stageName + ".json";
+
+	//ファイルストリーム
+	ofstream file;
+
+	//ファイルを開く
+	file.open(fullpath);
+	//ファイルオープン失敗をチェック
+	if (file.fail())
+	{
+		assert(0);
+	}
+
+	json data;
+	data = json::object();
+	data["name"] = json::string_t("stage");
+	data["objects"] = json::array();
+
+	for (size_t i = 0; i < boxes.size(); i++)
+	{
+		data["objects"][i] = {
+			{"type", boxes[i].type},
+			{"pos", {boxes[i].pos.x, boxes[i].pos.y}},
+			{"size", {boxes[i].size.x, boxes[i].size.y}}};
+	}
+
+	file << std::setw(4) << data << endl;
+	file.close();
 }

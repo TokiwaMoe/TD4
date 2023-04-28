@@ -129,3 +129,8 @@ Mouse::MouseMove Input::GetMouseMove()
 	return m_mouse.GetMouseMove();
 }
 
+Vec2 Input::GetMousePos()
+{
+	return m_mouse.GetMousePos();
+}
+
