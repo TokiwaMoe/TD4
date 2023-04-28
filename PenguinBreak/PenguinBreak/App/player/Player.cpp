@@ -59,11 +59,11 @@ void Player::Move()
 
 void Player::collide2Stage(Stage *stage) 
 {
-	//ロード外に出たらスタート位置に戻す
 	for (int i = 0; i < stage->GetInstance()->GetBoxSize(); i++)
 	{
 		if (OutStage(position, stage, 0) && OutStage(position, stage, 1) && OutStage(position, stage, 2))
 		{
+			//ロード外に出たらスタート位置に戻す
 			DebugText::Get()->Print(100.0f, 500.0f, 2, "out stage");
 			position = {
 				stage->GetInstance()->GetStartPos().x + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f),
@@ -96,7 +96,7 @@ bool Player::OutStage(Vec2 position, Stage *stage, int num)
 		((stage->GetInstance()->GetSize(num).y / 2.0f) - radius.y)
 	};
 	//距離がサイズの和より小さいor以下
-	if (distance.x < size_num.x && distance.y < size_num.y)
+	if (distance.x <= size_num.x && distance.y <= size_num.y)
 	{
 		return false;
 	}
