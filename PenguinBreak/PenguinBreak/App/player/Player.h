@@ -7,6 +7,7 @@
 #include"FBXObject3d.h"
 #include"Object.h"
 #include"Sprite.h"
+#include"Stage.h"
 #include<memory>
 
 class Player {
@@ -26,6 +27,8 @@ public:
 	void Update();
 
 	void Move();
+
+	void collide2Stage(Stage stage);
 
 	void Draw();
 
@@ -50,4 +53,6 @@ public:
 	// プレイヤー座標
 	Vec2 position = { 0,0 };
 	int  direction = 0;
+	//半径
+	Vec2 radius = {32, 64};
 };

@@ -51,6 +51,7 @@ private: //メンバ変数
 public: //メンバ関数
 	void Init();
 	void Draw(float offsetX = 0.0f, float offsetY = 0.0f);
+	Road GetPos(int num) { return boxes[num]; }
 private:
 	JsonData* LoadStage(const std::string& jsonFile);
 

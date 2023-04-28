@@ -63,11 +63,6 @@ void Stage::Draw(float offsetX, float offsetY)
 	}
 }
 
-int Stage::getMapChip(int y, int x)
-{
-	return 0;
-}
-
 Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 {
 	//連結してフルパスを得る

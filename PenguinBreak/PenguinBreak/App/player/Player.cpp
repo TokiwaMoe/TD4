@@ -44,6 +44,21 @@ void Player::Move()
 	}
 }
 
+//void Player::collide2Stage(Stage stage) {
+//	
+//	// 四隅の座標のマップチップ番号
+//	const int size = stage.GetInstance()->GetSize();
+//
+//	for (int i = 0; i < size; i++)
+//	{
+//
+//	}
+//
+//	//当たったらスタート位置に戻る
+//	
+//}
+
+
 void Player::Draw()
 {
 	//2D描画

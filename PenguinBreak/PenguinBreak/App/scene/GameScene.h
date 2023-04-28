@@ -51,6 +51,9 @@ private://定義
 	std::unique_ptr<Model> m_model;		  //ペンギンモデル
 	std::unique_ptr<FBXObject3d>  m_fbx;//ペンギンFBX
 
+	//2d
+	SpriteData background;
+
 	Player* player = nullptr;
 	Stage* stage = nullptr;
 };

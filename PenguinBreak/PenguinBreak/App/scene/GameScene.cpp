@@ -38,6 +38,9 @@ void GameScene::Init()
 	m_fbx->SetModel(m_model.get());
 	m_fbx->SetScale(Vec3(0.025f, 0.025f, 0.025f));
 
+	//スプライト作成の仕方
+	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
+
 	//プレイヤー
 	player = new Player();
 	player->Initialize();
@@ -75,6 +78,8 @@ void GameScene::Draw()
 	m_fbx->Draw(true);
 	stage->Draw();
 	player->Draw();
+	float width = 1280, height = 720;
+	Sprite::Get()->Draw(background, {0,0}, width, height);
 }
 
 void GameScene::ShadowDraw()
