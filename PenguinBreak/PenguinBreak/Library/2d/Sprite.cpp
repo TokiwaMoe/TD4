@@ -231,7 +231,7 @@ void Sprite::Update(SpriteData& sprite, const Vec2 &position, float width, float
 
 	if (sprite.size.x != width || sprite.size.y != height ||
 		sprite.anchorpoint.x != anchorpoint.x || sprite.anchorpoint.y != anchorpoint.y ||
-		isFlipX == true || isFlipY == true)
+		isFlipX == true || isFlipY == true|| isFlipX == false || isFlipY == false)
 	{
 		//ÉTÉCÉYÇçáÇÌÇπÇÈ
 		sprite.size.x = width, sprite.size.y = height;

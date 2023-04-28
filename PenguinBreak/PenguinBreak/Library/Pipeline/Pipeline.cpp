@@ -5,6 +5,11 @@ Pipeline::PipelineSet Pipeline::NoShadowOBJPipeline;
 Pipeline::PipelineSet Pipeline::ShadowMapPipeline;
 Pipeline::PipelineSet Pipeline::NormalMapPipeline;
 Pipeline::PipelineSet Pipeline::DepthOfFieldPipeline;
+
+Pipeline::PipelineSet Pipeline::PostPipeline;
+Pipeline::PipelineSet Pipeline::PostBlurPipeline;
+Pipeline::PipelineSet Pipeline::PostReversalPipeline;
+
 int Pipeline::pipelineType;
 void Pipeline::CreatePipeline(ID3D12Device* dev)
 {
@@ -13,6 +18,10 @@ void Pipeline::CreatePipeline(ID3D12Device* dev)
 	ShadowMapPipeline = ShadowCreateGraphicsPipeline(dev, ShaderManager::ShadowMapShader);
 	NormalMapPipeline = NormalMapCreatePipeline(dev, ShaderManager::normalMapShader);
 	DepthOfFieldPipeline = DepthOfFieldPipelineCreateGraphicesPipeline(dev, ShaderManager::DepthOfFieldShader);
+
+	PostPipeline = PostNormalCreateGraphicsPipeline(dev, ShaderManager::postNormalShader);
+	PostBlurPipeline = PostNormalCreateGraphicsPipeline(dev, ShaderManager::postBlurShader);
+	//PostReversalPipeline = PostNormalCreateGraphicsPipeline(dev, ShaderManager::postReversalShader);
 }
 
 bool Pipeline::SetPipeline(int type)

@@ -40,11 +40,14 @@ void GameScene::Init()
 
 	//スプライト作成の仕方
 	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
+	//ヤシの木
+	palm_1 = Sprite::Get()->SpriteCreate(L"Resources/palm.png");
+	palm_2 = Sprite::Get()->SpriteCreate(L"Resources/palm.png");
 
 	//プレイヤー
 	player = new Player();
 	player->Initialize();
-
+	player->Init();
 	stage = Stage::GetInstance();
 	stage->Init();
 }
@@ -72,17 +75,26 @@ void GameScene::Update()
 		stage->WriteStage("write_test");
 	}
 
-	player->Update();
+	player->Update(stage);
 
 	DebugText::Get()->Print(100.0f, 100.0f, 10, "Game");
 
 	lightGroup->Update();
 }
 
+Vec2 SizeChange(Vec2 startPos, Vec2 endPos)
+{
+	
+	return Vec2{};
+}
+
 void GameScene::Draw()
 {
 	float width = 1280, height = 720;
 	Sprite::Get()->Draw(background, { 0,0 }, width, height);
+	Vec2 palmSize = { 305, 437 };
+	Sprite::Get()->Draw(palm_1, { 0,720 }, palmSize.x, palmSize.y, {0.0f, 1.0f});
+	Sprite::Get()->Draw(palm_2, { width,720 }, palmSize.x, palmSize.y, { 0,1.0f }, {1,1,1,1}, true);
 	m_fbx->Draw(true);
 	stage->Draw();
 	player->Draw();

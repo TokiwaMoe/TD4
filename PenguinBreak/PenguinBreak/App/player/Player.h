@@ -23,12 +23,23 @@ public:
 	void Initialize();
 
 	void Init();
+	/// <summary>
+	/// ステージ変わるごとの初期化
+	/// </summary>
+	/// <param name="stageNo">ステージ番号</param>
+	void stageInit(int stageNo);
 
-	void Update();
+	void Update(Stage *stage);
+	/// <summary>
+	/// マウス移動
+	/// </summary>
+	void Move();
 
-	void Move();//マウス
+	void collide2Stage(Stage *stage);
 
-	void collide2Stage(Stage stage);
+	int CollisionCount(Stage *stage);
+
+	bool OutStage(Vec2 position, Stage *stage, int num);
 
 	void Draw();
 
@@ -52,8 +63,12 @@ public:
 	// プレイヤー座標
 	Vec2 position = { 50,50 };
 	int  direction = 0;
-	//半径
-	Vec2 radius = { 32, 64 };
+
+	//スプライトサイズ
+	float width = 64.0f, height = 128.0f;
+	bool flipFlag = false;
+	//半径 
+	Vec2 radius = { 30, 62 };
 	//マウスの判定用
 	Sphere circle;
 	Ray ray;
