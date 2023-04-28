@@ -54,9 +54,16 @@ public: //メンバ関数
 	void Init();
 	// 描画
 	void Draw(float offsetX = 0.0f, float offsetY = 0.0f);
-	Road GetPos(int num) {
+	Road GetBox(int num) {
 		return boxes[num];
 	}
+	size_t GetBoxSize() { return boxes.size(); }
+	//スプライトサイズ
+	Vec2 GetSize(int num) {
+		return boxes[num].size;
+	}
+
+	Vec2 GetStartPos() { return boxes[START].pos; }
 
 	// ステージの書き込み
 	void WriteStage(const std::string& stageName);

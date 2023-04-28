@@ -29,13 +29,15 @@ public:
 	/// <param name="stageNo">ステージ番号</param>
 	void stageInit(int stageNo);
 
-	void Update();
+	void Update(Stage *stage);
 	/// <summary>
 	/// マウス移動
 	/// </summary>
 	void Move();
 
-	void collide2Stage(Stage stage);
+	void collide2Stage(Stage *stage);
+
+	bool OutStage(Vec2 position, Stage *stage, int num);
 
 	void Draw();
 
@@ -59,6 +61,9 @@ public:
 	// プレイヤー座標
 	Vec2 position = { 50,50 };
 	int  direction = 0;
+
+	//スプライトサイズ
+	float width = 64.0f, height = 128.0f;
 	bool flipFlag = false;
 	//半径 
 	Vec2 radius = { 32, 64 };

@@ -72,7 +72,7 @@ void GameScene::Update()
 		stage->WriteStage("write_test");
 	}
 
-	player->Update();
+	player->Update(stage);
 
 	DebugText::Get()->Print(100.0f, 100.0f, 10, "Game");
 
