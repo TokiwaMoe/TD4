@@ -99,12 +99,8 @@ void Player::Draw()
 {
 	//2D描画
 	//Vec2 position2D = { 200.0f,200.0f };
-<<<<<<< HEAD
-	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f });
-=======
 	float width = 64.0f, height = 128.0f;
 	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
->>>>>>> 628af06fb6fc8929a57681da32b05a9e31cf23f4
 }
 
 

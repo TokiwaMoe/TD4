@@ -29,7 +29,7 @@ public:
 	/// <param name="stageNo">ステージ番号</param>
 	void stageInit(int stageNo);
 
-	void Update();
+	void Update(Stage *stage);
 	/// <summary>
 	/// マウス移動
 	/// </summary>
