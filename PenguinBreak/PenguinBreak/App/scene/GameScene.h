@@ -53,6 +53,8 @@ private://’è‹`
 
 	//2d
 	SpriteData background;
+	SpriteData palm_1;
+	SpriteData palm_2;
 
 	Player* player = nullptr;
 	Stage* stage = nullptr;
