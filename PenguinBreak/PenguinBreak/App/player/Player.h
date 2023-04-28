@@ -24,11 +24,13 @@ public:
 
 	void Init();
 
-	void Update();
+	void Update(Stage *stage);
 
 	void Move();//マウス
 
-	void collide2Stage(Stage stage);
+	void collide2Stage(Stage *stage);
+
+	bool OutStage(Vec2 position, Stage *stage, int num);
 
 	void Draw();
 
@@ -52,6 +54,8 @@ public:
 	// プレイヤー座標
 	Vec2 position = { 50,50 };
 	int  direction = 0;
+	//スプライトサイズ
+	float width = 64.0f, height = 128.0f;
 	//半径
 	Vec2 radius = { 32, 64 };
 	//マウスの判定用
