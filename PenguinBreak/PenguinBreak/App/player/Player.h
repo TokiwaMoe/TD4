@@ -26,16 +26,16 @@ public:
 
 	void Update();
 
-	void Move();//ãƒã‚¦ã‚¹
+	void Move();//ƒ}ƒEƒX
 
 	void collide2Stage(Stage stage);
 
 	void Draw();
 
 	//getter
-	//åº§æ¨™
+	//À•W
 	const Vec2& GetPosition() { return position; }
-	//å›è»¢
+	//‰ñ“]
 	const Vec2& GetRotation() { return rotation; }
 	//setter
 
@@ -47,14 +47,14 @@ public:
 	};
 	//2d
 	SpriteData player;
-	// X,Y,Zè»¸å›ã‚Šã®ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢è§’
+	// X,Y,Z²‰ñ‚è‚Ìƒ[ƒJƒ‹‰ñ“]Šp
 	Vec2 rotation = { 0,0 };
-	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åº§æ¨™
+	// ƒvƒŒƒCƒ„[À•W
 	Vec2 position = { 50,50 };
 	int  direction = 0;
-	//åŠå¾„
-	Vec2 radius = {32, 64};
-	//ãƒã‚¦ã‚¹ã®åˆ¤å®šç”¨
+	//”¼Œa
+	Vec2 radius = { 32, 64 };
+	//ƒ}ƒEƒX‚Ì”»’è—p
 	Sphere circle;
 	Ray ray;
 };
