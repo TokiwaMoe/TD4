@@ -44,7 +44,7 @@ void GameScene::Init()
 	//ƒvƒŒƒCƒ„[
 	player = new Player();
 	player->Initialize();
-
+	player->Init();
 	stage = Stage::GetInstance();
 	stage->Init();
 }
