@@ -37,6 +37,8 @@ public:
 
 	void collide2Stage(Stage *stage);
 
+	int CollisionCount(Stage *stage);
+
 	bool OutStage(Vec2 position, Stage *stage, int num);
 
 	void Draw();
@@ -66,7 +68,7 @@ public:
 	float width = 64.0f, height = 128.0f;
 	bool flipFlag = false;
 	//半径 
-	Vec2 radius = { 32, 64 };
+	Vec2 radius = { 30, 62 };
 	//マウスの判定用
 	Sphere circle;
 	Ray ray;
