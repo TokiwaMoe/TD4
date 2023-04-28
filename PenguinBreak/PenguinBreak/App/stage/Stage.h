@@ -54,10 +54,10 @@ public: //メンバ関数
 	void Init();
 	// 描画
 	void Draw(float offsetX = 0.0f, float offsetY = 0.0f);
+	Road GetPos(int num) { return boxes[num];
 
 	// ステージの書き込み
 	void WriteStage(const std::string& stageName);
-private:
 	// ステージの読み込み
 	JsonData* LoadStage(const std::string& jsonFile);
 
