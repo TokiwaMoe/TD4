@@ -59,37 +59,46 @@ void Player::Move()
 
 void Player::collide2Stage(Stage *stage) 
 {
-
 	//ロード外に出たらスタート位置に戻す
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < stage->GetInstance()->GetBoxSize(); i++)
 	{
-		if (OutStage(position, stage, i))
+		if (OutStage(position, stage, 0) && OutStage(position, stage, 1) && OutStage(position, stage, 2))
 		{
 			DebugText::Get()->Print(100.0f, 500.0f, 2, "out stage");
 			position = { stage->GetInstance()->GetStartPos().x - radius.x + 5.0f, stage->GetInstance()->GetStartPos().y + radius.y + 5.0f};
 		}
 	}
-	
 }
 
 bool Player::OutStage(Vec2 position, Stage *stage, int num)
 {
-	float boxTop = stage->GetInstance()->GetBox(num).pos.y;
-	float boxBottom = stage->GetInstance()->GetBox(num).pos.y + stage->GetInstance()->GetBox(num).size.y;
-
-	float boxRight = stage->GetInstance()->GetBox(num).pos.x + stage->GetInstance()->GetSize(num).x;
-	float boxLeft = stage->GetInstance()->GetBox(num).pos.x;
-
-	//プレイヤーの上部分がステージの上部分より上だったら
-	if (boxTop < position.y - radius.y && boxBottom > position.y + radius.y)
+	//ステージスプライトの中心座標
+	Vec2 stageCenter = {
+		stage->GetInstance()->GetBox(num).pos.x + (stage->GetInstance()->GetSize(num).x / 2.0f),
+		stage->GetInstance()->GetBox(num).pos.y + (stage->GetInstance()->GetSize(num).y / 2.0f)
+	};
+	//X軸、Y軸の距離を算出
+	Vec2 distance =
+	{
+		stageCenter.x - position.x,
+		stageCenter.y - position.y
+	};
+	//絶対値にするため結果が負なら正にする
+	if (distance.x < 0.0f) { distance.x *= -1.0f; }
+	if (distance.y < 0.0f) { distance.y *= -1.0f; }
+	//2つの矩形の和を算出
+	Vec2 size_num =
+	{
+		((stage->GetInstance()->GetSize(num).x / 2.0f) - radius.x),
+		((stage->GetInstance()->GetSize(num).y / 2.0f) - radius.y)
+	};
+	//距離がサイズの和より小さいor以下
+	if (distance.x < size_num.x && distance.y < size_num.y)
 	{
 		return false;
 	}
-	/*if (boxLeft < position.x - radius.x && boxRight < position.x + radius.x)
+	else
 	{
-		return false;
-	}*/
-	else{
 		return true;
 	}
 }
