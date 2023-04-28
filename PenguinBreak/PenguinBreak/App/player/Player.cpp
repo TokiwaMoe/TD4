@@ -41,15 +41,6 @@ void Player::Move()
 
 void Player::collide2Stage(Stage *stage) 
 {
-	//プレイヤーの四隅
-	//左上
-	Vec2 leftTop = { position.x, position.y };
-	//左下
-	Vec2 leftBottom = { position.x, position.y + height };
-	//右上
-	Vec2 rightTop = { position.x + width , position.y };
-	//右下
-	Vec2 rightBottom = { position.x + width, position.y + height };
 
 	//ロード外に出たらスタート位置に戻す
 	for (int i = 0; i < 3; i++)
