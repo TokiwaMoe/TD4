@@ -34,8 +34,12 @@ Shader ShaderManager::objShader;
 Shader ShaderManager::toonObjShader;
 Shader ShaderManager::normalMapShader;
 Shader ShaderManager::particleShader;
+
 Shader ShaderManager::postNormalShader;
-Shader ShaderManager::postTestShader;
+Shader ShaderManager::postReversalShader;
+Shader ShaderManager::postBlurShader;
+
+
 Shader ShaderManager::ShadowMapShader;
 Shader ShaderManager::DepthOfFieldShader;
 Shader ShaderManager::noShadowOBJShader;
@@ -64,8 +68,8 @@ void ShaderManager::LoadShaders()
 	postNormalShader.vsBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectNormalVS.hlsl", "vs_5_0");
 	postNormalShader.psBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectNormalPS.hlsl", "ps_5_0");
 	//ブルーム
-	postTestShader.vsBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectTestVS.hlsl", "vs_5_0");
-	postTestShader.psBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectTestPS.hlsl", "ps_5_0");
+	postBlurShader.vsBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectTestVS.hlsl", "vs_5_0");
+	postBlurShader.psBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectTestPS.hlsl", "ps_5_0");
 	//シャドウマップ
 	ShadowMapShader.vsBlob = LoadShader(L"Resources/shaders/ShadowMapVS.hlsl", "vs_5_0");
 	ShadowMapShader.psBlob = LoadShader(L"Resources/shaders/ShadowMapPS.hlsl", "ps_5_0");

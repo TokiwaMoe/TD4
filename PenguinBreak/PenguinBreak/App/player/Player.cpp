@@ -9,12 +9,20 @@ void Player::Initialize()
 {
 	//スプライト作成の仕方
 	player = Sprite::Get()->SpriteCreate(L"Resources/Kari.png");
-	//colCenter = Sprite::Get()->SpriteCreate(L"Resources/gutitubo.png");
 }
 
 void Player::Init()
 {
+	position = { 50,50 };
+	flipFlag = false;
+}
 
+void Player::stageInit(int stageNo)
+{
+	//初期ポジション
+	//if(stageNo==){
+	//position={};
+	//}
 }
 
 
@@ -34,9 +42,19 @@ void Player::Move()
 	if (Input::Get()->MousePushLeft()) {
 		if (Collision::CheckRay2Sphere(ray, circle)) {
 			position = Input::Get()->GetMousePos();
+			//プレイヤーの画像によってはいらない処理
+			if ((float)Input::Get()->GetMouseMove().lX > 0) {
+				flipFlag = true;
+			}
+			else if ((float)Input::Get()->GetMouseMove().lX < 0) {
+				flipFlag = false;
+			}
 		}
 	}
-	DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%f,%f",position.x,position.y);
+
+
+	//DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%f", (float)Input::Get()->GetMouseMove().lX);
+	DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
 }
 
 void Player::collide2Stage(Stage *stage) 
@@ -81,7 +99,12 @@ void Player::Draw()
 {
 	//2D描画
 	//Vec2 position2D = { 200.0f,200.0f };
+<<<<<<< HEAD
 	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f });
+=======
+	float width = 64.0f, height = 128.0f;
+	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
+>>>>>>> 628af06fb6fc8929a57681da32b05a9e31cf23f4
 }
 
 

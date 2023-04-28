@@ -3,6 +3,14 @@
 #include"Singleton.h"
 #include"Sprite.h"
 #include"Texture.h"
+
+enum class PostEffectType
+{
+	NORMAL,		//通常
+	REVERSAL,	//反転
+	BLUR,       //ぼかし
+};
+
 /// <summary>
 /// ポストエフェクト
 /// </summary>

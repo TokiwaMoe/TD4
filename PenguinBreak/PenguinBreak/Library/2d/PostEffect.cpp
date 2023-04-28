@@ -183,11 +183,11 @@ void PostEffect::Initialize(ID3D12Device* dev)
 
 void PostEffect::CreatePipeline(ID3D12Device* dev)
 {
-	m_pipelineSet = Pipeline::DepthOfFieldPipeline;
+	m_pipelineSet = Pipeline::PostPipeline;
 	//SetPipeline(2);
 }
 
-void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList,const Vec4 &color)
+void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList, const Vec4& color)
 {
 
 	DrawPost(m_sprite, { 0, 0 }, 500.0f, 500.0f, { 0.0f,0.0f }, color, false, false);
@@ -231,7 +231,7 @@ void PostEffect::PostDrawScene(ID3D12GraphicsCommandList* cmdList)
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 }
 
-void PostEffect::UpdatePost(SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY)
+void PostEffect::UpdatePost(SpriteData& sprite, const Vec2& position, float width, float height, const Vec2& anchorpoint, const Vec4& color, bool isFlipX, bool isFlipY)
 {
 	//定数バッファの転送
 	Sprite::ConstBufferData* constMap = nullptr;
@@ -241,7 +241,7 @@ void PostEffect::UpdatePost(SpriteData& sprite, const Vec2 &position, float widt
 	m_constBuff->Unmap(0, nullptr);
 }
 
-void PostEffect::DrawPost(SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY)
+void PostEffect::DrawPost(SpriteData& sprite, const Vec2& position, float width, float height, const Vec2& anchorpoint, const Vec4& color, bool isFlipX, bool isFlipY)
 {
 	//パイプラインステートの設定
 	Sprite::cmdList->SetPipelineState(m_pipelineSet.pipelinestate.Get());
@@ -258,15 +258,15 @@ void PostEffect::DrawPost(SpriteData& sprite, const Vec2 &position, float width,
 
 
 	//テクスチャ用デスクリプタヒープの設定
-	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap()};
+	ID3D12DescriptorHeap* ppHeaps[] = { Texture::Get()->GetDescHeap() };
 	Sprite::cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	//シェーダーリソースビューをセット
-	
+
 	Sprite::cmdList->SetGraphicsRootDescriptorTable(1, Texture::Get()->GetPostEfect().gpuDescHandleSRV);
 
 	//ヒープの２番目にあるSRVをルートパラメータ１番に設定
-	Sprite::cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetCameraDepth().gpuDescHandleSRV);
+	//Sprite::cmdList->SetGraphicsRootDescriptorTable(2, Texture::Get()->GetCameraDepth().gpuDescHandleSRV);
 
 
 	//ポリゴンの描画（４頂点で四角形）
@@ -277,14 +277,16 @@ void PostEffect::SetPipeline(int num)
 {
 	switch (num)
 	{
-	case 0:
-		m_pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev, ShaderManager::postNormalShader);
+	case static_cast<int>(PostEffectType::NORMAL):
+		m_pipelineSet = Pipeline::PostPipeline;
 		break;
-	case 1:
-		m_pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev, ShaderManager::postTestShader);
+	case static_cast<int>(PostEffectType::REVERSAL):
+		//m_pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev, ShaderManager::postReversalShader);
 		break;
-	case 2:
-		m_pipelineSet = Pipeline::DepthOfFieldPipeline;
+	case static_cast<int>(PostEffectType::BLUR):
+		m_pipelineSet = Pipeline::PostBlurPipeline;
+		break;
+	default:
 		break;
 	}
 }
