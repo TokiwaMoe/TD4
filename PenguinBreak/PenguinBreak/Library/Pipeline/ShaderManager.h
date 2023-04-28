@@ -27,7 +27,8 @@ public:
 	/// ポストエフェクト
 	/// </summary>
 	static Shader postNormalShader;	//ポストエフェクト（通常）
-	static Shader postTestShader;	//ブルーム
+	static Shader postReversalShader;//反射
+	static Shader postBlurShader;
 	static Shader ShadowMapShader;	//影シェーダー
 	static Shader DepthOfFieldShader;//被写界深度
 	/// <summary>
@@ -41,6 +42,7 @@ public:
 	/// パーティクル
 	/// </summary>
 	static Shader particleShader;	//パーティクル
+
 
 	static void LoadShaders();
 };

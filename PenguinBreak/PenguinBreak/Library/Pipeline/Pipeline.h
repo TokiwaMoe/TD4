@@ -58,12 +58,18 @@ public:
 	static PipelineSet ParticlePiepline;
 	//ノーマルマップ２種類
 	static PipelineSet NormalMapPipeline;
-	//ポストエフェクト
-	static PipelineSet PostPipeline;
 	//深度値保存用
 	static PipelineSet ShadowMapPipeline;
 	//被写界深度
 	static PipelineSet DepthOfFieldPipeline;
+
+
+	//ポストエフェクト
+	static PipelineSet PostPipeline;
+	//ポストブルーム
+	static PipelineSet PostBlurPipeline;
+	//ブルーム
+	static PipelineSet PostReversalPipeline;
 	//パイプライン作成
 	static void CreatePipeline(ID3D12Device* dev);
 
