@@ -26,7 +26,7 @@ void Player::stageInit(int stageNo)
 }
 
 
-void Player::Update(Stage *stage)
+void Player::Update(Stage* stage)
 {
 	//移動
 	Move();
@@ -57,7 +57,7 @@ void Player::Move()
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
 }
 
-void Player::collide2Stage(Stage *stage) 
+void Player::collide2Stage(Stage* stage)
 {
 	if (stage->GetInstance()->GetBoxSize() == CollisionCount(stage))
 	{
@@ -68,9 +68,16 @@ void Player::collide2Stage(Stage *stage)
 			stage->GetInstance()->GetStartPos().y + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)
 		};
 	}
+	//ゴールの判定
+	if ((position.x > stage->GetInstance()->GetGoalPos().x + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f) ||
+		position.x > stage->GetInstance()->GetGoalPos().x - (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)) &&
+		(position.y > stage->GetInstance()->GetGoalPos().y + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f) ||
+		position.y > stage->GetInstance()->GetGoalPos().y - (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)) ) {
+		DebugText::Get()->Print(100.0f, 300.0f, 4, "GOAL");
+	}
 }
 
-int Player::CollisionCount(Stage *stage)
+int Player::CollisionCount(Stage* stage)
 {
 	int count = 0;
 	for (int i = 0; i < stage->GetInstance()->GetBoxSize(); i++)
@@ -84,7 +91,7 @@ int Player::CollisionCount(Stage *stage)
 	return count;
 }
 
-bool Player::OutStage(Vec2 position, Stage *stage, int num)
+bool Player::OutStage(Vec2 position, Stage* stage, int num)
 {
 	//ステージスプライトの中心座標
 	Vec2 stageCenter = {
