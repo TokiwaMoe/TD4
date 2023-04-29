@@ -55,7 +55,7 @@ void GameScene::Init()
 void GameScene::Update()
 {
 	//シーンの変更の仕方
-	if (Input::Get()->KeybordTrigger(DIK_SPACE))
+	if (player->GetGoalFlag()==true)
 	{
 		BaseScene* scene = new ResultScene();
 		sceneManager_->SetNextScene(scene);

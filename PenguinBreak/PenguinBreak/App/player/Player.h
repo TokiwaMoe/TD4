@@ -40,7 +40,7 @@ public:
 	int CollisionCount(Stage *stage);
 
 	bool OutStage(Vec2 position, Stage *stage, int num);
-
+	bool Gole(Vec2 position, Stage* stage);
 	void Draw();
 
 	//getter
@@ -48,6 +48,7 @@ public:
 	const Vec2& GetPosition() { return position; }
 	//回転
 	const Vec2& GetRotation() { return rotation; }
+	bool GetGoalFlag() { return goalFlag; }
 	//setter
 
 public:
@@ -72,4 +73,5 @@ public:
 	//マウスの判定用
 	Sphere circle;
 	Ray ray;
+	bool goalFlag = false;
 };

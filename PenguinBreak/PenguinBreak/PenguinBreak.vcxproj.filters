@@ -375,7 +375,9 @@
     <ClInclude Include="App\player\Player.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="App\stage\Stage.h" />
+    <ClInclude Include="App\stage\Stage.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -507,11 +509,11 @@
     <ClCompile Include="App\scene\BaseScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="App\player\Player.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="App\stage\Stage.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="App\player\Player.cpp">
+      <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
