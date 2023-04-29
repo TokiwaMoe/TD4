@@ -70,7 +70,7 @@ void Player::collide2Stage(Stage* stage)
 		};
 	}
 	//ゴールの判定
-	if (!Gole(position, stage)) {
+	if (!OutStage(position, stage, stage->GOAL)) {
 		goalFlag = true;
 		DebugText::Get()->Print(100.0f, 300.0f, 4, "GOAL");
 	}
@@ -123,38 +123,6 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 	}
 }
 
-bool Player::Gole(Vec2 position, Stage* stage)
-{
-	//ステージスプライトの中心座標
-	Vec2 stageCenter = {
-		stage->GetInstance()->GetGoalPos().x + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f),
-		stage->GetInstance()->GetGoalPos().y + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)
-	};
-	//X軸、Y軸の距離を算出
-	Vec2 distance =
-	{
-		stageCenter.x - position.x,
-		stageCenter.y - position.y
-	};
-	//絶対値にするため結果が負なら正にする
-	if (distance.x < 0.0f) { distance.x *= -1.0f; }
-	if (distance.y < 0.0f) { distance.y *= -1.0f; }
-	//2つの矩形の和を算出
-	Vec2 size_num =
-	{
-		((stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f) - radius.x),
-		((stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f) - radius.y)
-	};
-	//距離がサイズの和より小さいor以下
-	if (distance.x <= size_num.x && distance.y <= size_num.y)
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
-}
 
 
 
