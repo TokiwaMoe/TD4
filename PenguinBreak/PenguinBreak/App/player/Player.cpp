@@ -26,7 +26,6 @@ void Player::stageInit(int stageNo)
 	//}
 }
 
-
 void Player::Update(Stage* stage)
 {
 	//移動
@@ -53,7 +52,6 @@ void Player::Move()
 		}
 	}
 
-
 	//DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%f", (float)Input::Get()->GetMouseMove().lX);
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
 }
@@ -65,12 +63,12 @@ void Player::collide2Stage(Stage* stage)
 		//ロード外に出たらスタート位置に戻す
 		DebugText::Get()->Print(100.0f, 500.0f, 2, "out stage");
 		position = {
-			stage->GetInstance()->GetStartPos().x + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f),
-			stage->GetInstance()->GetStartPos().y + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)
+			stage->GetInstance()->GetStartPos().x/* + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)*/,
+			stage->GetInstance()->GetStartPos().y/* + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)*/
 		};
 	}
 	//ゴールの判定
-	if (!OutStage(position, stage, stage->GOAL)) {
+	if (!OutStage(position, stage, static_cast<int>(stage->GetGoal()))) {
 		goalFlag = true;
 		DebugText::Get()->Print(100.0f, 300.0f, 4, "GOAL");
 	}
@@ -94,8 +92,8 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 {
 	//ステージスプライトの中心座標
 	Vec2 stageCenter = {
-		stage->GetInstance()->GetBox(num).pos.x + (stage->GetInstance()->GetSize(num).x / 2.0f),
-		stage->GetInstance()->GetBox(num).pos.y + (stage->GetInstance()->GetSize(num).y / 2.0f)
+		stage->GetInstance()->GetBox(num).pos.x/* + (stage->GetInstance()->GetSize(num).x / 2.0f)*/,
+		stage->GetInstance()->GetBox(num).pos.y/* + (stage->GetInstance()->GetSize(num).y / 2.0f)*/
 	};
 	//X軸、Y軸の距離を算出
 	Vec2 distance =
@@ -123,9 +121,6 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 	}
 }
 
-
-
-
 void Player::Draw()
 {
 	//2D描画
@@ -133,5 +128,3 @@ void Player::Draw()
 	float width = 64.0f, height = 128.0f;
 	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
 }
-
-
