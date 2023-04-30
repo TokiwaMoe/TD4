@@ -1,4 +1,4 @@
-#include "GameScene.h"
+ï»¿#include "GameScene.h"
 #include<sstream>
 #include<iomanip>
 #include "Input.h"
@@ -6,7 +6,6 @@
 #include"Shape.h"
 #include"SceneManager.h"
 #include"ResultScene.h"
-
 
 GameScene::GameScene()
 {}
@@ -16,20 +15,20 @@ GameScene::~GameScene()
 
 void GameScene::Init()
 {
-	//ƒ‰ƒCƒgƒOƒ‹[ƒvƒNƒ‰ƒXì¬
+	//ãƒ©ã‚¤ãƒˆã‚°ãƒ«ãƒ¼ãƒ—ã‚¯ãƒ©ã‚¹ä½œæˆ
 	lightGroup = std::make_unique<LightGroup>();
 	lightGroup->Initialize();
-	// 3DƒIƒuƒGƒNƒg‚Éƒ‰ƒCƒg‚ğƒZƒbƒg
+	// 3Dã‚ªãƒ–ã‚¨ã‚¯ãƒˆã«ãƒ©ã‚¤ãƒˆã‚’ã‚»ãƒƒãƒˆ
 	lightGroup->SetDirLightActive(0, true);
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
 	lightGroup->SetShadowDir(Vec3(0, 1, 0));
-	//‰¹ƒf[ƒ^“Ç‚İ‚İ
-	//ƒJƒƒ‰ˆÊ’u‚ğƒZƒbƒg
+	//éŸ³ãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
+	//ã‚«ãƒ¡ãƒ©ä½ç½®ã‚’ã‚»ãƒƒãƒˆ
 	Camera::Get()->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
 
-	//FBXŠÖ˜A
+	//FBXé–¢é€£
 	Model* model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin", "FBX/");
 	m_model = std::make_unique<Model>();
 	m_model = std::unique_ptr<Model>(model1);
@@ -38,30 +37,31 @@ void GameScene::Init()
 	m_fbx->SetModel(m_model.get());
 	m_fbx->SetScale(Vec3(0.025f, 0.025f, 0.025f));
 
-	//ƒXƒvƒ‰ƒCƒgì¬‚Ìd•û
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆä½œæˆã®ä»•æ–¹
 	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
-	//ƒ„ƒV‚Ì–Ø
+	//ãƒ¤ã‚·ã®æœ¨
 	palm_1 = Sprite::Get()->SpriteCreate(L"Resources/palm.png");
 	palm_2 = Sprite::Get()->SpriteCreate(L"Resources/palm.png");
 
-	//ƒvƒŒƒCƒ„[
+	// ã‚¹ãƒ†ãƒ¼ã‚¸
+	stage = Stage::GetInstance();
+	stage->Init();
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	player = new Player();
 	player->Initialize();
 	player->Init();
-	stage = Stage::GetInstance();
-	stage->Init();
 }
 
 void GameScene::Update()
 {
-	//ƒV[ƒ“‚Ì•ÏX‚Ìd•û
-	if (player->GetGoalFlag()==true)
+	//ã‚·ãƒ¼ãƒ³ã®å¤‰æ›´ã®ä»•æ–¹
+	if (player->GetGoalFlag() == true)
 	{
 		BaseScene* scene = new ResultScene();
 		sceneManager_->SetNextScene(scene);
 	}
 
-	//FBXŠÖ˜A
+	//FBXé–¢é€£
 	m_fbx->SetRotation({30.0f,180.0f,0.0f});
 	m_fbx->Update();
 	if (Input::Get()->KeybordTrigger(DIK_UP))
@@ -69,12 +69,13 @@ void GameScene::Update()
 		m_fbx->PlayAnimation(true);
 	}
 
-	// ƒXƒe[ƒWo—ÍiƒfƒoƒbƒOÀs—pj
+	// ã‚¹ãƒ†ãƒ¼ã‚¸å‡ºåŠ›ï¼ˆãƒ‡ãƒãƒƒã‚°å®Ÿè¡Œç”¨ï¼‰
 	if (Input::Get()->KeybordTrigger(DIK_1))
 	{
 		stage->WriteStage("write_test");
 	}
 
+	stage->GimmickUpdate();
 	player->Update(stage);
 
 	DebugText::Get()->Print(100.0f, 100.0f, 10, "Game");
@@ -105,9 +106,7 @@ void GameScene::ShadowDraw()
 	
 }
 
-
 void GameScene::Finalize()
 {
 
 }
-

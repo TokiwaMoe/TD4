@@ -96,6 +96,9 @@
     <Filter Include="ソース ファイル\Player">
       <UniqueIdentifier>{5dfc0fd6-ebe4-48ce-ab6f-f34d2fb0cb4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Stage">
+      <UniqueIdentifier>{2d300dea-48a0-4bc0-8789-06911483f5c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\SpritePS.hlsl">
@@ -376,7 +379,7 @@
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
     <ClInclude Include="App\stage\Stage.h">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -509,11 +512,11 @@
     <ClCompile Include="App\scene\BaseScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="App\stage\Stage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="App\player\Player.cpp">
       <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\Stage.cpp">
+      <Filter>ソース ファイル\Stage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

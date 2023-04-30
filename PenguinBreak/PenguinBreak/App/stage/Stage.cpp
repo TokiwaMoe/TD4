@@ -2,11 +2,29 @@
 #include <fstream>
 #include <json.hpp>
 
+Stage::GimmickParameter::GimmickParameter() :
+	flag(false),
+	speed(0.0f),
+	limit{}
+{
+}
+
+Stage::GimmickParameter::GimmickParameter(bool flag,float speed, const Vec2& limit) :
+	flag(flag),
+	speed(speed),
+	limit(limit)
+{
+}
+
 Stage::Road::Road() :
 	sprite{},
 	pos{},
 	size{},
-	type{}
+	type(RoadType::ROAD),
+	gimmick(Gimmick::NO_GIMMICK),
+	parameter{},
+	initPos(pos),
+	initSize(size)
 {
 }
 
@@ -14,7 +32,11 @@ Stage::Road::Road(const Vec2& pos, const Vec2& size) :
 	sprite{},
 	pos(pos),
 	size(size),
-	type(RoadType::ROAD)
+	type(RoadType::ROAD),
+	gimmick(Gimmick::NO_GIMMICK),
+	parameter{},
+	initPos(pos),
+	initSize(size)
 {
 }
 
@@ -24,7 +46,9 @@ void Stage::Road::BoxInit()
 }
 
 Stage::Stage() :
-	boxes{}
+	boxes{},
+	startIndex(0),
+	goalIndex(0)
 {
 }
 
@@ -42,12 +66,28 @@ void Stage::Init()
 	boxes = file->objects;
 }
 
+void Stage::GimmickUpdate()
+{
+	for (auto& i : boxes)
+	{
+		switch (i.GetGimmick())
+		{
+		case Gimmick::SCALE:
+			ScaleGimmick(i);
+			break;
+		default:
+			continue;
+			break;
+		}
+	}
+}
+
 void Stage::Draw(float offsetX, float offsetY)
 {
 	for (auto& i : boxes)
 	{
 		Vec4 color = Vec4();
-		switch (i.type)
+		switch (i.GetType())
 		{
 		case RoadType::START:
 			color = Vec4(0.0f, 0.0f, 1.0f, 1.0f);
@@ -60,56 +100,67 @@ void Stage::Draw(float offsetX, float offsetY)
 			break;
 		}
 
-		Sprite::Get()->Draw(i.sprite, i.pos + Vec2(offsetX, offsetY), i.size.x, i.size.y, Vec2(), color);
+		Sprite::Get()->Draw(i.GetSprite(), i.pos + Vec2(offsetX, offsetY), i.size.x, i.size.y, Vec2(0.5f, 0.5f), color);
 	}
 }
 
 Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 {
-	//連結してフルパスを得る
+	// 連結してフルパスを得る
 	const std::string fullpath = std::string("Resources/levels/") + jsonFile + ".json";
 
-	//ファイルストリーム
+	// ファイルストリーム
 	std::ifstream file;
 
-	//ファイルを開く
+	// ファイルを開く
 	file.open(fullpath);
-	//ファイルオープン失敗をチェック
+	// ファイルオープン失敗をチェック
 	if (file.fail())
 	{
 		assert(0);
 	}
 
-	//JSON文字列から解凍したデータ
+	// JSON文字列から解凍したデータ
 	nlohmann::json deserialized;
 
-	//解凍
+	// 解凍
 	file >> deserialized;
 
-	//正しいレベルファイルかチェック
+	// 正しいレベルファイルかチェック
 	assert(deserialized.is_object());
 	assert(deserialized.contains("name"));
 	assert(deserialized["name"].is_string());
 
-	//レベルデータ格納用インスタンスを生成
+	// レベルデータ格納用インスタンスを生成
 	JsonData* levelData = new JsonData();
 
-	//"objects"の全オブジェクトを走査
+	// "objects"の全オブジェクトを走査
 	for (nlohmann::json& object : deserialized["objects"])
 	{
 		assert(object.contains("type"));
 
-		//要素を追加
-		levelData->objects.emplace_back(Road{});
+		// 要素を追加
+		Vec2 pos = { object["pos"][0], object["pos"][1] };
+		Vec2 size = { object["size"][0], object["size"][1] };
+		levelData->objects.emplace_back(Road(pos, size));
 		auto& objectData = levelData->objects.back();
 
 		objectData.BoxInit();
-		objectData.type = object["type"];
-		objectData.pos.x = object["pos"][0];
-		objectData.pos.y = object["pos"][1];
-		objectData.size.x = object["size"][0];
-		objectData.size.y = object["size"][1];
+		objectData.SetType(object["type"]);
+		objectData.SetGimmick(object["gimmick"]);
+		// ギミック用のパラメータの読み込み
+		if (objectData.GetGimmick() != Gimmick::NO_GIMMICK)
+		{
+			bool flag = object["parameter"]["flag"];
+			float speed = object["parameter"]["speed"];
+			Vec2 limit = { object["parameter"]["limit"][0], object["parameter"]["limit"][1]};
+
+			objectData.ParameterInit(GimmickParameter(flag, speed, limit));
+		}
 	}
+
+	startIndex = levelData->objects.size() - 2;
+	goalIndex = levelData->objects.size() - 1;
 
 	return levelData;
 }
@@ -119,15 +170,15 @@ void Stage::WriteStage(const std::string& stageName)
 	using namespace std;
 	using json = nlohmann::json;
 
-	//連結してフルパスを得る
+	// 連結してフルパスを得る
 	const string fullpath = string("Resources/levels/") + stageName + ".json";
 
-	//ファイルストリーム
+	// ファイルストリーム
 	ofstream file;
 
-	//ファイルを開く
+	// ファイルを開く
 	file.open(fullpath);
-	//ファイルオープン失敗をチェック
+	// ファイルオープン失敗をチェック
 	if (file.fail())
 	{
 		assert(0);
@@ -141,11 +192,53 @@ void Stage::WriteStage(const std::string& stageName)
 	for (size_t i = 0; i < boxes.size(); i++)
 	{
 		data["objects"][i] = {
-			{"type", boxes[i].type},
+			{"type", boxes[i].GetType()},
 			{"pos", {boxes[i].pos.x, boxes[i].pos.y}},
-			{"size", {boxes[i].size.x, boxes[i].size.y}}};
+			{"size", {boxes[i].size.x, boxes[i].size.y}},
+			{"gimmick", boxes[i].GetGimmick()},
+		};
+		// ギミック用のパラメータの読み込み
+		if (boxes[i].GetGimmick() != Gimmick::NO_GIMMICK)
+		{
+			data["parameter"] = {
+				{"flag", boxes[i].GetGimmickParameter().GetFlag()},
+				{"speed", boxes[i].GetGimmickParameter().GetSpeed()},
+				{"limit", {boxes[i].GetGimmickParameter().GetLimit().x, boxes[i].GetGimmickParameter().GetLimit().y}},
+			};
+		}
 	}
 
 	file << std::setw(4) << data << endl;
 	file.close();
+}
+
+void Stage::ScaleGimmick(Road& road)
+{
+	Vec2 limit = road.GetInitSize();
+	// 軸単位で動かすかどうか
+	const Vec2 isMove = {
+		(road.GetGimmickParameter().GetLimit().x ? 1.0f : 0.0f),
+		(road.GetGimmickParameter().GetLimit().y ? 1.0f : 0.0f)
+	};
+
+	if (road.GetGimmickParameter().GetFlag())
+	{
+		limit += road.GetGimmickParameter().GetLimit();
+		road.size += isMove * road.GetGimmickParameter().GetSpeed();
+
+		if ((isMove.x && (road.size.x >= limit.x)) || (isMove.y && (road.size.y >= limit.y)))
+		{
+			road.GetGimmickParameter().ChangeFlag();
+		}
+	}
+	else
+	{
+		limit -= road.GetGimmickParameter().GetLimit();
+		road.size -= isMove * road.GetGimmickParameter().GetSpeed();
+
+		if ((isMove.x && (road.size.x <= limit.x)) || (isMove.y && (road.size.y <= limit.y)))
+		{
+			road.GetGimmickParameter().ChangeFlag();
+		}
+	}
 }
