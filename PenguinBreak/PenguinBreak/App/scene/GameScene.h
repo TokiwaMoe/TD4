@@ -34,6 +34,10 @@ public:
 	/// </summary>
 	void Update()override;
 	/// <summary>
+	/// XV
+	/// </summary>
+	void SizeChange(Vec2 startSize, Vec2 lim, bool flag, float speed);
+	/// <summary>
 	/// •`‰æ
 	/// </summary>
 	void Draw()override;
@@ -58,4 +62,8 @@ private://’è‹`
 
 	Player* player = nullptr;
 	Stage* stage = nullptr;
+
+	//
+	Vec2 palmSize = { 305, 437 };
+	bool isChange = false;
 };
