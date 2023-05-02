@@ -52,8 +52,14 @@ public:
 	static PipelineSet OBJPipeline;
 	//影無しオブジェクト
 	static PipelineSet NoShadowOBJPipeline;
+
+
 	//２Dスプライト描画
 	static PipelineSet SpritePipeline;
+
+	static PipelineSet SpriteBlurPipeline;
+
+
 	//パーティクル
 	static PipelineSet ParticlePiepline;
 	//ノーマルマップ２種類

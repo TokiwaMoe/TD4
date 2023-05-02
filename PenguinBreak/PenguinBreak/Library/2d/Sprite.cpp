@@ -201,7 +201,7 @@ Sprite::SpriteCommon Sprite::SpriteCommonCreate(int window_width, int window_hei
 	SpriteCommon spriteCommon{};
 
 	//スプライト用パイプライン生成
-	spriteCommon.pipelineSet = Pipeline::SpriteCreateGraphicsPipeline(dev, ShaderManager::spriteShader);
+	spriteCommon.pipelineSet = Pipeline::SpritePipeline;
 
 	//平行投影の射影行列生成
 	spriteCommon.matProjection = XMMatrixOrthographicOffCenterLH(
@@ -212,12 +212,12 @@ Sprite::SpriteCommon Sprite::SpriteCommonCreate(int window_width, int window_hei
 }
 
 //スプライト共通グラフィックコマンドのセット
-void Sprite::SpriteCommonBeginDraw()
+void Sprite::SpriteCommonBeginDraw(SpriteData& sprite)
 {
 	//パイプラインステートの設定
-	cmdList->SetPipelineState(spriteCommon.pipelineSet.pipelinestate.Get());
+	cmdList->SetPipelineState(sprite.pipeline.pipelinestate.Get());
 	//ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(spriteCommon.pipelineSet.rootsignature.Get());
+	cmdList->SetGraphicsRootSignature(sprite.pipeline.rootsignature.Get());
 	//プリミティブ形状を設定
 	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
@@ -231,7 +231,7 @@ void Sprite::Update(SpriteData& sprite, const Vec2 &position, float width, float
 
 	if (sprite.size.x != width || sprite.size.y != height ||
 		sprite.anchorpoint.x != anchorpoint.x || sprite.anchorpoint.y != anchorpoint.y ||
-		isFlipX == true || isFlipY == true|| isFlipX == false || isFlipY == false)
+		isFlipX == true || isFlipY == true)
 	{
 		//サイズを合わせる
 		sprite.size.x = width, sprite.size.y = height;
@@ -305,7 +305,7 @@ void Sprite::Update(SpriteData& sprite, const Vec2 &position, float width, float
 //スプライト単体描画
 void Sprite::Draw(SpriteData& sprite, const Vec2 &position, const float width, const float height, const Vec2 &anchorpoint, const Vec4 &color, const bool isFlipX, const bool isFlipY)
 {
-	SpriteCommonBeginDraw();
+	SpriteCommonBeginDraw(sprite);
 
 	if (constBuffer.size() <= spriteNum)
 	{
@@ -352,7 +352,7 @@ void Sprite::DebugUpdate(SpriteData& sprite)
 //スプライト単体描画
 void Sprite::DebugDraw(SpriteData& sprite)
 {
-	SpriteCommonBeginDraw();
+	SpriteCommonBeginDraw(sprite);
 
 	if (constBuffer.size() <= spriteNum)
 	{
@@ -375,36 +375,5 @@ void Sprite::DebugDraw(SpriteData& sprite)
 
 	//ポリゴンの描画（４頂点で四角形）
 	cmdList->DrawInstanced(4, 1, 0, 0);
-	spriteNum++;
-}
-
-void Sprite::PostEffectDraw(ID3D12DescriptorHeap* descHeap, SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY)
-{
-	//パイプラインステートの設定
-	cmdList->SetPipelineState(spriteCommon.pipelineSet.pipelinestate.Get());
-	//ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(spriteCommon.pipelineSet.rootsignature.Get());
-	//プリミティブ形状を設定
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-
-	//テクスチャ用デスクリプタヒープの設定
-	ID3D12DescriptorHeap* ppHeaps[] = { descHeap };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-
-	if (constBuffer.size() <= spriteNum)
-	{
-		CreateConstBuffer();
-	}
-
-	Update(sprite, position, width, height, anchorpoint, color, isFlipX, isFlipY);
-	//頂点バッファをセット
-	cmdList->IASetVertexBuffers(0, 1, &sprite.vbView);
-	//定数バッファをセット
-	cmdList->SetGraphicsRootConstantBufferView(0, constBuffer[spriteNum]->constBuff->GetGPUVirtualAddress());
-
-	cmdList->SetGraphicsRootDescriptorTable(1, descHeap->GetGPUDescriptorHandleForHeapStart());
-	//ポリゴンの描画（４頂点で四角形）
-	cmdList->DrawInstanced(4, 1, 0, 0);
-
 	spriteNum++;
 }
