@@ -96,17 +96,8 @@
     <Filter Include="ソース ファイル\Player">
       <UniqueIdentifier>{5dfc0fd6-ebe4-48ce-ab6f-f34d2fb0cb4a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Stage">
-      <UniqueIdentifier>{2d300dea-48a0-4bc0-8789-06911483f5c4}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\shaders\SpritePS.hlsl">
-      <Filter>HLSL\Sprite</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
-      <Filter>HLSL\Sprite</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\shaders\ParticleGS.hlsl">
       <Filter>HLSL\Particle</Filter>
     </FxCompile>
@@ -182,11 +173,20 @@
     <FxCompile Include="Resources\shaders\FBX\FBXShadowVS.hlsl">
       <Filter>HLSL\OBJ\FBX</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\Sprite\SpriteBlurPS.hlsl">
+      <Filter>HLSL\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Sprite\SpriteBlurVS.hlsl">
+      <Filter>HLSL\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Sprite\SpritePS.hlsl">
+      <Filter>HLSL\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Sprite\SpriteVS.hlsl">
+      <Filter>HLSL\Sprite</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\shaders\Sprite.hlsli">
-      <Filter>HLSL\Sprite</Filter>
-    </None>
     <None Include="Resources\shaders\Particle.hlsli">
       <Filter>HLSL\Particle</Filter>
     </None>
@@ -222,6 +222,12 @@
     </None>
     <None Include="Resources\shaders\FBX\FBXShadow.hlsli">
       <Filter>HLSL\OBJ\FBX</Filter>
+    </None>
+    <None Include="Resources\shaders\Sprite\Sprite.hlsli">
+      <Filter>HLSL\Sprite</Filter>
+    </None>
+    <None Include="Resources\shaders\Sprite\SpriteBlur.hlsli">
+      <Filter>HLSL\Sprite</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -378,9 +384,7 @@
     <ClInclude Include="App\player\Player.h">
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
-    <ClInclude Include="App\stage\Stage.h">
-      <Filter>ソース ファイル\Stage</Filter>
-    </ClInclude>
+    <ClInclude Include="App\stage\Stage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -513,10 +517,10 @@
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
     <ClCompile Include="App\player\Player.cpp">
-      <Filter>ソース ファイル\Player</Filter>
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="App\stage\Stage.cpp">
-      <Filter>ソース ファイル\Stage</Filter>
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
