@@ -30,6 +30,8 @@ ComPtr<ID3DBlob> LoadShader(const LPCWSTR &VshaderName, const LPCSTR &Vtarget, c
 }
 
 Shader ShaderManager::spriteShader;
+Shader ShaderManager::spriteBlurShader;
+
 Shader ShaderManager::objShader;
 Shader ShaderManager::toonObjShader;
 Shader ShaderManager::normalMapShader;
@@ -46,8 +48,12 @@ Shader ShaderManager::noShadowOBJShader;
 void ShaderManager::LoadShaders()
 {	
 	//スプライト
-	spriteShader.vsBlob = LoadShader(L"Resources/shaders/SpriteVS.hlsl", "vs_5_0");
-	spriteShader.psBlob = LoadShader(L"Resources/shaders/SpritePS.hlsl", "ps_5_0");
+	spriteShader.vsBlob = LoadShader(L"Resources/shaders/Sprite/SpriteVS.hlsl", "vs_5_0");
+	spriteShader.psBlob = LoadShader(L"Resources/shaders/Sprite/SpritePS.hlsl", "ps_5_0");
+	//ブラー
+	spriteBlurShader.vsBlob = LoadShader(L"Resources/shaders/Sprite/SpriteBlurVS.hlsl", "vs_5_0");
+	spriteBlurShader.psBlob = LoadShader(L"Resources/shaders/Sprite/SpriteBlurPS.hlsl", "ps_5_0");
+
 	//OBJ
 	objShader.vsBlob = LoadShader(L"Resources/shaders/Object/OBJVertexShader.hlsl", "vs_5_0");
 	objShader.psBlob = LoadShader(L"Resources/shaders/Object/OBJPixelShader.hlsl", "ps_5_0");

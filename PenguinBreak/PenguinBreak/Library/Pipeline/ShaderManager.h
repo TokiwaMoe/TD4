@@ -23,6 +23,7 @@ public:
 	/// スプライト
 	/// </summary>
 	static Shader spriteShader;		//スプライト
+	static Shader spriteBlurShader;//スプライトブラー
 	/// <summary>
 	/// ポストエフェクト
 	/// </summary>
@@ -41,7 +42,7 @@ public:
 	/// <summary>
 	/// パーティクル
 	/// </summary>
-	static Shader particleShader;	//パーティクル
+	static Shader particleShader;//パーティクル
 
 
 	static void LoadShaders();
