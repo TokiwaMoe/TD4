@@ -5,7 +5,12 @@ Pipeline::PipelineSet Pipeline::NoShadowOBJPipeline;
 Pipeline::PipelineSet Pipeline::ShadowMapPipeline;
 Pipeline::PipelineSet Pipeline::NormalMapPipeline;
 Pipeline::PipelineSet Pipeline::DepthOfFieldPipeline;
+//スプライト
+Pipeline::PipelineSet Pipeline::SpritePipeline;
+Pipeline::PipelineSet Pipeline::SpriteBlurPipeline;
 
+
+//ポストエフェクト
 Pipeline::PipelineSet Pipeline::PostPipeline;
 Pipeline::PipelineSet Pipeline::PostBlurPipeline;
 Pipeline::PipelineSet Pipeline::PostReversalPipeline;
@@ -17,7 +22,10 @@ void Pipeline::CreatePipeline(ID3D12Device* dev)
 	NoShadowOBJPipeline = NoShadowOBJCreateGraphicsPipeline(dev, ShaderManager::noShadowOBJShader);
 	ShadowMapPipeline = ShadowCreateGraphicsPipeline(dev, ShaderManager::ShadowMapShader);
 	NormalMapPipeline = NormalMapCreatePipeline(dev, ShaderManager::normalMapShader);
-	DepthOfFieldPipeline = DepthOfFieldPipelineCreateGraphicesPipeline(dev, ShaderManager::DepthOfFieldShader);
+
+	//スプライト
+	SpritePipeline = SpriteCreateGraphicsPipeline(dev, ShaderManager::spriteShader);
+	SpriteBlurPipeline = SpriteCreateGraphicsPipeline(dev, ShaderManager::spriteBlurShader);
 
 	PostPipeline = PostNormalCreateGraphicsPipeline(dev, ShaderManager::postNormalShader);
 	PostBlurPipeline = PostNormalCreateGraphicsPipeline(dev, ShaderManager::postBlurShader);
@@ -79,8 +87,8 @@ Pipeline::PipelineSet  Pipeline::SpriteCreateGraphicsPipeline(ID3D12Device* dev,
 	};
 #pragma region//パイプラインステート設定変数の宣言と、各種項目の設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC gpipeline{};
-	gpipeline.VS = CD3DX12_SHADER_BYTECODE(ShaderManager::spriteShader.vsBlob.Get());
-	gpipeline.PS = CD3DX12_SHADER_BYTECODE(ShaderManager::spriteShader.psBlob.Get());
+	gpipeline.VS = CD3DX12_SHADER_BYTECODE(shader.vsBlob.Get());
+	gpipeline.PS = CD3DX12_SHADER_BYTECODE(shader.psBlob.Get());
 
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK;//標準設定
 

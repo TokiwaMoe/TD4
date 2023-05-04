@@ -37,6 +37,11 @@ struct SpriteData
 	Vec2 anchorpoint = { 0.5f,0.5f };
 	//親
 	SpriteData* parent = nullptr;
+
+	Pipeline::PipelineSet pipeline = Pipeline::SpritePipeline;
+
+	void SetPipeline(Pipeline::PipelineSet pipeline_) { pipeline = pipeline_; }
+
 };
 /// <summary>
 /// ２Dスプライトクラス
@@ -129,7 +134,7 @@ public:
 	void CreateConstBuffer();
 
 	//スプライト単体更新
-	void Update(SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY);
+	void Update(SpriteData& sprite, const Vec2& position, float width, float height, const Vec2& anchorpoint, const Vec4& color, bool isFlipX, bool isFlipY);
 
 	/// <summary>
 	/// //スプライト単体描画
@@ -142,12 +147,10 @@ public:
 	/// <param name="color">色</param>
 	/// <param name="isFlipX"></param>
 	/// <param name="isFlipY"></param>
-	void Draw(SpriteData& sprite,const Vec2 &position,const float width,const float height,const Vec2 &anchorpoint = { 0.0f,0.0f },const Vec4 &color = { 1.0f,1.0f,1.0f,1.0f },const bool isFlipX = false,const bool isFlipY = false);
+	void Draw(SpriteData& sprite, const Vec2& position, const float width, const float height, const Vec2& anchorpoint = { 0.0f,0.0f }, const Vec4& color = { 1.0f,1.0f,1.0f,1.0f }, const bool isFlipX = false, const bool isFlipY = false);
 
-	//仮ポストエフェクト
-	void PostEffectDraw(ID3D12DescriptorHeap* descHeap, SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint = { 0.0f,0.0f }, const Vec4 &color = { 1.0f,1.0f,1.0f,1.0f }, bool isFlipX = false, bool isFlipY = false);
 	//スプライト共通グラフィックコマンドのセット
-	void SpriteCommonBeginDraw();
+	void SpriteCommonBeginDraw(SpriteData& sprite);
 public://デバックテキスト
 	void DebugUpdate(SpriteData& sprite);
 	//スプライト単体描画/スプライトデータsprite
