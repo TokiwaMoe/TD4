@@ -43,11 +43,11 @@ void GameScene::Init()
 	palm_1 = Sprite::Get()->SpriteCreate(L"Resources/palm.png");
 	palm_2 = Sprite::Get()->SpriteCreate(L"Resources/palm.png");
 
+	player = new Player();
 	// ステージ
 	stage = Stage::GetInstance();
-	stage->Init();
+	stage->Init(player->GetSize());
 	//プレイヤー
-	player = new Player();
 	player->Initialize();
 	player->Init();
 }
@@ -78,7 +78,7 @@ void GameScene::Update()
 	stage->GimmickUpdate();
 	player->Update(stage);
 
-	DebugText::Get()->Print(100.0f, 100.0f, 10, "Game");
+	//DebugText::Get()->Print(100.0f, 100.0f, 10, "Game");
 
 	lightGroup->Update();
 }

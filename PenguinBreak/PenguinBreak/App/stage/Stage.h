@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include "Sprite.h"
 #include <vector>
 #include "./../../Library/Helper/LoadJson.h"
 
 class Stage final
 {
-private: //ƒVƒ“ƒOƒ‹ƒgƒ“‰»
+private: //ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³åŒ–
 	Stage();
 	Stage(const Stage&) = delete;
 	~Stage();
@@ -17,23 +17,24 @@ public:
 		return &instance;
 	}
 
-public: //ƒTƒuƒNƒ‰ƒX
-	// “¹‚Ìƒ^ƒCƒv
+public: //ã‚µãƒ–ã‚¯ãƒ©ã‚¹
+	// é“ã®ã‚¿ã‚¤ãƒ—
 	enum RoadType
 	{
-		ROAD,  //“¹
-		START, //ƒXƒ^[ƒg
-		GOAL,  //ƒS[ƒ‹
+		ROAD,  //é“
+		START, //ã‚¹ã‚¿ãƒ¼ãƒˆ
+		GOAL,  //ã‚´ãƒ¼ãƒ«
 	};
 
-	// ƒMƒ~ƒbƒN‚Ìƒ^ƒCƒv
+	// ã‚®ãƒŸãƒƒã‚¯ã®ã‚¿ã‚¤ãƒ—
 	enum Gimmick
 	{
-		NO_GIMMICK, //ƒMƒ~ƒbƒN–³‚µ
-		SCALE,      //“¹‚ª‹·‚Ü‚éƒMƒ~ƒbƒN
+		NO_GIMMICK, //ã‚®ãƒŸãƒƒã‚¯ç„¡ã—
+		SCALE,      //é“ãŒç‹­ã¾ã‚‹ã‚®ãƒŸãƒƒã‚¯
+		MOVE,       //é“ãŒç§»å‹•ã™ã‚‹ã‚®ãƒŸãƒƒã‚¯
 	};
 
-	// ƒMƒ~ƒbƒN‚ğ“®‚©‚·ˆ×‚Ég‚¤’l
+	// ã‚®ãƒŸãƒƒã‚¯ã‚’å‹•ã‹ã™ç‚ºã«ä½¿ã†å€¤
 	class GimmickParameter
 	{
 	private:
@@ -87,35 +88,37 @@ public: //ƒTƒuƒNƒ‰ƒX
 		std::vector<Road> objects = {};
 	};
 
-private: //ƒƒ“ƒo•Ï”
+private: //ãƒ¡ãƒ³ãƒå¤‰æ•°
 	std::vector<Road> boxes;
 	size_t startIndex;
 	size_t goalIndex;
 
-public: //ƒƒ“ƒoŠÖ”
-	// ‰Šú‰»
-	void Init();
-	// ƒMƒ~ƒbƒN‚ÌXV
+public: //ãƒ¡ãƒ³ãƒé–¢æ•°
+	// åˆæœŸåŒ–
+	void Init(const Vec2& playerSize);
+	// ã‚®ãƒŸãƒƒã‚¯ã®æ›´æ–°
 	void GimmickUpdate();
-	// •`‰æ
+	// æç”»
 	void Draw(float offsetX = 0.0f, float offsetY = 0.0f);
 
-	// ƒXƒe[ƒW‚Ì‘‚«‚İ
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ã®æ›¸ãè¾¼ã¿
 	void WriteStage(const std::string& stageName);
-	// ƒXƒe[ƒW‚Ì“Ç‚İ‚İ
+	// ã‚¹ãƒ†ãƒ¼ã‚¸ã®èª­ã¿è¾¼ã¿
 	JsonData* LoadStage(const std::string& jsonFile);
 
 	Road GetBox(int num) { return boxes[num]; }
 	size_t GetBoxSize() { return boxes.size(); }
-	// À•W
+	// åº§æ¨™
 	Vec2 GetPos(int num) { return boxes[num].pos; }
-	//ƒXƒvƒ‰ƒCƒgƒTƒCƒY
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚µã‚¤ã‚º
 	Vec2 GetSize(int num) { return boxes[num].size; }
 	Vec2 GetStartPos() { return boxes[startIndex].pos; }
 	size_t GetStart() { return startIndex; }
 	Vec2 GetGoalPos() { return boxes[goalIndex].pos; }
 	size_t GetGoal() { return goalIndex; }
 private:
-	// “¹‚ª‹·‚Ü‚éƒMƒ~ƒbƒN
+	// é“ãŒç‹­ã¾ã‚‹ã‚®ãƒŸãƒƒã‚¯
 	void ScaleGimmick(Road& road);
+	// é“ãŒç§»å‹•ã™ã‚‹ã‚®ãƒŸãƒƒã‚¯
+	void MoveGimmick(Road& road);
 };
