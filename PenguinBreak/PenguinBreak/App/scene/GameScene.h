@@ -36,7 +36,7 @@ public:
 	/// <summary>
 	/// çXêV
 	/// </summary>
-	void SizeChange(Vec2 startSize, Vec2 lim, bool flag, float speed);
+	Vec2 SizeChange(Vec2 startSize, Vec2 lim, bool flag, float speed);
 	/// <summary>
 	/// ï`âÊ
 	/// </summary>
@@ -64,6 +64,8 @@ private://íËã`
 	Stage* stage = nullptr;
 
 	//
-	Vec2 palmSize = { 305, 437 };
-	bool isChange = false;
+	Vec2 size = { 305,437 };
+	Vec2 palmSize_1 = { 305, 437 };
+	Vec2 palmSize_2 = { 305, 437 };
+	bool isChange = true;
 };
