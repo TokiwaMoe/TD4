@@ -56,11 +56,11 @@ Stage::~Stage()
 {
 }
 
-void Stage::Init()
+void Stage::Init(const Vec2& playerSize)
 {
 	const float ROAD_OFFSET = 30.0f; //道の余白
-	const float ROAD_WIDTH = 128.0f + ROAD_OFFSET; //プレイヤーのサイズのでかい方の値を採用（今回は横64:縦128なので縦の値）
-
+	const float ROAD_WIDTH = (playerSize.x > playerSize.y) ? playerSize.x : playerSize.y;
+	int a = window_width - 200;
 	auto file = LoadStage("stage1");
 	boxes.clear();
 	boxes = file->objects;
@@ -74,6 +74,9 @@ void Stage::GimmickUpdate()
 		{
 		case Gimmick::SCALE:
 			ScaleGimmick(i);
+			break;
+		case Gimmick::MOVE:
+			MoveGimmick(i);
 			break;
 		default:
 			continue;
@@ -147,7 +150,17 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 
 		objectData.BoxInit();
 		objectData.SetType(object["type"]);
-		objectData.SetGimmick(object["gimmick"]);
+
+		// ギミックタイプの読み込み
+		if (objectData.GetType() == RoadType::ROAD)
+		{
+			objectData.SetGimmick(object["gimmick"]);
+		}
+		else
+		{
+			objectData.SetGimmick(Gimmick::NO_GIMMICK);
+		}
+
 		// ギミック用のパラメータの読み込み
 		if (objectData.GetGimmick() != Gimmick::NO_GIMMICK)
 		{
@@ -195,12 +208,18 @@ void Stage::WriteStage(const std::string& stageName)
 			{"type", boxes[i].GetType()},
 			{"pos", {boxes[i].pos.x, boxes[i].pos.y}},
 			{"size", {boxes[i].size.x, boxes[i].size.y}},
-			{"gimmick", boxes[i].GetGimmick()},
 		};
-		// ギミック用のパラメータの読み込み
+
+		// ギミックタイプの書き込み
+		if (boxes[i].GetType() == RoadType::ROAD)
+		{
+			data["objects"][i]["gimmick"] = boxes[i].GetGimmick();
+		}
+
+		// ギミック用のパラメータの書き込み
 		if (boxes[i].GetGimmick() != Gimmick::NO_GIMMICK)
 		{
-			data["parameter"] = {
+			data["objects"][i]["parameter"] = {
 				{"flag", boxes[i].GetGimmickParameter().GetFlag()},
 				{"speed", boxes[i].GetGimmickParameter().GetSpeed()},
 				{"limit", {boxes[i].GetGimmickParameter().GetLimit().x, boxes[i].GetGimmickParameter().GetLimit().y}},
@@ -223,6 +242,7 @@ void Stage::ScaleGimmick(Road& road)
 
 	if (road.GetGimmickParameter().GetFlag())
 	{
+		// 道幅が広くなる
 		limit += road.GetGimmickParameter().GetLimit();
 		road.size += isMove * road.GetGimmickParameter().GetSpeed();
 
@@ -233,10 +253,44 @@ void Stage::ScaleGimmick(Road& road)
 	}
 	else
 	{
+		// 道幅が狭くなる
 		limit -= road.GetGimmickParameter().GetLimit();
 		road.size -= isMove * road.GetGimmickParameter().GetSpeed();
 
 		if ((isMove.x && (road.size.x <= limit.x)) || (isMove.y && (road.size.y <= limit.y)))
+		{
+			road.GetGimmickParameter().ChangeFlag();
+		}
+	}
+}
+
+void Stage::MoveGimmick(Road& road)
+{
+	Vec2 limit = road.GetInitPos();
+	// 軸単位で動かすかどうか
+	const Vec2 isMove = {
+		(road.GetGimmickParameter().GetLimit().x ? 1.0f : 0.0f),
+		(road.GetGimmickParameter().GetLimit().y ? 1.0f : 0.0f)
+	};
+
+	if (road.GetGimmickParameter().GetFlag())
+	{
+		// +方向に移動する
+		limit += road.GetGimmickParameter().GetLimit();
+		road.pos += isMove * road.GetGimmickParameter().GetSpeed();
+
+		if ((isMove.x && (road.pos.x >= limit.x)) || (isMove.y && (road.pos.y >= limit.y)))
+		{
+			road.GetGimmickParameter().ChangeFlag();
+		}
+	}
+	else
+	{
+		// -方向に移動する
+		limit -= road.GetGimmickParameter().GetLimit();
+		road.pos -= isMove * road.GetGimmickParameter().GetSpeed();
+
+		if ((isMove.x && (road.pos.x <= limit.x)) || (isMove.y && (road.pos.y <= limit.y)))
 		{
 			road.GetGimmickParameter().ChangeFlag();
 		}

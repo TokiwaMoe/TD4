@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <DirectXMath.h>
 #include "DirectXBase.h"
 #include"DebugText.h"
@@ -24,14 +24,14 @@ public:
 
 	void Init();
 	/// <summary>
-	/// ƒXƒe[ƒW•Ï‚í‚é‚²‚Æ‚Ì‰Šú‰»
+	/// ã‚¹ãƒ†ãƒ¼ã‚¸å¤‰ã‚ã‚‹ã”ã¨ã®åˆæœŸåŒ–
 	/// </summary>
-	/// <param name="stageNo">ƒXƒe[ƒW”Ô†</param>
+	/// <param name="stageNo">ã‚¹ãƒ†ãƒ¼ã‚¸ç•ªå·</param>
 	void stageInit(int stageNo);
 
 	void Update(Stage *stage);
 	/// <summary>
-	/// ƒ}ƒEƒXˆÚ“®
+	/// ãƒã‚¦ã‚¹ç§»å‹•
 	/// </summary>
 	void Move();
 
@@ -43,9 +43,11 @@ public:
 	void Draw();
 
 	//getter
-	//À•W
+	//åº§æ¨™
 	const Vec2& GetPosition() { return position; }
-	//‰ñ“]
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚µã‚¤ã‚º
+	const Vec2 GetSize() const { return Vec2(width, height); }
+	//å›è»¢
 	const Vec2& GetRotation() { return rotation; }
 	bool GetGoalFlag() { return goalFlag; }
 	//setter
@@ -58,18 +60,18 @@ public:
 	};
 	//2d
 	SpriteData player;
-	// X,Y,Z²‰ñ‚è‚Ìƒ[ƒJƒ‹‰ñ“]Šp
+	// X,Y,Zè»¸å›ã‚Šã®ãƒ­ãƒ¼ã‚«ãƒ«å›è»¢è§’
 	Vec2 rotation = { 0,0 };
-	// ƒvƒŒƒCƒ„[À•W
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åº§æ¨™
 	Vec2 position = { 50,50 };
 	int  direction = 0;
 
-	//ƒXƒvƒ‰ƒCƒgƒTƒCƒY
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚µã‚¤ã‚º
 	float width = 64.0f, height = 128.0f;
 	bool flipFlag = false;
-	//”¼Œa 
+	//åŠå¾„ 
 	Vec2 radius = { 30, 62 };
-	//ƒ}ƒEƒX‚Ì”»’è—p
+	//ãƒã‚¦ã‚¹ã®åˆ¤å®šç”¨
 	Sphere circle;
 	Ray ray;
 	bool goalFlag = false;
