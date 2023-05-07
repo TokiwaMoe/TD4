@@ -1,7 +1,7 @@
 
 cbuffer cbuff0 : register(b0)
 {
-
+	float time;
 };
 struct VSOutput
 {

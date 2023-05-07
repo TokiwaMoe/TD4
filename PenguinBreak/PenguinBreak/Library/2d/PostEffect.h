@@ -41,7 +41,7 @@ public:
 	/// 描画コマンドの発行
 	/// </summary>
 	/// <param name="cmdList"></param>
-	void Draw(ID3D12GraphicsCommandList* cmdList,const Vec4 &color = { 1.0f,1.0f,1.0f,1.0f });
+	void Draw(ID3D12GraphicsCommandList* cmdList,const Vec4 &color = { 1.0f,1.0f,1.0f,1.0f }, float time = 0.0f);
 	/// <summary>
 	/// シーン描画前処理
 	/// </summary>
@@ -53,7 +53,7 @@ public:
 	/// <param name="cmdList">コマンドリスト</param>
 	void PostDrawScene(ID3D12GraphicsCommandList* cmdList);
 
-	void UpdatePost(SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY);
+	void UpdatePost(SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY, float time);
 	/// <summary>
 	/// ポストエフェクト描画
 	/// </summary>
@@ -65,7 +65,7 @@ public:
 	/// <param name="color">色</param>
 	/// <param name="isFlipX">横反転</param>
 	/// <param name="isFlipY">縦反転</param>
-	void DrawPost(SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY);
+	void DrawPost(SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY, float time);
 	//パイプライン切り替え
 	void SetPipeline(int num);
 
