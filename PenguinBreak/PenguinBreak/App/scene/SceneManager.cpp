@@ -62,7 +62,7 @@ void SceneManager::Initialize()
 void SceneManager::Update()
 {
 	Input::Get()->Update();
-
+	time += 0.01f;
 	//次のシーンの予約があるなら
 	if (nextScene_)
 	{
@@ -103,7 +103,7 @@ void SceneManager::Draw()
 	PostEffect::Get()->PostDrawScene(DirectXBase::Get()->GetCmandList());
 	DirectXBase::Get()->PreDraw();
 	////ポストエフェクトの描画
-	PostEffect::Get()->Draw(DirectXBase::Get()->GetCmandList());
+	PostEffect::Get()->Draw(DirectXBase::Get()->GetCmandList(), Vec4{ 1.0f,1.0f,1.0f,1.0f }, time);
 	//UI描画
 	DirectXBase::Get()->ResourceBarrier();
 }

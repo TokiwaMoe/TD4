@@ -45,4 +45,6 @@ private://’è‹`
 	BaseScene* nextScene_ = nullptr;
 
 	ShadowMap  m_shadowMapFar;
+
+	float time = 0;
 };
