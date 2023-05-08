@@ -81,21 +81,51 @@ void GameScene::Update()
 	//DebugText::Get()->Print(100.0f, 100.0f, 10, "Game");
 
 	lightGroup->Update();
+
+	palmSize_1 = SizeChange({ 305, 437 }, { 0,40 }, true, 2.0f);
+	palmSize_2 = SizeChange({ 305, 437 }, { 0,40 }, true, 2.0f);
 }
 
-Vec2 SizeChange(Vec2 startPos, Vec2 endPos)
+Vec2 GameScene::SizeChange(Vec2 startSize, Vec2 lim, bool flag, float speed)
 {
-	
-	return Vec2{};
+	Vec2 limit = startSize;
+	// 軸単位で動かすかどうか
+	const Vec2 isMove = {
+		(lim.x ? 1.0f : 0.0f),
+		(lim.y ? 1.0f : 0.0f)
+	};
+
+	if (isChange)
+	{
+		limit += lim;
+		size += isMove * speed;
+
+		if ((isMove.x && (size.x >= limit.x)) || (isMove.y && (size.y >= limit.y)))
+		{
+			isChange = false;
+		}
+	}
+	else
+	{
+		limit -= lim;
+		size -= isMove * speed;
+
+		if ((isMove.x && (size.x <= limit.x)) || (isMove.y && (size.y <= limit.y)))
+		{
+			isChange = true;
+		}
+	}
+
+	return size;
 }
 
 void GameScene::Draw()
 {
 	float width = 1280, height = 720;
 	Sprite::Get()->Draw(background, { 0,0 }, width, height);
-	Vec2 palmSize = { 305, 437 };
-	Sprite::Get()->Draw(palm_1, { 0,720 }, palmSize.x, palmSize.y, {0.0f, 1.0f});
-	Sprite::Get()->Draw(palm_2, { width,720 }, palmSize.x, palmSize.y, { 0,1.0f }, {1,1,1,1}, true);
+	
+	Sprite::Get()->Draw(palm_1, { 0,720 }, palmSize_1.x, palmSize_1.y, {0.0f, 1.0f});
+	Sprite::Get()->Draw(palm_2, { width,720 }, palmSize_2.x, palmSize_2.y, { 0,1.0f }, {1,1,1,1}, true);
 	m_fbx->Draw(true);
 	stage->Draw();
 	player->Draw();
