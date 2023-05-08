@@ -35,6 +35,7 @@ void Player::Update(Stage* stage)
 
 void Player::Move()
 {
+	//円とレイの判定を使っている
 	circle.center = { position.x, position.y, 0 };
 	circle.radius = 128;
 	ray.start = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y,0 };
@@ -53,7 +54,9 @@ void Player::Move()
 	}
 
 	//DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%f", (float)Input::Get()->GetMouseMove().lX);
+#if _DEBUG 
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
+#endif
 }
 
 void Player::collide2Stage(Stage* stage)
@@ -61,7 +64,10 @@ void Player::collide2Stage(Stage* stage)
 	if (stage->GetInstance()->GetBoxSize() == CollisionCount(stage))
 	{
 		//ロード外に出たらスタート位置に戻す
+#if _DEBUG 
+
 		DebugText::Get()->Print(100.0f, 500.0f, 2, "out stage");
+#endif
 		position = {
 			stage->GetInstance()->GetStartPos().x/* + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)*/,
 			stage->GetInstance()->GetStartPos().y/* + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)*/
