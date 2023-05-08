@@ -57,8 +57,18 @@ void GameScene::Update()
 	//シーンの変更の仕方
 	if (player->GetGoalFlag() == true)
 	{
-		BaseScene* scene = new ResultScene();
-		sceneManager_->SetNextScene(scene);
+		if (stageNumber < Stage::STAGE_COUNT)
+		{
+			// ステージ切り替え
+			stageNumber++;
+			stage->ChengeStage(stageNumber);
+			player->Init();
+		}
+		else
+		{
+			BaseScene* scene = new ResultScene();
+			sceneManager_->SetNextScene(scene);
+		}
 	}
 
 	//FBX関連
