@@ -3,12 +3,16 @@
 #include <cassert>
 #include "Input.h"
 #include"Debugtext.h"
+#include"Texture.h"
 using namespace DirectX;
 
 void Player::Initialize()
 {
 	//スプライト作成の仕方
 	player = Sprite::Get()->SpriteCreate(L"Resources/Kari.png");
+	moveParticle = std::make_unique <ParticleManager>();
+	moveParticle->Initialize();
+	p_Texture = Texture::Get()->LoadTexture(L"Resources/Paricle/particle.jpg");
 }
 
 void Player::Init()
@@ -16,6 +20,7 @@ void Player::Init()
 	position = { 50,50 };
 	flipFlag = false;
 	goalFlag = false;
+	deathFlag = false;
 }
 
 void Player::stageInit(int stageNo)
@@ -51,8 +56,12 @@ void Player::Move()
 				flipFlag = false;
 			}
 		}
-	}
+		//パーティクルだす
 
+	}
+	moveParticle->ParticleAdd2(
+		Vec3(0, 0, 0), { 1,1,1,1 }, { 1,1,1,1 });
+	moveParticle->Update();
 	//DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%f", (float)Input::Get()->GetMouseMove().lX);
 #if _DEBUG 
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
@@ -68,6 +77,7 @@ void Player::collide2Stage(Stage* stage)
 
 		DebugText::Get()->Print(100.0f, 500.0f, 2, "out stage");
 #endif
+		deathFlag = true;
 		position = {
 			stage->GetInstance()->GetStartPos().x/* + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)*/,
 			stage->GetInstance()->GetStartPos().y/* + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)*/
@@ -77,6 +87,9 @@ void Player::collide2Stage(Stage* stage)
 	if (!OutStage(position, stage, static_cast<int>(stage->GetGoal()))) {
 		goalFlag = true;
 		DebugText::Get()->Print(100.0f, 300.0f, 4, "GOAL");
+	}
+	if (deathFlag == true) {
+		//砂嵐出す(本家の場合)
 	}
 }
 
@@ -133,4 +146,5 @@ void Player::Draw()
 	//Vec2 position2D = { 200.0f,200.0f };
 	float width = 64.0f, height = 128.0f;
 	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
+	moveParticle->Draw(p_Texture);
 }

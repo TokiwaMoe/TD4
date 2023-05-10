@@ -137,7 +137,7 @@ void GameScene::Draw()
 	Sprite::Get()->Draw(palm_1, { 0,720 }, palmSize_1.x, palmSize_1.y, {0.0f, 1.0f});
 	Sprite::Get()->Draw(palm_2, { width,720 }, palmSize_2.x, palmSize_2.y, { 0,1.0f }, {1,1,1,1}, true);
 	m_fbx->Draw(true);
-	stage->Draw();
+	//stage->Draw();
 	player->Draw();
 }
 

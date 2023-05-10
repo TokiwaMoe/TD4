@@ -9,6 +9,8 @@
 #include"Sprite.h"
 #include"Stage.h"
 #include<memory>
+#include"ParticleManager.h"
+
 
 class Player {
 private:
@@ -59,7 +61,7 @@ public:
 		Right
 	};
 	//2d
-	SpriteData player;
+	SpriteData player = {};
 	// X,Y,Z軸回りのローカル回転角
 	Vec2 rotation = { 0,0 };
 	// プレイヤー座標
@@ -75,4 +77,7 @@ public:
 	Sphere circle;
 	Ray ray;
 	bool goalFlag = false;
+	bool deathFlag = false;
+	std::unique_ptr <ParticleManager> moveParticle;
+	TextureData p_Texture = {};
 };
