@@ -60,7 +60,7 @@ void Stage::Init(const Vec2& playerSize)
 {
 	const float ROAD_OFFSET = 30.0f; //道の余白
 	const float ROAD_WIDTH = (playerSize.x > playerSize.y) ? playerSize.x : playerSize.y;
-	int a = window_width - 200;
+
 	auto file = LoadStage("stage1");
 	boxes.clear();
 	boxes = file->objects;
@@ -176,6 +176,13 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 	goalIndex = levelData->objects.size() - 1;
 
 	return levelData;
+}
+
+void Stage::ChengeStage(int stageNumber)
+{
+	auto file = LoadStage("stage" + std::to_string(stageNumber));
+	boxes.clear();
+	boxes = file->objects;
 }
 
 void Stage::WriteStage(const std::string& stageName)

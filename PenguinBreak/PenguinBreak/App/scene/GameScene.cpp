@@ -28,14 +28,6 @@ void GameScene::Init()
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
 
-	//FBX関連
-	Model* model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin", "FBX/");
-	m_model = std::make_unique<Model>();
-	m_model = std::unique_ptr<Model>(model1);
-	m_fbx = std::make_unique<FBXObject3d>();
-	m_fbx->Initialize();
-	m_fbx->SetModel(m_model.get());
-	m_fbx->SetScale(Vec3(0.025f, 0.025f, 0.025f));
 
 	//スプライト作成の仕方
 	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
@@ -75,16 +67,18 @@ void GameScene::Update()
 	//シーンの変更の仕方
 	if (player->GetGoalFlag() == true)
 	{
-		BaseScene* scene = new ResultScene();
-		sceneManager_->SetNextScene(scene);
-	}
-
-	//FBX関連
-	m_fbx->SetRotation({30.0f,180.0f,0.0f});
-	m_fbx->Update();
-	if (Input::Get()->KeybordTrigger(DIK_UP))
-	{
-		m_fbx->PlayAnimation(true);
+		if (stageNumber < Stage::STAGE_COUNT)
+		{
+			// ステージ切り替え
+			stageNumber++;
+			stage->ChengeStage(stageNumber);
+			player->Init();
+		}
+		else
+		{
+			BaseScene* scene = new ResultScene();
+			sceneManager_->SetNextScene(scene);
+		}
 	}
 
 	// ステージ出力（デバッグ実行用）
