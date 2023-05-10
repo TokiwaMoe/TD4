@@ -88,6 +88,9 @@ public: //サブクラス
 		std::vector<Road> objects = {};
 	};
 
+public: //定数
+	static const int STAGE_COUNT = 2;
+
 private: //メンバ変数
 	std::vector<Road> boxes;
 	size_t startIndex;
@@ -105,6 +108,8 @@ public: //メンバ関数
 	void WriteStage(const std::string& stageName);
 	// ステージの読み込み
 	JsonData* LoadStage(const std::string& jsonFile);
+	// ステージの切り替え
+	void ChengeStage(int stageNumber);
 
 	Road GetBox(int num) { return boxes[num]; }
 	size_t GetBoxSize() { return boxes.size(); }

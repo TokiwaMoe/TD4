@@ -62,6 +62,7 @@ private://’è‹`
 
 	Player* player = nullptr;
 	Stage* stage = nullptr;
+	int stageNumber = 1;
 
 	//
 	Vec2 size = { 305,437 };
