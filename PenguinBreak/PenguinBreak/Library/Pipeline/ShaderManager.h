@@ -24,6 +24,10 @@ public:
 	/// </summary>
 	static Shader spriteShader;		//スプライト
 	static Shader spriteBlurShader;//スプライトブラー
+
+	//2枚用スプライト
+	static Shader doubleTextureShader;//２枚用変えていいよ
+
 	/// <summary>
 	/// ポストエフェクト
 	/// </summary>

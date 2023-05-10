@@ -33,6 +33,9 @@ public:
 	};
 	//スプライト
 	static PipelineSet  SpriteCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader);
+	//2枚テクスチャ用スプライト
+	static PipelineSet SpriteCreateDoubleGraphicsPipeline(ID3D12Device* dev, const Shader& shader);
+
 	//パーティクル
 	static PipelineSet ParticleCreateGraphicsPipeline(ID3D12Device* dev, const Shader &shader);
 	//ポストエフェクト(通常)
@@ -52,6 +55,12 @@ public:
 	static PipelineSet PostBlurPipeline;
 	//ブルーム
 	static PipelineSet PostReversalPipeline;
+
+	//2枚用
+	//仮
+	static PipelineSet DoubleTexturePipeline;
+
+
 	//パイプライン作成
 	static void CreatePipeline(ID3D12Device* dev);
 

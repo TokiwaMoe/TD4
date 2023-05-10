@@ -31,6 +31,7 @@ ComPtr<ID3DBlob> LoadShader(const LPCWSTR &VshaderName, const LPCSTR &Vtarget, c
 
 Shader ShaderManager::spriteShader;
 Shader ShaderManager::spriteBlurShader;
+Shader ShaderManager::doubleTextureShader;
 Shader ShaderManager::particleShader;
 Shader ShaderManager::postNormalShader;
 Shader ShaderManager::postReversalShader;
@@ -45,6 +46,10 @@ void ShaderManager::LoadShaders()
 	//ブラー
 	spriteBlurShader.vsBlob = LoadShader(L"Resources/shaders/Sprite/SpriteBlurVS.hlsl", "vs_5_0");
 	spriteBlurShader.psBlob = LoadShader(L"Resources/shaders/Sprite/SpriteBlurPS.hlsl", "ps_5_0");
+	//２枚テクスチャ用
+	doubleTextureShader.vsBlob = LoadShader(L"Resources/shaders/Sprite/DobuleTextureVS.hlsl", "vs_5_0");
+	doubleTextureShader.psBlob = LoadShader(L"Resources/shaders/Sprite/DobuleTexturePS.hlsl", "ps_5_0");
+
 	//パーティクル
 	particleShader.vsBlob = LoadShader(L"Resources/shaders/ParticleVS.hlsl", "vs_5_0");
 	particleShader.psBlob = LoadShader(L"Resources/shaders/ParticlePS.hlsl", "ps_5_0");
