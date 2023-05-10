@@ -39,8 +39,17 @@ struct SpriteData
 	SpriteData* parent = nullptr;
 
 	Pipeline::PipelineSet pipeline = Pipeline::SpritePipeline;
+	//2枚目のテクスチャ
+	TextureData secondTexture = {};
 
-	void SetPipeline(Pipeline::PipelineSet pipeline_) { pipeline = pipeline_; }
+	//使うシェーダーのテクスチャ数
+	int pipeTexNum = 1;
+	/// <summary>
+	/// パイプライン切り替え
+	/// </summary>
+	/// <param name="pipeline_">パイプライン</param>
+	/// <param name="pipeTexNum_">使うテクスチャ枚数</param>
+	void SetPipeline(Pipeline::PipelineSet pipeline_, int pipeTexNum_ = 1) { pipeline = pipeline_, pipeTexNum = pipeTexNum_; }
 
 };
 /// <summary>
