@@ -52,6 +52,22 @@ void GameScene::Init()
 	//プレイヤー
 	player->Initialize();
 	player->Init();
+
+	//背景スプで動くやつの変数
+	palmSize_1.pos = { 305,437 };
+	palmSize_1.lim = { 0,40 };
+	palmSize_1.flag = true;
+	palmSize_1.speed = 2.0f;
+
+	palmSize_2.pos = { 305,437 };
+	palmSize_2.lim = { 0,40 };
+	palmSize_2.flag = false;
+	palmSize_2.speed = 2.0f;
+
+	deerPos.pos = { 640,687 };
+	deerPos.lim = { 0,40 };
+	deerPos.flag = true;
+	deerPos.speed = 1.0f;
 }
 
 void GameScene::Update()
@@ -82,42 +98,40 @@ void GameScene::Update()
 
 	lightGroup->Update();
 
-	palmSize_1 = SizeChange({ 305, 437 }, { 0,40 }, true, 2.0f);
-	palmSize_2 = SizeChange({ 305, 437 }, { 0,40 }, true, 2.0f);
-	deerPos = SizeChange({ 305, 437 }, { 0,40 }, true, 1.0f);
+	SizeChange(palmSize_1);
+	SizeChange(palmSize_2);
+	SizeChange(deerPos);
 }
 
-Vec2 GameScene::SizeChange(Vec2 startSize, Vec2 lim, bool flag, float speed)
+void GameScene::SizeChange(Change change)
 {
-	Vec2 limit = startSize;
+	Vec2 limit = change.initPos;
 	// 軸単位で動かすかどうか
 	const Vec2 isMove = {
-		(lim.x ? 1.0f : 0.0f),
-		(lim.y ? 1.0f : 0.0f)
+		(change.lim.x ? 1.0f : 0.0f),
+		(change.lim.y ? 1.0f : 0.0f)
 	};
 
-	if (isChange)
+	if (change.flag)
 	{
-		limit += lim;
-		size += isMove * speed;
+		limit += change.lim;
+		change.pos += isMove * change.speed;
 
-		if ((isMove.x && (size.x >= limit.x)) || (isMove.y && (size.y >= limit.y)))
+		if ((isMove.x && (change.pos.x >= limit.x)) || (isMove.y && (change.pos.y >= limit.y)))
 		{
-			isChange = false;
+			change.flag = false;
 		}
 	}
 	else
 	{
-		limit -= lim;
-		size -= isMove * speed;
+		limit -= change.lim;
+		change.pos -= isMove * change.speed;
 
-		if ((isMove.x && (size.x <= limit.x)) || (isMove.y && (size.y <= limit.y)))
+		if ((isMove.x && (change.pos.x <= limit.x)) || (isMove.y && (change.pos.y <= limit.y)))
 		{
-			isChange = true;
+			change.flag = true;
 		}
 	}
-
-	return size;
 }
 
 void GameScene::Draw()
@@ -125,9 +139,9 @@ void GameScene::Draw()
 	float width = 1280, height = 720;
 	Sprite::Get()->Draw(background, { 0,0 }, width, height);
 	
-	Sprite::Get()->Draw(palm_1, { 0,720 }, palmSize_1.x, palmSize_1.y, {0.0f, 1.0f});
-	Sprite::Get()->Draw(palm_2, { width,height }, palmSize_2.x, palmSize_2.y, { 0,1.0f }, {1,1,1,1}, true);
-	Sprite::Get()->Draw(deer, {640, deerPos.y + 250.0f}, 96, 160, {0.5f, 1.0f}, {1,1,1,1}, false);
+	Sprite::Get()->Draw(palm_1, { 0,720 }, palmSize_1.pos.x, palmSize_1.pos.y, {0.0f, 1.0f});
+	Sprite::Get()->Draw(palm_2, { width,height }, palmSize_2.pos.x, palmSize_2.pos.x, { 0,1.0f }, {1,1,1,1}, true);
+	Sprite::Get()->Draw(deer, deerPos.pos, 96, 160, {0.5f, 1.0f}, {1,1,1,1}, false);
 	m_fbx->Draw(true);
 	stage->Draw();
 	player->Draw();

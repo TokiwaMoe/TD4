@@ -16,6 +16,16 @@ extern const int window_height;
 /// </summary>
 class GameScene:public BaseScene
 {
+private:
+	//サイズや座標変更用
+	struct Change
+	{
+		Vec2 initPos;
+		Vec2 pos;
+		Vec2 lim;
+		bool flag;
+		float speed;
+	};
 public:
 	/// <summary>
 	/// コンストラクタ
@@ -36,7 +46,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	Vec2 SizeChange(Vec2 startSize, Vec2 lim, bool flag, float speed);
+	void SizeChange(Change change);
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -66,8 +76,9 @@ private://定義
 
 	//
 	Vec2 size = { 305,437 };
-	Vec2 palmSize_1 = { 305, 437 };
-	Vec2 palmSize_2 = { 305, 437 };
-	Vec2 deerPos = { 640,560 };
+	Change palmSize_1;
+	Change palmSize_2;
+	Change deerPos;
 	bool isChange = true;
+
 };
