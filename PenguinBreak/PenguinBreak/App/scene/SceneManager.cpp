@@ -49,9 +49,6 @@ void SceneManager::Initialize()
 	//3Dオブジェクト初期化
 	Object::Init(DirectXBase::Get()->GetDevice(), DirectXBase::Get()->GetCmandList());
 	PostEffect::Get()->Initialize(DirectXBase::Get()->GetDevice());
-	////影
-	m_shadowMapFar.Init();
-	Texture::Get()->LoadShadowTexture(m_shadowMapFar.GetTexbuff());
 	//音作成
 	Audio::Get()->Init();
 	//シーンをタイトルに設定
@@ -86,14 +83,6 @@ void SceneManager::Update()
 
 void SceneManager::Draw()
 {
-	//影深度値取得
-	m_shadowMapFar.PreDraw(DirectXBase::Get()->GetCmandList());
-	Object::InitDraw();
-	//影描画
-	scene_->ShadowDraw();
-	m_shadowMapFar.PostDraw(DirectXBase::Get()->GetCmandList());
-
-
 	PostEffect::Get()->PreDrawScene(DirectXBase::Get()->GetCmandList());
 	Object::InitDraw(), Sprite::Get()->PreDraw();
 	//カメラ目線の描画

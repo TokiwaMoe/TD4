@@ -28,14 +28,6 @@ void GameScene::Init()
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
 
-	//FBX関連
-	Model* model1 = FbxLoader::GetInstance()->LoadModelFromFile("pengin", "FBX/");
-	m_model = std::make_unique<Model>();
-	m_model = std::unique_ptr<Model>(model1);
-	m_fbx = std::make_unique<FBXObject3d>();
-	m_fbx->Initialize();
-	m_fbx->SetModel(m_model.get());
-	m_fbx->SetScale(Vec3(0.025f, 0.025f, 0.025f));
 
 	//スプライト作成の仕方
 	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
@@ -59,14 +51,6 @@ void GameScene::Update()
 	{
 		BaseScene* scene = new ResultScene();
 		sceneManager_->SetNextScene(scene);
-	}
-
-	//FBX関連
-	m_fbx->SetRotation({30.0f,180.0f,0.0f});
-	m_fbx->Update();
-	if (Input::Get()->KeybordTrigger(DIK_UP))
-	{
-		m_fbx->PlayAnimation(true);
 	}
 
 	// ステージ出力（デバッグ実行用）
@@ -126,7 +110,6 @@ void GameScene::Draw()
 	
 	Sprite::Get()->Draw(palm_1, { 0,720 }, palmSize_1.x, palmSize_1.y, {0.0f, 1.0f});
 	Sprite::Get()->Draw(palm_2, { width,720 }, palmSize_2.x, palmSize_2.y, { 0,1.0f }, {1,1,1,1}, true);
-	m_fbx->Draw(true);
 	stage->Draw();
 	player->Draw();
 }
