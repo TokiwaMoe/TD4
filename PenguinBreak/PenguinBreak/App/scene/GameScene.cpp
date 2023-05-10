@@ -136,7 +136,6 @@ void GameScene::Draw()
 	Sprite::Get()->Draw(palm_1, { 0,720 }, palmSize_1.pos.x, palmSize_1.pos.y, {0.0f, 1.0f});
 	Sprite::Get()->Draw(palm_2, { width,height }, palmSize_2.pos.x, palmSize_2.pos.x, { 0,1.0f }, {1,1,1,1}, true);
 	Sprite::Get()->Draw(deer, deerPos.pos, 96, 160, {0.5f, 1.0f}, {1,1,1,1}, false);
-	m_fbx->Draw(true);
 	stage->Draw();
 	player->Draw();
 }
