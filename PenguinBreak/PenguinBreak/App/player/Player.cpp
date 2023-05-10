@@ -69,8 +69,8 @@ void Player::collide2Stage(Stage* stage)
 		DebugText::Get()->Print(100.0f, 500.0f, 2, "out stage");
 #endif
 		position = {
-			stage->GetInstance()->GetStartPos().x/* + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)*/,
-			stage->GetInstance()->GetStartPos().y/* + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)*/
+			stage->GetInstance()->GetStartPos().x,
+			stage->GetInstance()->GetStartPos().y
 		};
 	}
 	//ゴールの判定
@@ -98,8 +98,8 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 {
 	//ステージスプライトの中心座標
 	Vec2 stageCenter = {
-		stage->GetInstance()->GetBox(num).pos.x/* + (stage->GetInstance()->GetSize(num).x / 2.0f)*/,
-		stage->GetInstance()->GetBox(num).pos.y/* + (stage->GetInstance()->GetSize(num).y / 2.0f)*/
+		stage->GetInstance()->GetBox(num).pos.x,
+		stage->GetInstance()->GetBox(num).pos.y
 	};
 	//X軸、Y軸の距離を算出
 	Vec2 distance =
