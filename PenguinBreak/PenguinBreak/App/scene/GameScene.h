@@ -54,6 +54,7 @@ private://’è‹`
 	SpriteData background;
 	SpriteData palm_1;
 	SpriteData palm_2;
+	SpriteData deer;
 
 	Player* player = nullptr;
 	Stage* stage = nullptr;
@@ -61,7 +62,9 @@ private://’è‹`
 
 	//
 	Vec2 size = { 305,437 };
-	Vec2 palmSize_1 = { 305, 437 };
-	Vec2 palmSize_2 = { 305, 437 };
+	Vec2 deerPos;
+	Vec2 palmSize_1;
+	Vec2 palmSize_2;
 	bool isChange = true;
+
 };
