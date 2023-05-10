@@ -30,15 +30,6 @@ public:
 	static Shader postNormalShader;	//ポストエフェクト（通常）
 	static Shader postReversalShader;//反射
 	static Shader postBlurShader;
-	static Shader ShadowMapShader;	//影シェーダー
-	static Shader DepthOfFieldShader;//被写界深度
-	/// <summary>
-	/// オブジェクト
-	/// </summary>
-	static Shader objShader;		//通常OBJ
-	static Shader noShadowOBJShader;//影無しOBJ
-	static Shader toonObjShader;	//トゥーンシェーダー
-	static Shader normalMapShader;	//ノーマルマップ
 	/// <summary>
 	/// パーティクル
 	/// </summary>

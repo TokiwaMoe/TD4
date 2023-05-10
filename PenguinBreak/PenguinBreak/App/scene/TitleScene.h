@@ -43,12 +43,6 @@ public:
 private:
 	std::unique_ptr<LightGroup>lightGroup;
 private://定義
-
-	ObjectData objectData = {};//オブジェクトのデータ
-	PSR psr = {};             //座標、角度、スケール処理軽減用
-	ObjectData shape = {};
-	TextureData one = {};//3D用テクスチャデータ
-
 	SpriteData sprite = {};//スプライトデータ
 
 };

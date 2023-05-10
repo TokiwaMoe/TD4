@@ -50,11 +50,6 @@ public:
 private:
 	std::unique_ptr<LightGroup>lightGroup;
 private://定義
-
-	//ゴール時の演出ハンドサイン
-	std::unique_ptr<Model> m_model;		  //ペンギンモデル
-	std::unique_ptr<FBXObject3d>  m_fbx;//ペンギンFBX
-
 	//2d
 	SpriteData background;
 	SpriteData palm_1;
