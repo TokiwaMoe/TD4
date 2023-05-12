@@ -51,3 +51,8 @@ void ResultScene::ShadowDraw()
 
 void ResultScene::Finalize()
 {}
+
+bool ResultScene::GetEffect()
+{
+	return false;
+}

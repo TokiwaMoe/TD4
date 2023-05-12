@@ -53,11 +53,11 @@ float4 main(VSOutput input) : SV_TARGET
      float timeFrac;
      if (isAlive)
      {
-         timeFrac = steped * 0;
+         timeFrac = steped * 1;
      }
      else
      {
-         timeFrac = steped * 1;
+         timeFrac = steped * 0;
      }
      
      input.uv.x += timeFrac * (V + H);

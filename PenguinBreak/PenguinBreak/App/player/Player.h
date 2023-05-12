@@ -52,6 +52,7 @@ public:
 	//回転
 	const Vec2& GetRotation() { return rotation; }
 	bool GetGoalFlag() { return goalFlag; }
+	bool GetEffect() { return effect; }
 	//setter
 
 public:
@@ -78,6 +79,7 @@ public:
 	Ray ray;
 	bool goalFlag = false;//ゴールに行ったか否か
 	bool respawn = false;
+	bool effect = false;
 	int deathTime = 20;//死んだときの演出時間
 	std::unique_ptr <ParticleManager> moveParticle;
 	TextureData p_Texture = {};

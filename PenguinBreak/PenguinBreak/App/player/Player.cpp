@@ -26,6 +26,7 @@ void Player::Init(Stage* stage)
 	goalFlag = false;
 	deathTime = 20;
 	respawn = false;
+	effect = false;
 }
 
 void Player::stageInit(int stageNo)
@@ -91,10 +92,14 @@ void Player::collide2Stage(Stage* stage)
 			respawn = true;
 		}
 		if (respawn==true) {
+			effect = false;
 			position = {
 				stage->GetInstance()->GetStartPos().x/* + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)*/,
 				stage->GetInstance()->GetStartPos().y/* + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)*/
 			};
+		}
+		else if (respawn == false) {
+			effect = true;
 		}
 	}
 	//ゴールの判定

@@ -87,3 +87,8 @@ void GameScene::Finalize()
 {
 
 }
+
+bool GameScene::GetEffect()
+{
+	return player->GetEffect();
+}

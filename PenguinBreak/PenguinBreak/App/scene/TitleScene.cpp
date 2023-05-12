@@ -68,3 +68,8 @@ void TitleScene::Finalize()
 
 
 }
+
+bool TitleScene::GetEffect()
+{
+	return false;
+}
