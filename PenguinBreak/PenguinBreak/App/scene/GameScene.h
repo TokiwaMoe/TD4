@@ -50,15 +50,11 @@ public:
 private:
 	std::unique_ptr<LightGroup>lightGroup;
 private://定義
-
-	//ゴール時の演出ハンドサイン
-	std::unique_ptr<Model> m_model;		  //ペンギンモデル
-	std::unique_ptr<FBXObject3d>  m_fbx;//ペンギンFBX
-
 	//2d
 	SpriteData background;
 	SpriteData palm_1;
 	SpriteData palm_2;
+	SpriteData deer;
 
 	Player* player = nullptr;
 	Stage* stage = nullptr;
@@ -66,7 +62,9 @@ private://定義
 
 	//
 	Vec2 size = { 305,437 };
-	Vec2 palmSize_1 = { 305, 437 };
-	Vec2 palmSize_2 = { 305, 437 };
+	Vec2 deerPos;
+	Vec2 palmSize_1;
+	Vec2 palmSize_2;
 	bool isChange = true;
+
 };
