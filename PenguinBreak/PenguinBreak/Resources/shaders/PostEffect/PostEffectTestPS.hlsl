@@ -36,9 +36,9 @@ float4 main(VSOutput input) : SV_TARGET
      input.uv += w;
 
      //グリッチのパラメーターの計算
-     float VertGlitchPase = 0.1f;
-     float HorzGlitchPase = 0.1f;
-     float GlicthStepValue = 0.1f;
+     float VertGlitchPase = 0.5f;
+     float HorzGlitchPase = 0.5f;
+     float GlicthStepValue = 0.05f;
      float vertNoise = WhiteNoise(float2(floor((input.uv.x) / VertGlitchPase) * VertGlitchPase, time * 0.1));
      float horzNoise = WhiteNoise(float2(floor((input.uv.x) / HorzGlitchPase) * HorzGlitchPase, time * 0.2));
      float vertGlitchStrength = vertNoise / GlicthStepValue;
@@ -48,6 +48,7 @@ float4 main(VSOutput input) : SV_TARGET
      float V = step(vertNoise, GlicthStepValue * 2) * vertGlitchStrength;
      float H = step(horzNoise, GlicthStepValue * 2) * horzGlitchStrength;
      //一定周期でグリッチを有効
+     float4 Tex = tex.Sample(smp, input.uv);
      float sinv = sin(input.uv.y * 2 - time * -0.1f);
      float steped = 1 - step(0.99f, sinv * sinv);
      float timeFrac;
@@ -59,9 +60,16 @@ float4 main(VSOutput input) : SV_TARGET
      {
          timeFrac = steped * 0;
      }
-     
+     //rずらし
+     input.uv.x += 2 * timeFrac * (V + H);
+     Tex.r = tex.Sample(smp, input.uv).r;
+     //gずらし
+     input.uv.x += 1.5f * timeFrac * (V + H);
+     Tex.g = tex.Sample(smp, input.uv).g;
+     //bずらし
      input.uv.x += timeFrac * (V + H);
+     Tex.b = tex.Sample(smp, input.uv).b;
 
-     return float4(tex.Sample(smp, input.uv).rgb, 1.0f);
+     return float4(Tex.rgb, 1.0f);
 }
 
