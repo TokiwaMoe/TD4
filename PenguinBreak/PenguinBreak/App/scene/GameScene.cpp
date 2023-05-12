@@ -28,7 +28,6 @@ void GameScene::Init()
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
 
-
 	//スプライト作成の仕方
 	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
 

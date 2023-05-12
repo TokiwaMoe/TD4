@@ -4,7 +4,10 @@
 Texture2D<float4> tex : register(t0);//0番スロットに指定されたテクスチャ
 SamplerState smp : register(s0);//０番スロットに指定されたサンプラー
 
-
+float WhiteNoise(float2 coord)
+{
+    return frac(sin(dot(coord, float2(8.7819, 3.255))) * 437.645);
+}
 
 float wave(float2 uv, float2 emitter, float speed, float phase) {
     float _Time = time;
@@ -32,6 +35,25 @@ float4 main(VSOutput input) : SV_TARGET
 
      input.uv += w;
 
-     return float4(tex.Sample(smp, input.uv).rgb,1.0f);
+     //グリッチ
+     float VertGlitchPase = 0.1f;
+     float HorzGlitchPase = 0.1f;
+     float GlicthStepValue = 0.1f;
+     float vertNoise = WhiteNoise(float2(floor((input.uv.x) / VertGlitchPase) * VertGlitchPase, time * 0.1));
+     float horzNoise = WhiteNoise(float2(floor((input.uv.x) / HorzGlitchPase) * HorzGlitchPase, time * 0.2));
+     float vertGlitchStrength = vertNoise / GlicthStepValue;
+     float horzGlitchStrength = horzNoise / GlicthStepValue;
+     vertGlitchStrength = vertGlitchStrength * 2.0f - 1.0f;
+     horzGlitchStrength = horzGlitchStrength * 2.0f - 1.0f;
+     float V = step(vertNoise, GlicthStepValue * 2) * vertGlitchStrength;
+     float H = step(horzNoise, GlicthStepValue * 2) * horzGlitchStrength;
+
+     float sinv = sin(input.uv.y * 2 - time * -0.1f);
+     float steped = 1 - step(0.99f, sinv * sinv);
+     float timeFrac = steped * step(0.8f, frac(time));
+     input.uv.x += timeFrac * (V + H);
+     float4 Tex = tex.Sample(smp, input.uv);
+
+     return Tex;
 }
 
