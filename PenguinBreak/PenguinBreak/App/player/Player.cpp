@@ -83,19 +83,26 @@ void Player::collide2Stage(Stage* stage)
 
 		DebugText::Get()->Print(100.0f, 500.0f, 2, "out stage");
 #endif
-
+		effect = true;
+	}
+	else if(!effect)
+	{
 		respawn = false;
+	}
+	//死亡時演出後の処理
+	if (effect)
+	{
 		deathTime--;
 
 		if (deathTime <= 0) {
 			deathTime = 20;
 			respawn = true;
 		}
-		if (respawn==true) {
+		if (respawn == true) {
 			effect = false;
 			position = {
-				stage->GetInstance()->GetStartPos().x/* + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)*/,
-				stage->GetInstance()->GetStartPos().y/* + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)*/
+				stage->GetInstance()->GetStartPos().x,
+				stage->GetInstance()->GetStartPos().y
 			};
 		}
 		else if (respawn == false) {
