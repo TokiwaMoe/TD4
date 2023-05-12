@@ -34,10 +34,6 @@ public:
 	/// </summary>
 	void Update()override;
 	/// <summary>
-	/// 更新
-	/// </summary>
-	Vec2 SizeChange(Vec2 startSize, Vec2 lim, bool flag, float speed);
-	/// <summary>
 	/// 描画
 	/// </summary>
 	void Draw()override;
@@ -47,6 +43,7 @@ public:
 	void ShadowDraw()override;
 
 	void Finalize()override;
+	bool GetEffect()override;
 private:
 	std::unique_ptr<LightGroup>lightGroup;
 private://定義
@@ -59,12 +56,5 @@ private://定義
 	Player* player = nullptr;
 	Stage* stage = nullptr;
 	int stageNumber = 1;
-
-	//
-	Vec2 size = { 305,437 };
-	Vec2 deerPos;
-	Vec2 palmSize_1;
-	Vec2 palmSize_2;
-	bool isChange = true;
 
 };
