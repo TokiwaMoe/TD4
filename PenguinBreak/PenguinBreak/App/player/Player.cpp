@@ -59,10 +59,10 @@ void Player::Move()
 		//パーティクルだす
 
 	}
-	moveParticle->ParticleAdd2(
-		Vec3(0, 0, 0), { 1,1,1,1 }, { 1,1,1,1 });
-	moveParticle->Update();
-	//DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%f", (float)Input::Get()->GetMouseMove().lX);
+	/*moveParticle->ParticleAdd2(
+		Vec3(position.x, 0, 0), { 1,1,1,1 }, { 1,1,1,1 });
+	moveParticle->Update();*/
+	DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%f", position.x);
 #if _DEBUG 
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
 #endif
@@ -146,5 +146,5 @@ void Player::Draw()
 	//Vec2 position2D = { 200.0f,200.0f };
 	float width = 64.0f, height = 128.0f;
 	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
-	moveParticle->Draw(p_Texture);
+	//moveParticle->Draw(p_Texture);
 }
