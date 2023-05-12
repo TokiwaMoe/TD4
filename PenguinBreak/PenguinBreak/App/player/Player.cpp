@@ -98,8 +98,8 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 {
 	//ステージスプライトの中心座標
 	Vec2 stageCenter = {
-		stage->GetInstance()->GetBox(num).pos.x,
-		stage->GetInstance()->GetBox(num).pos.y
+		stage->GetInstance()->GetPos(num).x,
+		stage->GetInstance()->GetPos(num).y
 	};
 	//X軸、Y軸の距離を算出
 	Vec2 distance =

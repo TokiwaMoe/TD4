@@ -121,7 +121,7 @@ void GameScene::Draw()
 	
 	Sprite::Get()->Draw(palm_1, { 0,720 }, palmSize_1.x, palmSize_1.y, {0.0f, 1.0f});
 	Sprite::Get()->Draw(palm_2, { width,height }, palmSize_2.x, palmSize_2.y, { 0,1.0f }, {1,1,1,1}, true);
-	Sprite::Get()->Draw(deer, {640, deerPos.y + 250.0f}, 96, 160, {0.5f, 1.0f}, {1,1,1,1}, false);
+	//Sprite::Get()->Draw(deer, {640, deerPos.y + 250.0f}, 96, 160, {0.5f, 1.0f}, {1,1,1,1}, false);
 	stage->Draw();
 	player->Draw();
 }
