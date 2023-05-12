@@ -75,6 +75,7 @@ public://構造体
 		Vec4 color;
 		XMMATRIX mat;//3D変換行列
 		float time;
+		bool isAlive;
 	};
 
 	//スプライト共通データ

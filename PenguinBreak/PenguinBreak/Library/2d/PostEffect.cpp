@@ -187,10 +187,10 @@ void PostEffect::CreatePipeline(ID3D12Device* dev)
 	//SetPipeline(2);
 }
 
-void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList, const Vec4& color, float time)
+void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList, const Vec4& color, float time, bool isAlive)
 {
 
-	DrawPost(m_sprite, { 0, 0 }, 500.0f, 500.0f, { 0.0f,0.0f }, color, false, false, time);
+	DrawPost(m_sprite, { 0, 0 }, 500.0f, 500.0f, { 0.0f,0.0f }, color, false, false, time, isAlive);
 
 }
 
@@ -231,7 +231,7 @@ void PostEffect::PostDrawScene(ID3D12GraphicsCommandList* cmdList)
 			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE));
 }
 
-void PostEffect::UpdatePost(SpriteData& sprite, const Vec2& position, float width, float height, const Vec2& anchorpoint, const Vec4& color, bool isFlipX, bool isFlipY, float time)
+void PostEffect::UpdatePost(SpriteData& sprite, const Vec2& position, float width, float height, const Vec2& anchorpoint, const Vec4& color, bool isFlipX, bool isFlipY, float time, bool isAlive)
 {
 	//定数バッファの転送
 	Sprite::ConstBufferData* constMap = nullptr;
@@ -239,10 +239,11 @@ void PostEffect::UpdatePost(SpriteData& sprite, const Vec2& position, float widt
 	constMap->mat = XMMatrixIdentity();
 	constMap->color = color;
 	constMap->time = time;
+	constMap->isAlive = isAlive;
 	m_constBuff->Unmap(0, nullptr);
 }
 
-void PostEffect::DrawPost(SpriteData& sprite, const Vec2& position, float width, float height, const Vec2& anchorpoint, const Vec4& color, bool isFlipX, bool isFlipY, float time)
+void PostEffect::DrawPost(SpriteData& sprite, const Vec2& position, float width, float height, const Vec2& anchorpoint, const Vec4& color, bool isFlipX, bool isFlipY, float time, bool isAlive)
 {
 	//パイプラインステートの設定
 	Sprite::cmdList->SetPipelineState(m_pipelineSet.pipelinestate.Get());
@@ -251,7 +252,7 @@ void PostEffect::DrawPost(SpriteData& sprite, const Vec2& position, float width,
 	//プリミティブ形状を設定
 	Sprite::cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	UpdatePost(sprite, position, width, height, anchorpoint, color, isFlipX, isFlipY,time);
+	UpdatePost(sprite, position, width, height, anchorpoint, color, isFlipX, isFlipY,time, isAlive);
 	//頂点バッファをセット
 	Sprite::cmdList->IASetVertexBuffers(0, 1, &sprite.vbView);
 	//定数バッファをセット
