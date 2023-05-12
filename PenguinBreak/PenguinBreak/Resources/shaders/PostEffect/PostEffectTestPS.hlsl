@@ -35,7 +35,7 @@ float4 main(VSOutput input) : SV_TARGET
 
      input.uv += w;
 
-     //グリッチ
+     //グリッチのパラメーターの計算
      float VertGlitchPase = 0.1f;
      float HorzGlitchPase = 0.1f;
      float GlicthStepValue = 0.1f;
@@ -47,10 +47,19 @@ float4 main(VSOutput input) : SV_TARGET
      horzGlitchStrength = horzGlitchStrength * 2.0f - 1.0f;
      float V = step(vertNoise, GlicthStepValue * 2) * vertGlitchStrength;
      float H = step(horzNoise, GlicthStepValue * 2) * horzGlitchStrength;
-
+     //一定周期でグリッチを有効
      float sinv = sin(input.uv.y * 2 - time * -0.1f);
      float steped = 1 - step(0.99f, sinv * sinv);
-     float timeFrac = steped * step(0.8f, frac(time));
+     float timeFrac;
+     if (isAlive)
+     {
+         timeFrac = steped * 0;
+     }
+     else
+     {
+         timeFrac = steped * 1;
+     }
+     
      input.uv.x += timeFrac * (V + H);
 
      return float4(tex.Sample(smp, input.uv).rgb, 1.0f);
