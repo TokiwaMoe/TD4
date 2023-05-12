@@ -92,7 +92,7 @@ void SceneManager::Draw()
 	PostEffect::Get()->PostDrawScene(DirectXBase::Get()->GetCmandList());
 	DirectXBase::Get()->PreDraw();
 	////ポストエフェクトの描画
-	PostEffect::Get()->Draw(DirectXBase::Get()->GetCmandList(), Vec4{ 1.0f,1.0f,1.0f,1.0f }, time);
+	PostEffect::Get()->Draw(DirectXBase::Get()->GetCmandList(), Vec4{ 1.0f,1.0f,1.0f,1.0f }, time,scene_->GetEffect());
 	//UI描画
 	DirectXBase::Get()->ResourceBarrier();
 }

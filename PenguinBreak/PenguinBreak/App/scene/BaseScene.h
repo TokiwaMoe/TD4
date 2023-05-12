@@ -28,6 +28,8 @@ public:
 	virtual void Finalize() = 0;
 
 	virtual void SetSceneManager(SceneManager* sceneManager) { sceneManager_ = sceneManager; }
+
+	virtual bool GetEffect() = 0;
 protected:
 	SceneManager* sceneManager_ = nullptr;
 };

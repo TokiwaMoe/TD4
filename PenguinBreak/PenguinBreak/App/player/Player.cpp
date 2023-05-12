@@ -3,19 +3,30 @@
 #include <cassert>
 #include "Input.h"
 #include"Debugtext.h"
+#include"Texture.h"
 using namespace DirectX;
 
 void Player::Initialize()
 {
 	//スプライト作成の仕方
 	player = Sprite::Get()->SpriteCreate(L"Resources/Kari.png");
+	moveParticle = std::make_unique <ParticleManager>();
+	moveParticle->Initialize();
+	p_Texture = Texture::Get()->LoadTexture(L"Resources/Paricle/particle.jpg");
 }
 
-void Player::Init()
+void Player::Init(Stage* stage)
 {
-	position = { 50,50 };
+	//position = { 50,50 };
+	position = {
+	stage->GetInstance()->GetStartPos().x/* + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)*/,
+	stage->GetInstance()->GetStartPos().y/* + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)*/
+	};
 	flipFlag = false;
 	goalFlag = false;
+	deathTime = 20;
+	respawn = false;
+	effect = false;
 }
 
 void Player::stageInit(int stageNo)
@@ -51,9 +62,13 @@ void Player::Move()
 				flipFlag = false;
 			}
 		}
-	}
+		//パーティクルだす
 
-	//DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%f", (float)Input::Get()->GetMouseMove().lX);
+	}
+	/*moveParticle->ParticleAdd2(
+		Vec3(position.x, 0, 0), { 1,1,1,1 }, { 1,1,1,1 });
+	moveParticle->Update();*/
+	;
 #if _DEBUG 
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
 #endif
@@ -68,16 +83,31 @@ void Player::collide2Stage(Stage* stage)
 
 		DebugText::Get()->Print(100.0f, 500.0f, 2, "out stage");
 #endif
-		position = {
-			stage->GetInstance()->GetStartPos().x,
-			stage->GetInstance()->GetStartPos().y
-		};
+
+		respawn = false;
+		deathTime--;
+
+		if (deathTime <= 0) {
+			deathTime = 20;
+			respawn = true;
+		}
+		if (respawn==true) {
+			effect = false;
+			position = {
+				stage->GetInstance()->GetStartPos().x/* + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)*/,
+				stage->GetInstance()->GetStartPos().y/* + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)*/
+			};
+		}
+		else if (respawn == false) {
+			effect = true;
+		}
 	}
 	//ゴールの判定
 	if (!OutStage(position, stage, static_cast<int>(stage->GetGoal()))) {
 		goalFlag = true;
 		DebugText::Get()->Print(100.0f, 300.0f, 4, "GOAL");
 	}
+	DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%d", deathTime);
 }
 
 int Player::CollisionCount(Stage* stage)
@@ -133,4 +163,5 @@ void Player::Draw()
 	//Vec2 position2D = { 200.0f,200.0f };
 	float width = 64.0f, height = 128.0f;
 	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
+	//moveParticle->Draw(p_Texture);
 }
