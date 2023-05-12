@@ -24,7 +24,7 @@ private:
 public:
 	void Initialize();
 
-	void Init();
+	void Init(Stage* stage);
 	/// <summary>
 	/// ステージ変わるごとの初期化
 	/// </summary>
@@ -76,8 +76,9 @@ public:
 	//マウスの判定用
 	Sphere circle;
 	Ray ray;
-	bool goalFlag = false;
-	bool deathFlag = false;
+	bool goalFlag = false;//ゴールに行ったか否か
+	bool respawn = false;
+	int deathTime = 20;//死んだときの演出時間
 	std::unique_ptr <ParticleManager> moveParticle;
 	TextureData p_Texture = {};
 };

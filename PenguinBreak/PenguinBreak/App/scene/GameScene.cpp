@@ -49,7 +49,7 @@ void GameScene::Init()
 	stage->Init(player->GetSize());
 	//プレイヤー
 	player->Initialize();
-	player->Init();
+	player->Init(stage);
 }
 
 void GameScene::Update()
@@ -62,7 +62,7 @@ void GameScene::Update()
 			// ステージ切り替え
 			stageNumber++;
 			stage->ChengeStage(stageNumber);
-			player->Init();
+			player->Init(stage);
 		}
 		else
 		{

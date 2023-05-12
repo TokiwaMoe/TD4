@@ -15,12 +15,17 @@ void Player::Initialize()
 	p_Texture = Texture::Get()->LoadTexture(L"Resources/Paricle/particle.jpg");
 }
 
-void Player::Init()
+void Player::Init(Stage* stage)
 {
-	position = { 50,50 };
+	//position = { 50,50 };
+	position = {
+	stage->GetInstance()->GetStartPos().x/* + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)*/,
+	stage->GetInstance()->GetStartPos().y/* + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)*/
+	};
 	flipFlag = false;
 	goalFlag = false;
-	deathFlag = false;
+	deathTime = 20;
+	respawn = false;
 }
 
 void Player::stageInit(int stageNo)
@@ -62,7 +67,7 @@ void Player::Move()
 	/*moveParticle->ParticleAdd2(
 		Vec3(position.x, 0, 0), { 1,1,1,1 }, { 1,1,1,1 });
 	moveParticle->Update();*/
-	DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%f", position.x);
+	;
 #if _DEBUG 
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
 #endif
@@ -77,20 +82,26 @@ void Player::collide2Stage(Stage* stage)
 
 		DebugText::Get()->Print(100.0f, 500.0f, 2, "out stage");
 #endif
-		deathFlag = true;
-		position = {
-			stage->GetInstance()->GetStartPos().x/* + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)*/,
-			stage->GetInstance()->GetStartPos().y/* + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)*/
-		};
+		respawn = false;
+		deathTime--;
+
+		if (deathTime <= 0) {
+			deathTime = 20;
+			respawn = true;
+		}
+		if (respawn==true) {
+			position = {
+				stage->GetInstance()->GetStartPos().x/* + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)*/,
+				stage->GetInstance()->GetStartPos().y/* + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)*/
+			};
+		}
 	}
 	//ゴールの判定
 	if (!OutStage(position, stage, static_cast<int>(stage->GetGoal()))) {
 		goalFlag = true;
 		DebugText::Get()->Print(100.0f, 300.0f, 4, "GOAL");
 	}
-	if (deathFlag == true) {
-		//砂嵐出す(本家の場合)
-	}
+	DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%d", deathTime);
 }
 
 int Player::CollisionCount(Stage* stage)
