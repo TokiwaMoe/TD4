@@ -52,7 +52,6 @@ float4 main(VSOutput input) : SV_TARGET
      float steped = 1 - step(0.99f, sinv * sinv);
      float timeFrac = steped * step(0.8f, frac(time));
      input.uv.x += timeFrac * (V + H);
-     float4 Tex = tex.Sample(smp, input.uv);
 
      return float4(tex.Sample(smp, input.uv).rgb, 1.0f);
 }
