@@ -22,15 +22,8 @@ void TitleScene::Init()
 	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
 	lightGroup->SetShadowDir(Vec3(0, 1, 0));
 
-	//Shepeで図形をある程度設定できる。
-	shape = Shape::CreateSquare(10.0f, 10.0f, 10.0f);
-	//.objファイル読み込み
-	objectData = Shape::CreateOBJ("sphere", false, "OBJ/");
 	//スプライト作成の仕方
 	sprite = Sprite::Get()->SpriteCreate(L"Resources/gutitubo.png");
-
-	//3Dテクスチャ描画
-	one = Texture::Get()->LoadTexture(L"Resources/Mary.jpg");
 
 	//カメラ設定
 	Camera::Get()->SetCamera(Vec3{ 0,0,-35 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
@@ -56,13 +49,6 @@ void TitleScene::Draw()
 	Vec3 position = {};
 	Vec3 scale = { 1.0f,1.0f,1.0f };
 	Vec3 angle = {};
-
-	/// <summary>
-	/// 3D描画
-	/// shadowFlag trueじゃないと描画されないよ
-	/// </summary>
-	Object::Draw(objectData, psr, position, scale, angle,{},one,true);
-
 
 	//2D描画
 	Vec2 position2D = { 200.0f,200.0f };

@@ -226,7 +226,7 @@ void Sprite::SpriteCommonBeginDraw(SpriteData& sprite)
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 }
 //スプライト単体更新
-void Sprite::Update(SpriteData& sprite, const Vec2 &position, float width, float height, const Vec2 &anchorpoint, const Vec4 &color, bool isFlipX, bool isFlipY)
+void Sprite::Update(SpriteData& sprite, const Vec2& position, float width, float height, const Vec2& anchorpoint, const Vec4& color, bool isFlipX, bool isFlipY)
 {
 
 	if (sprite.size.x != width || sprite.size.y != height ||
@@ -303,7 +303,7 @@ void Sprite::Update(SpriteData& sprite, const Vec2 &position, float width, float
 }
 
 //スプライト単体描画
-void Sprite::Draw(SpriteData& sprite, const Vec2 &position, const float width, const float height, const Vec2 &anchorpoint, const Vec4 &color, const bool isFlipX, const bool isFlipY)
+void Sprite::Draw(SpriteData& sprite, const Vec2& position, const float width, const float height, const Vec2& anchorpoint, const Vec4& color, const bool isFlipX, const bool isFlipY)
 {
 	SpriteCommonBeginDraw(sprite);
 
@@ -324,6 +324,14 @@ void Sprite::Draw(SpriteData& sprite, const Vec2 &position, const float width, c
 			Texture::Get()->GetDescHeap()->GetGPUDescriptorHandleForHeapStart(),
 			sprite.texNumber.s_texNum,
 			dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+	if (sprite.pipeTexNum >= 2)
+	{
+		cmdList->SetGraphicsRootDescriptorTable(2,
+			CD3DX12_GPU_DESCRIPTOR_HANDLE(
+				Texture::Get()->GetDescHeap()->GetGPUDescriptorHandleForHeapStart(),
+				sprite.secondTexture.s_texNum,
+				dev->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV)));
+	}
 
 	//ポリゴンの描画（４頂点で四角形）
 	cmdList->DrawInstanced(4, 1, 0, 0);

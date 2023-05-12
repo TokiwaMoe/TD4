@@ -185,6 +185,12 @@
     <FxCompile Include="Resources\shaders\Sprite\SpriteVS.hlsl">
       <Filter>HLSL\Sprite</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\shaders\Sprite\DobuleTexturePS.hlsl">
+      <Filter>HLSL\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\Sprite\DobuleTextureVS.hlsl">
+      <Filter>HLSL\Sprite</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Particle.hlsli">
@@ -227,6 +233,9 @@
       <Filter>HLSL\Sprite</Filter>
     </None>
     <None Include="Resources\shaders\Sprite\SpriteBlur.hlsli">
+      <Filter>HLSL\Sprite</Filter>
+    </None>
+    <None Include="Resources\shaders\Sprite\DobuleTexture.hlsli">
       <Filter>HLSL\Sprite</Filter>
     </None>
   </ItemGroup>
