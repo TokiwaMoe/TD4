@@ -54,6 +54,6 @@ float4 main(VSOutput input) : SV_TARGET
      input.uv.x += timeFrac * (V + H);
      float4 Tex = tex.Sample(smp, input.uv);
 
-     return Tex;
+     return float4(tex.Sample(smp, input.uv).rgb, 1.0f);
 }
 
