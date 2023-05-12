@@ -34,10 +34,6 @@ public:
 	/// </summary>
 	void Update()override;
 	/// <summary>
-	/// XV
-	/// </summary>
-	Vec2 SizeChange(Vec2 startSize, Vec2 lim, bool flag, float speed);
-	/// <summary>
 	/// •`‰æ
 	/// </summary>
 	void Draw()override;
@@ -59,12 +55,5 @@ private://’è‹`
 	Player* player = nullptr;
 	Stage* stage = nullptr;
 	int stageNumber = 1;
-
-	//
-	Vec2 size = { 305,437 };
-	Vec2 deerPos;
-	Vec2 palmSize_1;
-	Vec2 palmSize_2;
-	bool isChange = true;
 
 };
