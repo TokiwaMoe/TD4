@@ -133,4 +133,9 @@ private:
 	void DirectionScaleGimmick(Road& road);
 	// 道が移動するギミック
 	void MoveGimmick(Road& road);
+
+	// 上限を超えたかどうか
+	bool IsUpOver(float* pos, float* size, float limit, float speed, float scale);
+	// 下限を超えたかどうか
+	bool IsDownOver(float* pos, float* size, float limit, float speed, float scale);
 };

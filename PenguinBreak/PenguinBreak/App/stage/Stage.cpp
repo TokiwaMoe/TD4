@@ -311,31 +311,110 @@ void Stage::DirectionScaleGimmick(Road& road)
 {
 	Vec2 limit = road.GetInitSize();
 	// 軸単位で動かすかどうか
-	const Vec2 moveDir = {
+	Vec2 moveDir = {};
+	if (road.parameter.GetLimit().x > 0) { moveDir.x = +1.0f; }
+	else if (road.parameter.GetLimit().x < 0) { moveDir.x = -1.0f; }
+	if (road.parameter.GetLimit().y > 0) { moveDir.y = +1.0f; }
+	else if (road.parameter.GetLimit().y < 0) { moveDir.y = -1.0f; }
+
+	Vec2 speed = moveDir * road.parameter.GetSpeed() / 2.0f;
+	Vec2 scale = {
 		(road.parameter.GetLimit().x ? 1.0f : 0.0f),
 		(road.parameter.GetLimit().y ? 1.0f : 0.0f)
 	};
+	scale *= road.parameter.GetSpeed();
+	bool isOver = false;
 
 	if (road.parameter.GetFlag())
 	{
-		// 大きくなる
-		limit += road.parameter.GetLimit();
-		road.size += moveDir * road.parameter.GetSpeed();
-
-		if ((moveDir.x && (road.size.x >= limit.x)) || (moveDir.y && (road.size.y >= limit.y)))
+		if (moveDir.x > 0)
 		{
-			road.parameter.ChangeFlag();
+			// 大きくなる
+			isOver |= (moveDir.x &&
+					   IsUpOver(&road.pos.x,
+								&road.size.x,
+								(limit + road.parameter.GetLimit()).x,
+								speed.x,
+								scale.x));
+		}
+		else
+		{
+			// 小さくなる
+			isOver |= (moveDir.x &&
+					   IsDownOver(&road.pos.x,
+								  &road.size.x,
+								  (limit + road.parameter.GetLimit()).x,
+								  speed.x,
+								  scale.x));
+		}
+		if (moveDir.y > 0)
+		{
+			// 大きくなる
+			isOver |= (moveDir.y &&
+					   IsUpOver(&road.pos.y,
+								&road.size.y,
+								(limit + road.parameter.GetLimit()).y,
+								speed.y,
+								scale.y));
+		}
+		else
+		{
+			// 小さくなる
+			isOver |= (moveDir.y &&
+					   IsDownOver(&road.pos.y,
+								  &road.size.y,
+								  (limit + road.parameter.GetLimit()).y,
+								  speed.y,
+								  scale.y));
 		}
 	}
 	else
 	{
-		// 小さくなる
-		road.size -= moveDir * road.parameter.GetSpeed();
-
-		if ((moveDir.x && (road.size.x <= limit.x)) || (moveDir.y && (road.size.y <= limit.y)))
+		if (moveDir.x > 0)
 		{
-			road.parameter.ChangeFlag();
+			// 小さくなる
+			isOver |= (moveDir.x &&
+					   IsDownOver(&road.pos.x,
+								  &road.size.x,
+								  (limit - road.parameter.GetLimit()).x,
+								  speed.x,
+								  scale.x));
 		}
+		else
+		{
+			// 大きくなる
+			isOver |= (moveDir.x &&
+					   IsUpOver(&road.pos.x,
+								&road.size.x,
+								(limit - road.parameter.GetLimit()).x,
+								speed.x,
+								scale.x));
+		}
+		if (moveDir.y > 0)
+		{
+			// 小さくなる
+			isOver |= (moveDir.y &&
+					   IsDownOver(&road.pos.y,
+								  &road.size.y,
+								  (limit - road.parameter.GetLimit()).y,
+								  speed.y,
+								  scale.y));
+		}
+		else
+		{
+			// 大きくなる
+			isOver |= (moveDir.y &&
+					   IsUpOver(&road.pos.y,
+								&road.size.y,
+								(limit - road.parameter.GetLimit()).y,
+								speed.y,
+								scale.y));
+		}
+	}
+
+	if (isOver)
+	{
+		road.parameter.ChangeFlag();
 	}
 }
 
@@ -370,4 +449,20 @@ void Stage::MoveGimmick(Road& road)
 			road.parameter.ChangeFlag();
 		}
 	}
+}
+
+bool Stage::IsUpOver(float* pos, float* size, float limit, float speed, float scale)
+{
+	*pos += speed;
+	*size += scale;
+
+	return *size >= limit;
+}
+
+bool Stage::IsDownOver(float* pos, float* size, float limit, float speed, float scale)
+{
+	*pos -= speed;
+	*size -= scale;
+
+	return *size <= limit;
 }
