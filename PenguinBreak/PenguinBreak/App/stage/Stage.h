@@ -24,14 +24,23 @@ public: //サブクラス
 		ROAD,  //道
 		START, //スタート
 		GOAL,  //ゴール
+		BACK,  //背景オブジェクト
+	};
+
+	// 道のタイプ
+	enum BackType
+	{
+		PALM, //ヤシの木
+		DEER, //鹿
 	};
 
 	// ギミックのタイプ
 	enum Gimmick
 	{
-		NO_GIMMICK, //ギミック無し
-		SCALE,      //道が狭まるギミック
-		MOVE,       //道が移動するギミック
+		NO_GIMMICK,      //ギミック無し
+		SCALE,           //道が狭まるギミック(全方向)
+		MOVE,            //道が移動するギミック
+		DIRECTION_SCALE, //道が狭まるギミック(単一の方向)
 	};
 
 	// ギミックを動かす為に使う値
@@ -56,31 +65,28 @@ public: //サブクラス
 	{
 	private:
 		SpriteData sprite;
-		RoadType type;
-		Gimmick gimmick;
-		GimmickParameter parameter;
 
 		Vec2 initPos;
 		Vec2 initSize;
 	public:
+		RoadType type;
+		Gimmick gimmick;
+		GimmickParameter parameter;
+		BackType back; //背景オブジェクトの種類
+		bool isFlipX;
+		bool isFlipY;
+
 		Vec2 pos;
 		Vec2 size;
+		Vec2 offset;
 
 	public:
 		Road();
-		Road(const Vec2& pos, const Vec2& size);
-		void BoxInit();
-		void ParameterInit(const GimmickParameter& parameter) { this->parameter = parameter; }
-
-		void SetType(const RoadType& type) { this->type = type; }
-		void SetGimmick(const Gimmick& gimmick) { this->gimmick = gimmick; }
+		void Init();
 
 		SpriteData& GetSprite() { return sprite; }
-		const RoadType GetType() const { return type; }
-		const Gimmick GetGimmick() const { return gimmick; }
-		GimmickParameter& GetGimmickParameter() { return parameter; }
-		const Vec2 GetInitPos() { return initPos; }
-		const Vec2 GetInitSize() { return initSize; }
+		const Vec2 GetInitPos() const { return initPos; }
+		const Vec2 GetInitSize() const { return initSize; }
 	};
 
 	struct JsonData
@@ -111,7 +117,6 @@ public: //メンバ関数
 	// ステージの切り替え
 	void ChengeStage(int stageNumber);
 
-	Road GetBox(int num) { return boxes[num]; }
 	size_t GetBoxSize() { return boxes.size(); }
 	// 座標
 	Vec2 GetPos(int num) { return boxes[num].pos; }
@@ -122,8 +127,15 @@ public: //メンバ関数
 	Vec2 GetGoalPos() { return boxes[goalIndex].pos; }
 	size_t GetGoal() { return goalIndex; }
 private:
-	// 道が狭まるギミック
+	// 道が狭まるギミック(全方向)
 	void ScaleGimmick(Road& road);
+	// 道が狭まるギミック(単一の方向)
+	void DirectionScaleGimmick(Road& road);
 	// 道が移動するギミック
 	void MoveGimmick(Road& road);
+
+	// 上限を超えたかどうか
+	bool IsUpOver(float* pos, float* size, float limit, float speed, float scale);
+	// 下限を超えたかどうか
+	bool IsDownOver(float* pos, float* size, float limit, float speed, float scale);
 };

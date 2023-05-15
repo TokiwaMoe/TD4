@@ -38,6 +38,7 @@ public:
 	/// </summary>
 	void ShadowDraw()override;
 	void Finalize()override;
+	bool GetEffect()override;
 private:
 	std::unique_ptr<LightGroup> lightGroup;
 private:

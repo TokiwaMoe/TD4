@@ -9,6 +9,8 @@
 #include"Sprite.h"
 #include"Stage.h"
 #include<memory>
+#include"ParticleManager.h"
+
 
 class Player {
 private:
@@ -22,7 +24,7 @@ private:
 public:
 	void Initialize();
 
-	void Init();
+	void Init(Stage* stage);
 	/// <summary>
 	/// ステージ変わるごとの初期化
 	/// </summary>
@@ -50,6 +52,7 @@ public:
 	//回転
 	const Vec2& GetRotation() { return rotation; }
 	bool GetGoalFlag() { return goalFlag; }
+	bool GetEffect() { return effect; }
 	//setter
 
 public:
@@ -59,7 +62,7 @@ public:
 		Right
 	};
 	//2d
-	SpriteData player;
+	SpriteData player = {};
 	// X,Y,Z軸回りのローカル回転角
 	Vec2 rotation = { 0,0 };
 	// プレイヤー座標
@@ -74,5 +77,10 @@ public:
 	//マウスの判定用
 	Sphere circle;
 	Ray ray;
-	bool goalFlag = false;
+	bool goalFlag = false;//ゴールに行ったか否か
+	bool respawn = false;
+	bool effect = false;
+	int deathTime = 20;//死んだときの演出時間
+	std::unique_ptr <ParticleManager> moveParticle;
+	TextureData p_Texture = {};
 };
