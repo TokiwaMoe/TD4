@@ -61,13 +61,13 @@ float4 main(VSOutput input) : SV_TARGET
          timeFrac = steped * 0;
      }
      //r‚¸‚ç‚µ
-     input.uv.x += 2 * timeFrac * (V + H);
+     input.uv.x += timeFrac * (V + H);
      Tex.r = tex.Sample(smp, input.uv).r;
      //g‚¸‚ç‚µ
-     input.uv.x += 1.5f * timeFrac * (V + H);
+     input.uv.x += 0.6f * timeFrac * (V + H);
      Tex.g = tex.Sample(smp, input.uv).g;
      //b‚¸‚ç‚µ
-     input.uv.x += timeFrac * (V + H);
+     input.uv.x += 0.3f * timeFrac * (V + H);
      Tex.b = tex.Sample(smp, input.uv).b;
 
      return float4(Tex.rgb, 1.0f);
