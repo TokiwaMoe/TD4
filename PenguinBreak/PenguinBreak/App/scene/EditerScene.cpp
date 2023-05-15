@@ -1,19 +1,19 @@
-﻿#include "GameScene.h"
+﻿#include "EditerScene.h"
 #include<sstream>
 #include<iomanip>
 #include "Input.h"
 #include"FbxLoader.h"
 #include"Shape.h"
 #include"SceneManager.h"
-#include"ResultScene.h"
+#include"TitleScene.h"
 
-GameScene::GameScene()
+EditerScene::EditerScene()
 {}
-GameScene::~GameScene()
+EditerScene::~EditerScene()
 {
 }
 
-void GameScene::Init()
+void EditerScene::Init()
 {
 	//ライトグループクラス作成
 	lightGroup = std::make_unique<LightGroup>();
@@ -28,110 +28,75 @@ void GameScene::Init()
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
 
-
-	//スプライト作成の仕方
-	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
-	//ヤシの木
-	palm_1 = Sprite::Get()->SpriteCreate(L"Resources/palm.png");
-	palm_2 = Sprite::Get()->SpriteCreate(L"Resources/palm.png");
-	//鹿
-	deer = Sprite::Get()->SpriteCreate(L"Resources/shika.png");
-
 	player = new Player();
 	// ステージ
 	stage = Stage::GetInstance();
-	stage->Init(player->GetSize());
+	stage->EditerInit(player->GetSize());
 	//プレイヤー
 	player->Initialize();
-	player->Init();
+	player->Init(stage);
 }
 
-void GameScene::Update()
+void EditerScene::Update()
 {
 	//シーンの変更の仕方
-	if (player->GetGoalFlag() == true)
+	if (Input::Get()->KeybordTrigger(DIK_ESCAPE))
 	{
-		if (stageNumber < Stage::STAGE_COUNT)
-		{
-			// ステージ切り替え
-			stageNumber++;
-			stage->ChengeStage(stageNumber);
-			player->Init();
-		}
-		else
-		{
-			BaseScene* scene = new ResultScene();
-			sceneManager_->SetNextScene(scene);
-		}
+		BaseScene* scene = new TitleScene();
+		sceneManager_->SetNextScene(scene);
 	}
 
-	// ステージ出力（デバッグ実行用）
-	if (Input::Get()->KeybordTrigger(DIK_1))
+	// ステージ出力
+	if (Input::Get()->KeybordTrigger(DIK_S))
 	{
-		stage->WriteStage("write_test");
+		stage->WriteStage("write_stage");
 	}
 
-	stage->GimmickUpdate();
-	player->Update(stage);
+	int roadIndex = GetStageIndex2MousePos();
+	if (Input::Get()->MousePushLeft() && roadIndex != -1)
+	{
+		stage->GetPos(roadIndex) = Input::Get()->GetMousePos();
+	}
 
 	lightGroup->Update();
-
-	palmSize_1 = SizeChange({ 305, 437 }, { 0,40 }, true, 2.0f);
-	palmSize_2 = SizeChange({ 305, 437 }, { 0,40 }, true, 2.0f);
-	deerPos = SizeChange({ 305, 437 }, { 0,60 }, true, 2.0f);
 }
 
-Vec2 GameScene::SizeChange(Vec2 startSize, Vec2 lim, bool flag, float speed)
+void EditerScene::Draw()
 {
-	Vec2 limit = startSize;
-	// 軸単位で動かすかどうか
-	const Vec2 isMove = {
-		(lim.x ? 1.0f : 0.0f),
-		(lim.y ? 1.0f : 0.0f)
-	};
-
-	if (isChange)
-	{
-		limit += lim;
-		size += isMove * speed;
-
-		if ((isMove.x && (size.x >= limit.x)) || (isMove.y && (size.y >= limit.y)))
-		{
-			isChange = false;
-		}
-	}
-	else
-	{
-		limit -= lim;
-		size -= isMove * speed;
-
-		if ((isMove.x && (size.x <= limit.x)) || (isMove.y && (size.y <= limit.y)))
-		{
-			isChange = true;
-		}
-	}
-
-	return size;
-}
-
-void GameScene::Draw()
-{
-	float width = 1280, height = 720;
-	Sprite::Get()->Draw(background, { 0,0 }, width, height);
-	
-	Sprite::Get()->Draw(palm_1, { 0,720 }, palmSize_1.x, palmSize_1.y, {0.0f, 1.0f});
-	Sprite::Get()->Draw(palm_2, { width,height }, palmSize_2.x, palmSize_2.y, { 0,1.0f }, {1,1,1,1}, true);
-	Sprite::Get()->Draw(deer, {640, deerPos.y + 250.0f}, 96, 160, {0.5f, 1.0f}, {1,1,1,1}, false);
 	stage->Draw();
-	player->Draw();
 }
 
-void GameScene::ShadowDraw()
+void EditerScene::ShadowDraw()
 {
-	
 }
 
-void GameScene::Finalize()
+void EditerScene::Finalize()
 {
+}
 
+bool EditerScene::GetEffect()
+{
+	return false;
+}
+
+int EditerScene::GetStageIndex2MousePos()
+{
+	int result = -1;
+
+	for (int i = 0; i < stage->GetBoxSize(); i++)
+	{
+		const Vec2 leftUp = stage->GetPos(i) - (stage->GetSize(i) / 2.0f);
+		const Vec2 rightDown = stage->GetPos(i) + (stage->GetSize(i) / 2.0f);
+
+		if (leftUp.x < Input::Get()->GetMousePos().x &&
+			rightDown.x > Input::Get()->GetMousePos().x &&
+			leftUp.y < Input::Get()->GetMousePos().y &&
+			rightDown.y > Input::Get()->GetMousePos().y)
+		{
+			result = i;
+			break;
+		}
+	}
+
+	return result;
 }

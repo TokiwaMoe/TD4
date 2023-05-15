@@ -159,7 +159,7 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		assert(object.contains("type"));
 
 		// 要素を追加
-		levelData->objects.emplace_back(Road());
+		levelData->objects.emplace_back();
 		auto& objectData = levelData->objects.back();
 		objectData.type = object["type"];
 		objectData.pos = Vec2(object["pos"][0], object["pos"][1]);
@@ -272,6 +272,28 @@ void Stage::WriteStage(const std::string& stageName)
 
 	file << std::setw(4) << data << endl;
 	file.close();
+}
+
+void Stage::EditerInit(const Vec2& playerSize)
+{
+	const float ROAD_OFFSET = 30.0f; //道の余白
+	const Vec2 ROAD_SIZE = playerSize;
+
+	boxes.clear();
+
+	// スタートの追加
+	boxes.emplace_back();
+	boxes.back().type = RoadType::START;
+	boxes.back().size = { ROAD_SIZE.x + ROAD_OFFSET, ROAD_SIZE.y + ROAD_OFFSET };
+	boxes.back().offset = { ROAD_SIZE.x + ROAD_OFFSET, ROAD_SIZE.y + ROAD_OFFSET };
+	boxes.back().Init();
+
+	// ゴールの追加
+	boxes.emplace_back();
+	boxes.back().type = RoadType::GOAL;
+	boxes.back().size = { ROAD_SIZE.x + ROAD_OFFSET, ROAD_SIZE.y + ROAD_OFFSET };
+	boxes.back().offset = { window_width - ROAD_SIZE.x + ROAD_OFFSET, window_height - ROAD_SIZE.y + ROAD_OFFSET };
+	boxes.back().Init();
 }
 
 void Stage::ScaleGimmick(Road& road)
