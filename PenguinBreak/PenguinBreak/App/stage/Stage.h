@@ -104,7 +104,7 @@ private: //メンバ変数
 
 public: //メンバ関数
 	// 初期化
-	void Init(const Vec2& playerSize);
+	void Init();
 	// ギミックの更新
 	void GimmickUpdate();
 	// 描画
