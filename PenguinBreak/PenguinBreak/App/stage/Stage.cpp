@@ -68,14 +68,8 @@ Stage::~Stage()
 {
 }
 
-void Stage::Init(const Vec2& playerSize)
+void Stage::Init()
 {
-	const float ROAD_OFFSET = 30.0f; //道の余白
-	const float ROAD_WIDTH = (playerSize.x > playerSize.y) ? playerSize.x : playerSize.y;
-
-	auto file = LoadStage("stage1");
-	boxes.clear();
-	boxes = file->objects;
 }
 
 void Stage::GimmickUpdate()
@@ -208,6 +202,7 @@ void Stage::ChengeStage(int stageNumber)
 	auto file = LoadStage("stage" + std::to_string(stageNumber));
 	boxes.clear();
 	boxes = file->objects;
+	delete file;
 }
 
 void Stage::WriteStage(const std::string& stageName)
