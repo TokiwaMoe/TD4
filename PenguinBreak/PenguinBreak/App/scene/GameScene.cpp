@@ -34,7 +34,8 @@ void GameScene::Init()
 	player = std::make_unique<Player>();
 	// ステージ
 	stage = Stage::GetInstance();
-	stage->Init(player->GetSize());
+	stage->Init();
+	stage->ChengeStage(stageNumber);
 	//プレイヤー
 	player->Initialize();
 	player->Init(stage);
@@ -43,7 +44,8 @@ void GameScene::Init()
 void GameScene::Update()
 {
 	//シーンの変更の仕方
-	if (player->GetGoalFlag() == true)
+	if (player->GetGoalFlag() == true ||
+		Input::Get()->KeybordTrigger(DIK_SPACE))
 	{
 		if (stageNumber < Stage::STAGE_COUNT)
 		{
@@ -58,11 +60,7 @@ void GameScene::Update()
 			sceneManager_->SetNextScene(scene);
 		}
 	}
-	if (Input::Get()->KeybordTrigger(DIK_SPACE))
-	{
-		BaseScene* scene = new ResultScene();
-		sceneManager_->SetNextScene(scene);
-	}
+
 	// ステージ出力（デバッグ実行用）
 	if (Input::Get()->KeybordTrigger(DIK_1))
 	{
