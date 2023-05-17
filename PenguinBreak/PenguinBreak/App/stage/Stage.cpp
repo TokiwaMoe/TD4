@@ -191,9 +191,6 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		}
 	}
 
-	startIndex = levelData->objects.size() - 2;
-	goalIndex = levelData->objects.size() - 1;
-
 	return levelData;
 }
 
@@ -202,6 +199,7 @@ void Stage::ChengeStage(int stageNumber)
 	auto file = LoadStage("stage" + std::to_string(stageNumber));
 	boxes.clear();
 	boxes = file->objects;
+	SetIndex();
 	delete file;
 }
 
@@ -267,6 +265,34 @@ void Stage::WriteStage(const std::string& stageName)
 
 	file << std::setw(4) << data << endl;
 	file.close();
+}
+
+void Stage::SetIndex()
+{
+	bool isStart = false; //startIndexを設定したかどうか
+	bool isGoal = false;   //goalIndexを設定したかどうか
+
+	for (size_t i = 0; i < boxes.size(); i++)
+	{
+		switch (boxes[i].type)
+		{
+		case Stage::START:
+			startIndex = i;
+			isStart = true;
+			break;
+		case Stage::GOAL:
+			goalIndex = i;
+			isGoal = true;
+			break;
+		default:
+			break;
+		}
+
+		if (isStart && isGoal)
+		{
+			break;
+		}
+	}
 }
 
 void Stage::EditerInit(const Vec2& playerSize)

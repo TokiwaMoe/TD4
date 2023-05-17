@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "DirectXBase.h"
 #include"DebugText.h"
 #include"ParticleManager.h"
@@ -12,41 +12,43 @@ extern const int window_width;
 extern const int window_height;
 
 /// <summary>
-/// ƒQ[ƒ€ƒV[ƒ“
+/// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³
 /// </summary>
 class GameScene :public BaseScene
 {
 public:
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	GameScene();
 	/// <summary>
-	/// ƒfƒXƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ãƒ‡ã‚¹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	~GameScene();
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	void Init()override;
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	void Update()override;
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw()override;
 	/// <summary>
-	/// ‰e•`‰æ
+	/// å½±æç”»
 	/// </summary>
 	void ShadowDraw()override;
 
 	void Finalize()override;
 	bool GetEffect()override;
+
+	static void SetEditer() { isEditer = true; }
 private:
 	std::unique_ptr<LightGroup>lightGroup;
-private://’è‹`
+private://å®šç¾©
 	//2d
 	SpriteData background;
 	SpriteData palm_1;
@@ -56,5 +58,6 @@ private://’è‹`
 	std::unique_ptr<Player>player;
 	Stage* stage = nullptr;
 	int stageNumber = 1;
+	static bool isEditer;
 
 };

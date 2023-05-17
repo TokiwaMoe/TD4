@@ -8,6 +8,9 @@
 #include"FBXObject3d.h"
 #include"Player.h"
 #include"../stage/Stage.h"
+#include<vector>
+#include<string>
+
 extern const int window_width;
 extern const int window_height;
 
@@ -54,6 +57,8 @@ private:
 private://定義
 	std::unique_ptr<LightGroup>lightGroup;
 
-	Player* player = nullptr;
+	std::unique_ptr<Player>player;
 	Stage* stage = nullptr;
+
+	std::vector<std::string> debugText;
 };

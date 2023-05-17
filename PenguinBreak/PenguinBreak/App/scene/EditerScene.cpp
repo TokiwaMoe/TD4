@@ -6,6 +6,7 @@
 #include"Shape.h"
 #include"SceneManager.h"
 #include"TitleScene.h"
+#include"GameScene.h"
 
 EditerScene::EditerScene()
 {}
@@ -28,13 +29,16 @@ void EditerScene::Init()
 	FBXObject3d::SetLight(lightGroup.get());
 	Object::SetLight(lightGroup.get());
 
-	player = new Player();
+	player = std::make_unique<Player>();
 	// ステージ
 	stage = Stage::GetInstance();
 	stage->EditerInit(player->GetSize());
-	//プレイヤー
-	player->Initialize();
-	player->Init(stage);
+
+	//デバッグテキスト
+	//debugText.push_back("Mouse:Move");
+	//debugText.push_back("S:Save");
+	//debugText.push_back("P:Clear Check");
+	//debugText.push_back("Esc:Title");
 }
 
 void EditerScene::Update()
@@ -45,6 +49,13 @@ void EditerScene::Update()
 		BaseScene* scene = new TitleScene();
 		sceneManager_->SetNextScene(scene);
 	}
+	else if(Input::Get()->KeybordTrigger(DIK_P))
+	{
+		GameScene::SetEditer();
+		stage->SetIndex();
+		BaseScene* scene = new GameScene();
+		sceneManager_->SetNextScene(scene);
+	}
 
 	// ステージ出力
 	if (Input::Get()->KeybordTrigger(DIK_S))
@@ -52,10 +63,19 @@ void EditerScene::Update()
 		stage->WriteStage("write_stage");
 	}
 
-	int roadIndex = GetStageIndex2MousePos();
-	if (Input::Get()->MousePushLeft() && roadIndex != -1)
+	static int roadIndex = -1;
+	if (Input::Get()->MouseTriggerLeft())
 	{
-		stage->GetPos(roadIndex) = Input::Get()->GetMousePos();
+		roadIndex = GetStageIndex2MousePos();
+	}
+	else if (Input::Get()->KeybordPush(DIK_1)) //マウスを離した瞬間の入力にしたい
+	{
+		roadIndex = -1;
+	}
+
+	if (roadIndex != -1)
+	{
+		stage->SetPos(Input::Get()->GetMousePos(), roadIndex);
 	}
 
 	lightGroup->Update();
@@ -64,6 +84,8 @@ void EditerScene::Update()
 void EditerScene::Draw()
 {
 	stage->Draw();
+
+	DebugText::Get()->Print(100.0f, 100.0f, 5, "Editer");
 }
 
 void EditerScene::ShadowDraw()

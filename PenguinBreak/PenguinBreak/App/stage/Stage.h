@@ -118,7 +118,7 @@ public: //メンバ関数
 	void ChengeStage(int stageNumber);
 
 	size_t GetBoxSize() const { return boxes.size(); }
-	// 座標
+	// 座標の取得
 	Vec2 GetPos(size_t num) const { return boxes[num].pos + boxes[num].offset; }
 	//スプライトサイズ
 	Vec2 GetSize(size_t num) const { return boxes[num].size; }
@@ -126,6 +126,11 @@ public: //メンバ関数
 	size_t GetStart() const { return startIndex; }
 	Vec2 GetGoalPos() const { return GetPos(goalIndex); }
 	size_t GetGoal() const { return goalIndex; }
+
+	// 座標の設定
+	void SetPos(const Vec2& pos, size_t num) { boxes[num].offset = pos; }
+	// 各インデックスの設定
+	void SetIndex();
 
 	/* エディター用関数*/
 	// 初期化(エディター用)
