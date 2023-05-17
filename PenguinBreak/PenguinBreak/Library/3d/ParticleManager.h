@@ -146,7 +146,7 @@ public: // メンバ関数
 	/// </summary>
 	void Draw(TextureData &graph);
 	
-	Vec3 GetPos();
+	XMMATRIX GetMat() { return matV; };
 
 private: // メンバ変数
 
@@ -162,5 +162,6 @@ private: // メンバ変数
 
 	D3D12_VERTEX_BUFFER_VIEW m_vbView{};
 	ParticleManager::VertexPos m_vertices[vertexCount];
+	XMMATRIX matV;
 };
 

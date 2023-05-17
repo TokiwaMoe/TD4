@@ -57,7 +57,7 @@ public:
 private:
 	void Move();
 	/// <summary>
-	/// パーティクルの座標を2Dの物に変換
+	/// playerの座標を3dに変換
 	/// </summary>
 	void ConvertParticlePos();
 	enum Direction
@@ -75,6 +75,7 @@ private:
 	Vec2 position = { 50,50 };
 	int  direction = 0;
 	Vec3 particlePos = { 0,0,0 };
+
 	//スプライトサイズ
 	float width = 64.0f, height = 128.0f;
 	bool flipFlag = false;

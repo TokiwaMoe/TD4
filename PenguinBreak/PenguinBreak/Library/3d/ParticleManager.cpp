@@ -339,7 +339,8 @@ void ParticleManager::Update()
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = m_constBuff->Map(0, nullptr, (void**)&constMap);
-	constMap->mat = Camera::Get()->GetMatView() * Camera::Get()->GetProjection();	// 行列の合成
+	matV = Camera::Get()->GetMatView() * Camera::Get()->GetProjection();
+	constMap->mat = matV;	// 行列の合成
 	constMap->matBillboard = matBillboard;
 	m_constBuff->Unmap(0, nullptr);
 }
@@ -372,11 +373,4 @@ void ParticleManager::Draw(TextureData &graph)
 	cmdList->DrawInstanced((UINT)std::distance(particles.begin(), particles.end()), 1, 0, 0);
 }
 
-Vec3 ParticleManager::GetPos()
-{
-	for (std::forward_list<Particle>::iterator it = particles.begin();
-		it != particles.end();
-		it++) {
-		return it->position;
-	}
-}
+
