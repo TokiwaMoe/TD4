@@ -78,11 +78,7 @@ void Player::collide2Stage(Stage* stage)
 {
 	if (stage->GetInstance()->GetBoxSize() == CollisionCount(stage))
 	{
-		//ロード外に出たらスタート位置に戻す
-#if _DEBUG 
-
-		DebugText::Get()->Print(100.0f, 500.0f, 2, "out stage");
-#endif
+		//エフェクトだす
 		effect = true;
 	}
 	else if(!effect)
@@ -93,13 +89,14 @@ void Player::collide2Stage(Stage* stage)
 	if (effect)
 	{
 		deathTime--;
-
+		//一定時間に達したらリスポーンする
 		if (deathTime <= 0) {
 			deathTime = 20;
 			respawn = true;
 		}
 		if (respawn == true) {
 			effect = false;
+			//ロード外に出たらスタート位置に戻す
 			position = {
 				stage->GetInstance()->GetStartPos().x,
 				stage->GetInstance()->GetStartPos().y
