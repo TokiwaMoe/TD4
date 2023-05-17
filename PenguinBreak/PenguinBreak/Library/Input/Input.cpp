@@ -134,3 +134,8 @@ Vec2 Input::GetMousePos()
 	return m_mouse.GetMousePos();
 }
 
+void Input::SetCursor(bool flag)
+{
+	ShowCursor(flag);
+}
+
