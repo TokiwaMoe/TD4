@@ -65,8 +65,8 @@ void TitleScene::ShadowDraw()
 
 void TitleScene::Finalize()
 {
-
-
+	Texture::Get()->Delete();
+	Sprite::Get()->Delete();
 }
 
 bool TitleScene::GetEffect()
