@@ -129,6 +129,8 @@ public://静的関数
 
 	//スプライト共通データを生成
 	SpriteCommon SpriteCommonCreate(int window_width, int window_height);
+
+	void Delete();
 public:
 	//スプライト生成
 	SpriteData SpriteCreate(const wchar_t* filename);

@@ -14,7 +14,7 @@ extern const int window_height;
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class GameScene:public BaseScene
+class GameScene :public BaseScene
 {
 public:
 	/// <summary>
@@ -53,7 +53,7 @@ private://定義
 	SpriteData palm_2;
 	SpriteData deer;
 
-	Player* player = nullptr;
+	std::unique_ptr<Player>player;
 	Stage* stage = nullptr;
 	int stageNumber = 1;
 

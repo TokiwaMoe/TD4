@@ -31,7 +31,7 @@ void GameScene::Init()
 	//スプライト作成の仕方
 	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
 
-	player = new Player();
+	player = std::make_unique<Player>();
 	// ステージ
 	stage = Stage::GetInstance();
 	stage->Init();
@@ -61,6 +61,12 @@ void GameScene::Update()
 		}
 	}
 
+	// ステージ出力（デバッグ実行用）
+	if (Input::Get()->KeybordTrigger(DIK_1))
+	{
+		stage->WriteStage("write_test");
+	}
+
 	stage->GimmickUpdate();
 	player->Update(stage);
 
@@ -81,7 +87,8 @@ void GameScene::ShadowDraw()
 
 void GameScene::Finalize()
 {
-
+	Texture::Get()->Delete();
+	Sprite::Get()->Delete();
 }
 
 bool GameScene::GetEffect()

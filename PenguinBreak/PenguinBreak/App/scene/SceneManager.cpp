@@ -51,6 +51,7 @@ void SceneManager::Initialize()
 	PostEffect::Get()->Initialize(DirectXBase::Get()->GetDevice());
 	//音作成
 	Audio::Get()->Init();
+	Texture::Get()->KeepTexture();
 	//シーンをタイトルに設定
 	BaseScene* scene = new TitleScene();
 	SetNextScene(scene);

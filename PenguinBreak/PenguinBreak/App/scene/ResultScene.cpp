@@ -50,7 +50,10 @@ void ResultScene::ShadowDraw()
 }
 
 void ResultScene::Finalize()
-{}
+{
+	Texture::Get()->Delete();
+	Sprite::Get()->Delete();
+}
 
 bool ResultScene::GetEffect()
 {
