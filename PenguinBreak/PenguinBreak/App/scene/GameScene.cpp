@@ -31,7 +31,7 @@ void GameScene::Init()
 	//スプライト作成の仕方
 	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
 
-	player = new Player();
+	player = std::make_unique<Player>();
 	// ステージ
 	stage = Stage::GetInstance();
 	stage->Init(player->GetSize());
@@ -58,7 +58,11 @@ void GameScene::Update()
 			sceneManager_->SetNextScene(scene);
 		}
 	}
-
+	if (Input::Get()->KeybordTrigger(DIK_SPACE))
+	{
+		BaseScene* scene = new ResultScene();
+		sceneManager_->SetNextScene(scene);
+	}
 	// ステージ出力（デバッグ実行用）
 	if (Input::Get()->KeybordTrigger(DIK_1))
 	{
@@ -85,7 +89,8 @@ void GameScene::ShadowDraw()
 
 void GameScene::Finalize()
 {
-
+	Texture::Get()->Delete();
+	Sprite::Get()->Delete();
 }
 
 bool GameScene::GetEffect()
