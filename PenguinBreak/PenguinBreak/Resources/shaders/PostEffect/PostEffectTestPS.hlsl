@@ -36,9 +36,9 @@ float4 main(VSOutput input) : SV_TARGET
      input.uv += w;
 
      //グリッチのパラメーターの計算
-     float VertGlitchPase = 0.5f;
-     float HorzGlitchPase = 0.5f;
-     float GlicthStepValue = 0.05f;
+     float VertGlitchPase = 0.1f;
+     float HorzGlitchPase = 0.1f;
+     float GlicthStepValue = 0.07f;
      float vertNoise = WhiteNoise(float2(floor((input.uv.x) / VertGlitchPase) * VertGlitchPase, time * 0.1));
      float horzNoise = WhiteNoise(float2(floor((input.uv.x) / HorzGlitchPase) * HorzGlitchPase, time * 0.2));
      float vertGlitchStrength = vertNoise / GlicthStepValue;

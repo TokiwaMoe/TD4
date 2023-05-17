@@ -90,4 +90,9 @@ public://マウス
 	/// </summary>
 	/// <returns>マウス座標</returns>
 	Vec2 GetMousePos();
+	/// <summary>
+	/// カーソルを表示or非表示
+	/// </summary>
+	/// <returns>表示するか</returns>
+	void SetCursor(bool flag);
 };

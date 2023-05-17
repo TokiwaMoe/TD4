@@ -63,6 +63,8 @@ public:
 	};
 	//2d
 	SpriteData player = {};
+	SpriteData hand_p = {};
+	SpriteData hand_g = {};
 	// X,Y,Z軸回りのローカル回転角
 	Vec2 rotation = { 0,0 };
 	// プレイヤー座標
@@ -83,4 +85,6 @@ public:
 	int deathTime = 20;//死んだときの演出時間
 	std::unique_ptr <ParticleManager> moveParticle;
 	TextureData p_Texture = {};
+	//描画
+	bool isDraw = true;
 };
