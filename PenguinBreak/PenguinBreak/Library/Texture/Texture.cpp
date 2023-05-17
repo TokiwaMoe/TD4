@@ -332,3 +332,13 @@ ID3D12DescriptorHeap* Texture::GetDescHeap()
 	return m_descHeap.Get();
 }
 
+void Texture::KeepTexture()
+{
+	m_keepTex = m_texNum;
+}
+
+void Texture::Delete()
+{
+	m_texNum = m_keepTex;
+}
+
