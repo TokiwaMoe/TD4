@@ -104,7 +104,7 @@ private: //メンバ変数
 
 public: //メンバ関数
 	// 初期化
-	void Init(const Vec2& playerSize);
+	void Init();
 	// ギミックの更新
 	void GimmickUpdate();
 	// 描画
@@ -119,13 +119,13 @@ public: //メンバ関数
 
 	size_t GetBoxSize() { return boxes.size(); }
 	// 座標
-	Vec2 GetPos(int num) { return boxes[num].pos; }
+	Vec2 GetPos(size_t num) const { return boxes[num].pos + boxes[num].offset; }
 	//スプライトサイズ
-	Vec2 GetSize(int num) { return boxes[num].size; }
-	Vec2 GetStartPos() { return boxes[startIndex].pos; }
-	size_t GetStart() { return startIndex; }
-	Vec2 GetGoalPos() { return boxes[goalIndex].pos; }
-	size_t GetGoal() { return goalIndex; }
+	Vec2 GetSize(size_t num) const { return boxes[num].size; }
+	Vec2 GetStartPos() const { return GetPos(startIndex); }
+	size_t GetStart() const { return startIndex; }
+	Vec2 GetGoalPos() const { return GetPos(goalIndex); }
+	size_t GetGoal() const { return goalIndex; }
 private:
 	// 道が狭まるギミック(全方向)
 	void ScaleGimmick(Road& road);
@@ -133,4 +133,9 @@ private:
 	void DirectionScaleGimmick(Road& road);
 	// 道が移動するギミック
 	void MoveGimmick(Road& road);
+
+	// 上限を超えたかどうか
+	bool IsUpOver(float* pos, float* size, float limit, float speed, float scale);
+	// 下限を超えたかどうか
+	bool IsDownOver(float* pos, float* size, float limit, float speed, float scale);
 };

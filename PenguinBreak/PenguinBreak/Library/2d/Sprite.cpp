@@ -211,6 +211,15 @@ Sprite::SpriteCommon Sprite::SpriteCommonCreate(int window_width, int window_hei
 	return spriteCommon;
 }
 
+void Sprite::Delete()
+{
+	for (int i = (int)constBuffer.size() - 1; i >= 0; i--)
+	{
+		delete constBuffer[i];
+		constBuffer.erase(constBuffer.begin() + i);
+	}
+}
+
 //スプライト共通グラフィックコマンドのセット
 void Sprite::SpriteCommonBeginDraw(SpriteData& sprite)
 {

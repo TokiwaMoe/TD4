@@ -31,10 +31,11 @@ void GameScene::Init()
 	//スプライト作成の仕方
 	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
 
-	player = new Player();
+	player = std::make_unique<Player>();
 	// ステージ
 	stage = Stage::GetInstance();
-	stage->Init(player->GetSize());
+	stage->Init();
+	stage->ChengeStage(stageNumber);
 	//プレイヤー
 	player->Initialize();
 	player->Init(stage);
@@ -43,7 +44,8 @@ void GameScene::Init()
 void GameScene::Update()
 {
 	//シーンの変更の仕方
-	if (player->GetGoalFlag() == true)
+	if (player->GetGoalFlag() == true ||
+		Input::Get()->KeybordTrigger(DIK_SPACE))
 	{
 		if (stageNumber < Stage::STAGE_COUNT)
 		{
@@ -85,7 +87,8 @@ void GameScene::ShadowDraw()
 
 void GameScene::Finalize()
 {
-
+	Texture::Get()->Delete();
+	Sprite::Get()->Delete();
 }
 
 bool GameScene::GetEffect()

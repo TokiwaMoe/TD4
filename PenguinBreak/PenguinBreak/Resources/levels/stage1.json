@@ -7,7 +7,7 @@
             "flipY" : false,
             "gimmick": 2,
             "parameter": {
-                "flag": false,
+                "flag": true,
                 "limit": [
                     0.0,
                     60.0
@@ -25,6 +25,60 @@
             "offset": [
                 640.0,
                 250.0
+            ],
+            "type": 3
+        },
+        {
+            "back" : 0,
+            "flipX" : false,
+            "flipY" : false,
+            "gimmick": 3,
+            "parameter": {
+                "flag": true,
+                "limit": [
+                    0.0,
+                    -40.0
+                ],
+                "speed": 6.0
+            },
+            "pos": [
+                0.0,
+                0.0
+            ],
+            "size": [
+                305.0,
+                437.0
+            ],
+            "offset": [
+                152.5,
+                501.5
+            ],
+            "type": 3
+        },
+        {
+            "back" : 0,
+            "flipX" : true,
+            "flipY" : false,
+            "gimmick": 3,
+            "parameter": {
+                "flag": true,
+                "limit": [
+                    0.0,
+                    -40.0
+                ],
+                "speed": 6.0
+            },
+            "pos": [
+                0.0,
+                0.0
+            ],
+            "size": [
+                305.0,
+                437.0
+            ],
+            "offset": [
+                1127.5,
+                501.5
             ],
             "type": 3
         },
