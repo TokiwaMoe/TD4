@@ -145,6 +145,8 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	void Draw(TextureData &graph);
+	
+	Vec3 GetPos();
 
 private: // メンバ変数
 

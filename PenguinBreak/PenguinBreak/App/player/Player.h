@@ -31,17 +31,16 @@ public:
 	/// <param name="stageNo">ステージ番号</param>
 	void stageInit(int stageNo);
 
-	void Update(Stage *stage);
+	void Update(Stage* stage);
 	/// <summary>
 	/// マウス移動
 	/// </summary>
-	void Move();
 
-	void collide2Stage(Stage *stage);
+	void collide2Stage(Stage* stage);
 
-	int CollisionCount(Stage *stage);
+	int CollisionCount(Stage* stage);
 
-	bool OutStage(Vec2 position, Stage *stage, int num);
+	bool OutStage(Vec2 position, Stage* stage, int num);
 	void Draw();
 
 	//getter
@@ -55,7 +54,12 @@ public:
 	bool GetEffect() { return effect; }
 	//setter
 
-public:
+private:
+	void Move();
+	/// <summary>
+	/// パーティクルの座標を2Dの物に変換
+	/// </summary>
+	void ConvertParticlePos();
 	enum Direction
 	{
 		Left,
@@ -68,7 +72,7 @@ public:
 	// プレイヤー座標
 	Vec2 position = { 50,50 };
 	int  direction = 0;
-
+	Vec3 particlePos = { 0,0,0 };
 	//スプライトサイズ
 	float width = 64.0f, height = 128.0f;
 	bool flipFlag = false;

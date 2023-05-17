@@ -371,3 +371,12 @@ void ParticleManager::Draw(TextureData &graph)
 	// 描画コマンド
 	cmdList->DrawInstanced((UINT)std::distance(particles.begin(), particles.end()), 1, 0, 0);
 }
+
+Vec3 ParticleManager::GetPos()
+{
+	for (std::forward_list<Particle>::iterator it = particles.begin();
+		it != particles.end();
+		it++) {
+		return it->position;
+	}
+}

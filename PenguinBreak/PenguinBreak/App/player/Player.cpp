@@ -39,6 +39,7 @@ void Player::stageInit(int stageNo)
 
 void Player::Update(Stage* stage)
 {
+	ConvertParticlePos();
 	//移動
 	Move();
 	collide2Stage(stage);
@@ -65,13 +66,24 @@ void Player::Move()
 		//パーティクルだす
 
 	}
-	/*moveParticle->ParticleAdd2(
-		Vec3(position.x, 0, 0), { 1,1,1,1 }, { 1,1,1,1 });
-	moveParticle->Update();*/
+	moveParticle->ParticleAdd2(
+		{0,0,0}, { 1,1,1,1 }, { 1,1,1,1 });
+	moveParticle->Update();
 	;
 #if _DEBUG 
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
 #endif
+}
+
+void Player::ConvertParticlePos()
+{
+	//ワールド座標取得
+	//particlePos=
+	//ビューポート
+
+	//プロジェクション
+
+	//座標にプロジェクションを掛ける	
 }
 
 void Player::collide2Stage(Stage* stage)
