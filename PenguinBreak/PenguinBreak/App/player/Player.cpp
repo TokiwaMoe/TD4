@@ -10,6 +10,8 @@ void Player::Initialize()
 {
 	//スプライト作成の仕方
 	player = Sprite::Get()->SpriteCreate(L"Resources/Kari.png");
+	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
+	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
 	moveParticle = std::make_unique <ParticleManager>();
 	moveParticle->Initialize();
 	p_Texture = Texture::Get()->LoadTexture(L"Resources/Paricle/particle.jpg");
@@ -42,6 +44,7 @@ void Player::Update(Stage* stage)
 	//移動
 	Move();
 	collide2Stage(stage);
+	Input::Get()->SetCursor(false);
 }
 
 void Player::Move()
@@ -61,14 +64,19 @@ void Player::Move()
 			else if ((float)Input::Get()->GetMouseMove().lX < 0) {
 				flipFlag = false;
 			}
+			
 		}
 		//パーティクルだす
-
+		//手のspを表示するか
+		isDraw = true;
+	}
+	else
+	{
+		isDraw = false;
 	}
 	/*moveParticle->ParticleAdd2(
 		Vec3(position.x, 0, 0), { 1,1,1,1 }, { 1,1,1,1 });
 	moveParticle->Update();*/
-	;
 #if _DEBUG 
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
 #endif
@@ -168,4 +176,15 @@ void Player::Draw()
 	float width = 64.0f, height = 128.0f;
 	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
 	//moveParticle->Draw(p_Texture);
+
+	if (isDraw)
+	{
+		Vec2 hPos = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y };
+		Sprite::Get()->Draw(hand_g, hPos, 32, 32, { 0.5f,0.5f });
+	}
+	else
+	{
+		Vec2 hPos = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y };
+		Sprite::Get()->Draw(hand_p, hPos, 32, 32, { 0.5f,0.5f });
+	}
 }
