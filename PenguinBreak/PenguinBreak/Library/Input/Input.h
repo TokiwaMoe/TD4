@@ -33,6 +33,8 @@ public://キーボード
 	bool KeybordPush(BYTE keyNumber);
 	//押した瞬間
 	bool KeybordTrigger(BYTE keyNumber);
+	//離した瞬間
+	bool KeybordReleaseTheHand(BYTE keyNumber);
 	//矢印キーのいずれかを押したかどうか
 	bool KeybordInputArrow();
 public://ゲームパッド

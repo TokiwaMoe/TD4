@@ -33,6 +33,11 @@ bool Input::KeybordTrigger(BYTE keyNumber)
 	return m_keybord.TriggerKey(keyNumber);
 }
 
+bool Input::KeybordReleaseTheHand(BYTE keyNumber)
+{
+	return m_keybord.ReleaseTheHand(keyNumber);;
+}
+
 bool Input::KeybordInputArrow()
 {
 	if (KeybordPush(DIK_UP) || KeybordPush(DIK_DOWN)
