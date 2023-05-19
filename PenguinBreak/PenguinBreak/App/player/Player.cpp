@@ -93,8 +93,10 @@ void Player::Move()
 
 void Player::ConvertParticlePos()
 {
-	//ビュープロジェクションビューポート行列
-	XMMATRIX mvpv = moveParticle->GetMat();
+	//ビューポート
+	XMMATRIX matV = XMMatrixIdentity();
+	//合成
+	XMMATRIX mvpv = moveParticle->GetMat() * matV;
 	//合成行列の逆行列
 	XMMATRIX mvpvInv = XMMatrixInverse(nullptr, mvpv);
 	//スクリーン座標
