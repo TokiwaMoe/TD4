@@ -85,9 +85,6 @@ void Player::Move()
 	{
 		isDraw = false;
 	}
-	moveParticle->ParticleAdd2(
-		particlePos, { 1,1,1,1 }, { 1,1,1,1 });
-	moveParticle->Update();
 
 #if _DEBUG 
 	//DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
@@ -96,25 +93,35 @@ void Player::Move()
 
 void Player::ConvertParticlePos()
 {
-	//
+	//ビュープロジェクションビューポート行列
 	XMMATRIX mvpv = moveParticle->GetMat();
+	//合成行列の逆行列
 	XMMATRIX mvpvInv = XMMatrixInverse(nullptr, mvpv);
+	//スクリーン座標
 	Vec3 posNear = Vec3{ position.x,position.y,0 };
 	Vec3 posFar = Vec3{ position.x,position.y,1 };
+	//スクリーン座標をベクトルに直す
 	XMVECTOR posNearV = XMLoadFloat3(&posNear);
 	XMVECTOR posFarV = XMLoadFloat3(&posFar);
-
+	//スクリーン座標からワールド座標へ
 	posNearV = XMVector3TransformCoord(posNearV, mvpvInv);
 	posFarV = XMVector3TransformCoord(posFarV, mvpvInv);
+	//マウスレイの方向
 	XMVECTOR direction = posFarV - posNearV;
+	//正規化
 	direction = XMVector3Normalize(direction);
 	const float distance = 0.01f;
 	direction *= distance;
+	//カメラから照準オブジェクトの距離
 	particlePos.x = position.x + direction.m128_f32[0];
 	particlePos.y = position.y + direction.m128_f32[1];
 	particlePos.z = posNear.z + direction.m128_f32[2];
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", particlePos.x, particlePos.y);
 	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);
+
+	moveParticle->ParticleAdd2(
+		particlePos, { 0,1,0,1 }, { 0,1,0,1 });
+	moveParticle->Update();
 }
 
 
