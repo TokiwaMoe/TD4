@@ -15,15 +15,18 @@ EditerScene::~EditerScene()
 void EditerScene::Init()
 {
 	cursor = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
+	frame = Sprite::Get()->SpriteCreate(L"Resources/white1x1.png");
 
 	player = std::make_unique<Player>();
 	// ステージ
 	stage = Stage::GetInstance();
 	stage->EditerInit(player->GetSize());
 
-	//デバッグテキスト
-	operationText.push_back("Mouse:Move");
+	// デバッグテキスト
+	operationText.push_back("Drag:Move");
 	operationText.push_back("C:Create");
+	operationText.push_back("drag corner:Size Change");
+	operationText.push_back("Left Click+D:Delete");
 	operationText.push_back("S:Save");
 	operationText.push_back("P:Clear Check");
 	operationText.push_back("Esc:Title");
@@ -45,10 +48,24 @@ void EditerScene::Update()
 		sceneManager_->SetNextScene(scene);
 	}
 
+	roadIndex = GetStageIndex2MousePos();
+	isClick = Input::Get()->MousePushLeft() && roadIndex != -1;
+
+	if (isClick)
+	{
+		stage->SetPos(roadIndex, Input::Get()->GetMousePos());
+	}
+
 	// 道の生成
 	if (Input::Get()->KeybordTrigger(DIK_C))
 	{
 		stage->Create();
+	}
+	// 道の削除
+	if (Input::Get()->KeybordTrigger(DIK_D) && isClick)
+	{
+		stage->Delete(roadIndex);
+		isClick = false;
 	}
 
 	// ステージ出力
@@ -56,28 +73,23 @@ void EditerScene::Update()
 	{
 		stage->WriteStage("write_stage");
 	}
-
-	static int roadIndex = -1;
-	if (Input::Get()->MouseTriggerLeft())
-	{
-		roadIndex = GetStageIndex2MousePos();
-	}
-	else if (Input::Get()->KeybordPush(DIK_1)) //マウスを離した瞬間の入力にしたい
-	{
-		roadIndex = -1;
-	}
-
-	if (roadIndex != -1)
-	{
-		stage->SetPos(Input::Get()->GetMousePos(), roadIndex);
-	}
 }
 
 void EditerScene::Draw()
 {
 	DebugText::Get()->Print(100.0f, 100.0f, 5, "Editer");
 
+	if (isClick)
+	{
+		Sprite::Get()->Draw(frame,
+							Input::Get()->GetMousePos(),
+							stage->GetSize(roadIndex).x + 10.0f,
+							stage->GetSize(roadIndex).y + 10.0f,
+							{ 0.5f,0.5f },
+							{ 0.5f, 0.5f, 0.5f, 1.0f });
+	}
 	stage->Draw();
+
 	Sprite::Get()->Draw(cursor, Input::Get()->GetMousePos(), 32, 32, { 0.5f,0.5f });
 	OperationDraw();
 }
@@ -118,6 +130,7 @@ int EditerScene::GetStageIndex2MousePos()
 			rightDown.y > Input::Get()->GetMousePos().y)
 		{
 			result = i;
+			stage->Anchorpoint2Center(result, Vec2());
 			break;
 		}
 	}

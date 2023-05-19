@@ -57,9 +57,13 @@ private:
 
 private://定義
 	SpriteData cursor;
+	SpriteData frame;
 
 	std::unique_ptr<Player>player;
 	Stage* stage = nullptr;
+
+	int roadIndex = -1;
+	bool isClick = false;
 
 	std::vector<std::string> operationText;
 };

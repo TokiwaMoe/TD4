@@ -298,35 +298,14 @@ void Stage::SetIndex()
 	}
 }
 
-void Stage::EditerInit(const Vec2& playerSize)
+void Stage::Anchorpoint2Center(size_t num, const Vec2& anchorpoint)
 {
-	const float ROAD_OFFSET = 30.0f; //道の余白
-	ROAD_SIZE = playerSize + Vec2(ROAD_OFFSET, ROAD_OFFSET);
+	const Vec2 center = { 0.5f, 0.5f };
+	const Vec2 centerPos = anchorpoint - center;
 
-	boxes.clear();
-
-	// スタートの追加
-	boxes.emplace_back();
-	boxes.back().type = RoadType::START;
-	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
-	boxes.back().offset = { ROAD_SIZE.x, ROAD_SIZE.y };
-	boxes.back().Init();
-
-	// ゴールの追加
-	boxes.emplace_back();
-	boxes.back().type = RoadType::GOAL;
-	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
-	boxes.back().offset = { window_width - ROAD_SIZE.x, window_height - ROAD_SIZE.y };
-	boxes.back().Init();
-}
-
-void Stage::Create()
-{
-	boxes.emplace_back();
-	boxes.back().type = RoadType::ROAD;
-	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
-	boxes.back().offset = Input::Get()->GetMousePos();
-	boxes.back().Init();
+	boxes[num].offset = {
+		GetPos(num).x + (boxes[num].size.x * centerPos.x / 2.0f),
+		GetPos(num).y + (boxes[num].size.y * centerPos.y / 2.0f) };
 }
 
 void Stage::ScaleGimmick(Road& road)
@@ -520,4 +499,42 @@ bool Stage::IsDownOver(float* pos, float* size, float limit, float speed, float 
 	*size -= scale;
 
 	return *size <= limit;
+}
+
+void Stage::EditerInit(const Vec2& playerSize)
+{
+	const float ROAD_OFFSET = 30.0f; //道の余白
+	ROAD_SIZE = playerSize + Vec2(ROAD_OFFSET, ROAD_OFFSET);
+
+	boxes.clear();
+
+	// スタートの追加
+	boxes.emplace_back();
+	boxes.back().type = RoadType::START;
+	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
+	boxes.back().offset = { ROAD_SIZE.x, ROAD_SIZE.y };
+	boxes.back().Init();
+
+	// ゴールの追加
+	boxes.emplace_back();
+	boxes.back().type = RoadType::GOAL;
+	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
+	boxes.back().offset = { window_width - ROAD_SIZE.x, window_height - ROAD_SIZE.y };
+	boxes.back().Init();
+}
+
+void Stage::Create()
+{
+	boxes.emplace_back();
+	boxes.back().type = RoadType::ROAD;
+	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
+	boxes.back().offset = Input::Get()->GetMousePos();
+	boxes.back().Init();
+}
+
+void Stage::Delete(size_t num)
+{
+	if (num < 0 || num >= boxes.size()) return;
+
+	boxes.erase(boxes.begin() + num);
 }
