@@ -50,8 +50,11 @@ void GameScene::Init()
 void GameScene::Update()
 {
 	//シーンの変更の仕方
-	if (player->GetGoalFlag() == true ||
-		Input::Get()->KeybordTrigger(DIK_SPACE))
+	if (player->GetGoalFlag() == true
+#ifdef _DEBUG
+		|| Input::Get()->KeybordTrigger(DIK_SPACE)
+#endif // _DEBUG
+		)
 	{
 		if (isEditer == true)
 		{

@@ -199,6 +199,8 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 
 void Stage::ChengeStage(int stageNumber)
 {
+	if (stageNumber <= 0 || stageNumber > STAGE_COUNT) return;
+
 	auto file = LoadStage("stage" + std::to_string(stageNumber));
 	boxes.clear();
 	boxes = file->objects;
