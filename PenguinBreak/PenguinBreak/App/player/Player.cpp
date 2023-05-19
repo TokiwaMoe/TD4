@@ -15,6 +15,10 @@ void Player::Initialize()
 	moveParticle = std::make_unique <ParticleManager>();
 	moveParticle->Initialize();
 	p_Texture = Texture::Get()->LoadTexture(L"Resources/Paricle/particle.jpg");
+	for (int i = 0; i < DEATH_MAX; i++)
+	{
+		death[i] = Sprite::Get()->SpriteCreate(L"Resources/death.png");
+	}
 }
 
 void Player::Init(Stage* stage)
@@ -29,6 +33,12 @@ void Player::Init(Stage* stage)
 	deathTime = 20;
 	respawn = false;
 	effect = false;
+	deathCount = 0;
+	for (int i = 0; i < DEATH_MAX; i++)
+	{
+		deathPos[i] = { 0,0 };
+		isDeathDraw[i] = false;
+	}
 }
 
 void Player::stageInit(int stageNo)
@@ -98,12 +108,13 @@ void Player::ConvertParticlePos()
 	posFarV = XMVector3TransformCoord(posFarV, mvpvInv);
 	XMVECTOR direction = posFarV - posNearV;
 	direction = XMVector3Normalize(direction);
-	const float distance = 0.1f;
+	const float distance = 0.01f;
 	direction *= distance;
-	particlePos.x = posNear.x + direction.m128_f32[0];
-	particlePos.y = posNear.y + direction.m128_f32[1];
+	particlePos.x = position.x + direction.m128_f32[0];
+	particlePos.y = position.y + direction.m128_f32[1];
 	particlePos.z = posNear.z + direction.m128_f32[2];
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", particlePos.x, particlePos.y);
+	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);
 }
 
 
@@ -130,7 +141,13 @@ void Player::collide2Stage(Stage* stage)
 		}
 		if (respawn == true) {
 			effect = false;
-			//ロード外に出たらスタート位置に戻す
+			//死のカウントをプラス
+			deathCount++;
+			//死んだ場所の位置コピー
+			deathPos[deathCount - 1] = position;
+			//死んだ場所に描画するスプライトのフラグをture
+			isDeathDraw[deathCount - 1] = true;
+ 			//ロード外に出たらスタート位置に戻す
 			position = {
 				stage->GetInstance()->GetStartPos().x,
 				stage->GetInstance()->GetStartPos().y
@@ -198,6 +215,13 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 void Player::Draw()
 {
 	//2D描画
+	for (int i = 0; i < DEATH_MAX; i++)
+	{
+		if (isDeathDraw[i])
+		{
+			Sprite::Get()->Draw(death[i], deathPos[i], 32, 32, { 0.5f,0.5f });
+		}
+	}
 	//Vec2 position2D = { 200.0f,200.0f };
 	float width = 64.0f, height = 128.0f;
 	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
@@ -213,4 +237,5 @@ void Player::Draw()
 		Vec2 hPos = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y };
 		Sprite::Get()->Draw(hand_p, hPos, 32, 32, { 0.5f,0.5f });
 	}
+	
 }

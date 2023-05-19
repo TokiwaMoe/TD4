@@ -48,3 +48,12 @@ bool Keybord::TriggerKey(BYTE keyNumber)
 	return false;
 }
 
+bool Keybord::ReleaseTheHand(BYTE keyNumber)
+{
+	// 前回が0で、今回が0でなければトリガー
+	if (m_oldkey[keyNumber] > 0 && m_key[keyNumber] == 0) {
+		return true;
+	}
+	// トリガーでない
+	return false;
+}

@@ -51,9 +51,6 @@ private:
 private://定義
 	//2d
 	SpriteData background;
-	SpriteData palm_1;
-	SpriteData palm_2;
-	SpriteData deer;
 
 	std::unique_ptr<Player>player;
 	Stage* stage = nullptr;

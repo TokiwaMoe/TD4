@@ -130,7 +130,6 @@ int EditerScene::GetStageIndex2MousePos()
 			rightDown.y > Input::Get()->GetMousePos().y)
 		{
 			result = i;
-			stage->Anchorpoint2Center(result, Vec2());
 			break;
 		}
 	}

@@ -28,8 +28,10 @@ public://ƒƒ“ƒoŠÖ”
 	//XV
 	void Update();
 
-	//‰Ÿ‚µ‚½uŠÔ
+	//‰Ÿ‚µ‘±‚¯uŠÔ
 	bool PushKey(BYTE keyNumber);
-	//—£‚µ‚½uŠÔ
+	//‰Ÿ‚µ‚½uŠÔ
 	bool TriggerKey(BYTE keyNumber);
+	//—£‚µ‚½uŠÔ
+	bool ReleaseTheHand(BYTE keyNumber);
 };
