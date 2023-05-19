@@ -6,6 +6,9 @@
 #include"Shape.h"
 #include"SceneManager.h"
 #include"ResultScene.h"
+#include"EditerScene.h"
+
+bool GameScene::isEditer = false;
 
 GameScene::GameScene()
 {}
@@ -35,7 +38,10 @@ void GameScene::Init()
 	// ステージ
 	stage = Stage::GetInstance();
 	stage->Init();
-	stage->ChengeStage(stageNumber);
+	if (isEditer == false)
+	{
+		stage->ChengeStage(stageNumber);
+	}
 	//プレイヤー
 	player->Initialize();
 	player->Init(stage);
@@ -44,10 +50,19 @@ void GameScene::Init()
 void GameScene::Update()
 {
 	//シーンの変更の仕方
-	if (player->GetGoalFlag() == true ||
-		Input::Get()->KeybordTrigger(DIK_SPACE))
+	if (player->GetGoalFlag() == true
+#ifdef _DEBUG
+		|| Input::Get()->KeybordTrigger(DIK_SPACE)
+#endif // _DEBUG
+		)
 	{
-		if (stageNumber < Stage::STAGE_COUNT)
+		if (isEditer == true)
+		{
+			isEditer = false;
+			BaseScene* scene = new EditerScene();
+			sceneManager_->SetNextScene(scene);
+		}
+		else if (stageNumber < Stage::STAGE_COUNT)
 		{
 			// ステージ切り替え
 			stageNumber++;
@@ -61,12 +76,6 @@ void GameScene::Update()
 		}
 	}
 
-	// ステージ出力（デバッグ実行用）
-	if (Input::Get()->KeybordTrigger(DIK_1))
-	{
-		stage->WriteStage("write_test");
-	}
-
 	stage->GimmickUpdate();
 	player->Update(stage);
 
@@ -78,6 +87,11 @@ void GameScene::Draw()
 	Sprite::Get()->Draw(background, { 0,0 }, width, height);
 	stage->Draw();
 	player->Draw();
+
+	if (isEditer == true)
+	{
+		DebugText::Get()->Print(100.0f, 100.0f, 2, "Clear Check");
+	}
 }
 
 void GameScene::ShadowDraw()

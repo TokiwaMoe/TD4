@@ -7,6 +7,7 @@
 #include"Texture.h"
 #include"SceneManager.h"
 #include"GameScene.h"
+#include"EditerScene.h"
 TitleScene::TitleScene()
 {}
 TitleScene::~TitleScene()
@@ -39,8 +40,19 @@ void TitleScene::Update()
 		BaseScene* scene = new GameScene();
 		sceneManager_->SetNextScene(scene);
 	}
+#ifdef _DEBUG
+	else if (Input::Get()->KeybordTrigger(DIK_E))
+	{
+		// エディター
+		BaseScene* scene = new EditerScene();
+		sceneManager_->SetNextScene(scene);
+	}
+#endif // _DEBUG
 
 	DebugText::Get()->Print(100.0f, 100.0f, 5, "Title");
+#ifdef _DEBUG
+	DebugText::Get()->Print(16.0f, window_height - 16.0f, 2, "E:Editer");
+#endif // _DEBUG
 	lightGroup->Update();
 }
 

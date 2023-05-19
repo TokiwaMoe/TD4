@@ -1,6 +1,9 @@
 ﻿#include "Stage.h"
 #include <fstream>
 #include <json.hpp>
+#include "Input.h"
+
+Vec2 Stage::ROAD_SIZE = Vec2();
 
 Stage::GimmickParameter::GimmickParameter() :
 	flag(false),
@@ -153,7 +156,7 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		assert(object.contains("type"));
 
 		// 要素を追加
-		levelData->objects.emplace_back(Road());
+		levelData->objects.emplace_back();
 		auto& objectData = levelData->objects.back();
 		objectData.type = object["type"];
 		objectData.pos = Vec2(object["pos"][0], object["pos"][1]);
@@ -191,17 +194,17 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		}
 	}
 
-	startIndex = levelData->objects.size() - 2;
-	goalIndex = levelData->objects.size() - 1;
-
 	return levelData;
 }
 
 void Stage::ChengeStage(int stageNumber)
 {
+	if (stageNumber <= 0 || stageNumber > STAGE_COUNT) return;
+
 	auto file = LoadStage("stage" + std::to_string(stageNumber));
 	boxes.clear();
 	boxes = file->objects;
+	SetIndex();
 	delete file;
 }
 
@@ -267,6 +270,44 @@ void Stage::WriteStage(const std::string& stageName)
 
 	file << std::setw(4) << data << endl;
 	file.close();
+}
+
+void Stage::SetIndex()
+{
+	bool isStart = false; //startIndexを設定したかどうか
+	bool isGoal = false;   //goalIndexを設定したかどうか
+
+	for (size_t i = 0; i < boxes.size(); i++)
+	{
+		switch (boxes[i].type)
+		{
+		case Stage::START:
+			startIndex = i;
+			isStart = true;
+			break;
+		case Stage::GOAL:
+			goalIndex = i;
+			isGoal = true;
+			break;
+		default:
+			break;
+		}
+
+		if (isStart && isGoal)
+		{
+			break;
+		}
+	}
+}
+
+void Stage::Anchorpoint2Center(size_t num, const Vec2& anchorpoint)
+{
+	const Vec2 center = { 0.5f, 0.5f };
+	const Vec2 centerPos = (anchorpoint - center) * (-1.0f);
+
+	if (centerPos.x == 0.0f && centerPos.y == 0.0f) return;
+
+	boxes[num].offset += Vec2(boxes[num].size.x * centerPos.x, boxes[num].size.y * centerPos.y) / 2.0f;
 }
 
 void Stage::ScaleGimmick(Road& road)
@@ -460,4 +501,42 @@ bool Stage::IsDownOver(float* pos, float* size, float limit, float speed, float 
 	*size -= scale;
 
 	return *size <= limit;
+}
+
+void Stage::EditerInit(const Vec2& playerSize)
+{
+	const float ROAD_OFFSET = 30.0f; //道の余白
+	ROAD_SIZE = playerSize + Vec2(ROAD_OFFSET, ROAD_OFFSET);
+
+	boxes.clear();
+
+	// スタートの追加
+	boxes.emplace_back();
+	boxes.back().type = RoadType::START;
+	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
+	boxes.back().offset = { ROAD_SIZE.x, ROAD_SIZE.y };
+	boxes.back().Init();
+
+	// ゴールの追加
+	boxes.emplace_back();
+	boxes.back().type = RoadType::GOAL;
+	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
+	boxes.back().offset = { window_width - ROAD_SIZE.x, window_height - ROAD_SIZE.y };
+	boxes.back().Init();
+}
+
+void Stage::Create()
+{
+	boxes.emplace_back();
+	boxes.back().type = RoadType::ROAD;
+	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
+	boxes.back().offset = Input::Get()->GetMousePos();
+	boxes.back().Init();
+}
+
+void Stage::Delete(size_t num)
+{
+	if (num < 0 || num >= boxes.size()) return;
+
+	boxes.erase(boxes.begin() + num);
 }
