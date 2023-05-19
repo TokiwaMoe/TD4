@@ -50,6 +50,9 @@ void TitleScene::Update()
 #endif // _DEBUG
 
 	DebugText::Get()->Print(100.0f, 100.0f, 5, "Title");
+#ifdef _DEBUG
+	DebugText::Get()->Print(16.0f, window_height - 16.0f, 2, "E:Editer");
+#endif // _DEBUG
 	lightGroup->Update();
 }
 
