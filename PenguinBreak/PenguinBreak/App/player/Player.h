@@ -52,7 +52,12 @@ public:
 	const Vec2& GetRotation() { return rotation; }
 	bool GetGoalFlag() { return goalFlag; }
 	bool GetEffect() { return effect; }
+	//死
+	int GetDeathCount() { return deathCount; }
 	//setter
+
+private:
+	static const int DEATH_MAX = 30;
 
 private:
 	void Move();
@@ -69,6 +74,7 @@ private:
 	SpriteData player = {};
 	SpriteData hand_p = {};
 	SpriteData hand_g = {};
+	SpriteData death[DEATH_MAX] = {};
 	// X,Y,Z軸回りのローカル回転角
 	Vec2 rotation = { 0,0 };
 	// プレイヤー座標
@@ -92,4 +98,8 @@ private:
 	TextureData p_Texture = {};
 	//描画
 	bool isDraw = true;
+	//死
+	bool isDeathDraw[DEATH_MAX];
+	int deathCount = 0;
+	Vec2 deathPos[DEATH_MAX];
 };
