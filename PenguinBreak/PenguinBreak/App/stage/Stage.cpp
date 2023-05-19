@@ -301,11 +301,11 @@ void Stage::SetIndex()
 void Stage::Anchorpoint2Center(size_t num, const Vec2& anchorpoint)
 {
 	const Vec2 center = { 0.5f, 0.5f };
-	const Vec2 centerPos = anchorpoint - center;
+	const Vec2 centerPos = (anchorpoint - center) * (-1.0f);
 
-	boxes[num].offset = {
-		GetPos(num).x + (boxes[num].size.x * centerPos.x / 2.0f),
-		GetPos(num).y + (boxes[num].size.y * centerPos.y / 2.0f) };
+	if (centerPos.x == 0.0f && centerPos.y == 0.0f) return;
+
+	boxes[num].offset += Vec2(boxes[num].size.x * centerPos.x, boxes[num].size.y * centerPos.y) / 2.0f;
 }
 
 void Stage::ScaleGimmick(Road& road)
