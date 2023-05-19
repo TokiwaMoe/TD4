@@ -1,11 +1,8 @@
 ﻿#pragma once
 #include "DirectXBase.h"
 #include"DebugText.h"
-#include"ParticleManager.h"
 #include<memory>
 #include"BaseScene.h"
-#include<LightGroup.h>
-#include"FBXObject3d.h"
 #include"Player.h"
 #include"../stage/Stage.h"
 #include<vector>
@@ -49,16 +46,20 @@ public:
 	bool GetEffect()override;
 private:
 	/// <summary>
+	/// 操作説明の描画
+	/// </summary>
+	void OperationDraw();
+	/// <summary>
 	/// マウスカーソルがどの道にいるか
 	/// </summary>
 	/// <returns>ステージのインデックス（-1の時はどこにも属していない）</returns>
 	int GetStageIndex2MousePos();
 
 private://定義
-	std::unique_ptr<LightGroup>lightGroup;
+	SpriteData cursor;
 
 	std::unique_ptr<Player>player;
 	Stage* stage = nullptr;
 
-	std::vector<std::string> debugText;
+	std::vector<std::string> operationText;
 };

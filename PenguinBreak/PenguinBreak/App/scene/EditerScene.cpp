@@ -1,8 +1,6 @@
 ﻿#include "EditerScene.h"
 #include<sstream>
-#include<iomanip>
 #include "Input.h"
-#include"FbxLoader.h"
 #include"Shape.h"
 #include"SceneManager.h"
 #include"TitleScene.h"
@@ -16,18 +14,7 @@ EditerScene::~EditerScene()
 
 void EditerScene::Init()
 {
-	//ライトグループクラス作成
-	lightGroup = std::make_unique<LightGroup>();
-	lightGroup->Initialize();
-	// 3Dオブエクトにライトをセット
-	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
-	lightGroup->SetShadowDir(Vec3(0, 1, 0));
-	//音データ読み込み
-	//カメラ位置をセット
-	Camera::Get()->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
-	FBXObject3d::SetLight(lightGroup.get());
-	Object::SetLight(lightGroup.get());
+	cursor = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
 
 	player = std::make_unique<Player>();
 	// ステージ
@@ -35,10 +22,10 @@ void EditerScene::Init()
 	stage->EditerInit(player->GetSize());
 
 	//デバッグテキスト
-	//debugText.push_back("Mouse:Move");
-	//debugText.push_back("S:Save");
-	//debugText.push_back("P:Clear Check");
-	//debugText.push_back("Esc:Title");
+	operationText.push_back("Mouse:Move");
+	operationText.push_back("S:Save");
+	operationText.push_back("P:Clear Check");
+	operationText.push_back("Esc:Title");
 }
 
 void EditerScene::Update()
@@ -77,19 +64,27 @@ void EditerScene::Update()
 	{
 		stage->SetPos(Input::Get()->GetMousePos(), roadIndex);
 	}
-
-	lightGroup->Update();
 }
 
 void EditerScene::Draw()
 {
-	stage->Draw();
-
 	DebugText::Get()->Print(100.0f, 100.0f, 5, "Editer");
+
+	stage->Draw();
+	Sprite::Get()->Draw(cursor, Input::Get()->GetMousePos(), 32, 32, { 0.5f,0.5f });
+	OperationDraw();
 }
 
 void EditerScene::ShadowDraw()
 {
+}
+
+void EditerScene::OperationDraw()
+{
+	for (int i = 0; i < operationText.size(); i++)
+	{
+		DebugText::Get()->Print(16.0f, window_height - 32.0f * (operationText.size() - i) + 16.0f, 2, operationText[i].c_str());
+	}
 }
 
 void EditerScene::Finalize()
