@@ -96,8 +96,13 @@ void Player::Move()
 
 void Player::ConvertParticlePos()
 {
+	XMVECTOR one = XMVectorSet(2.0f / 1280.0f, 0.0f, 0.0f, 0.0f);
+	XMVECTOR two = XMVectorSet(0.0f, -2.0f / 720.0f, 0.0f, 0.0f);
+	XMVECTOR three = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	XMVECTOR four = XMVectorSet(-1.0f, 1.0f, 0.0f, 1.0f);
+	XMMATRIX mvp = XMMATRIX(one, two, three, four);
 	//ビュープロジェクションビューポート合成行列
-	XMMATRIX mvpv = moveParticle->GetMat();
+	XMMATRIX mvpv = moveParticle->GetMat() * mvp;
 	//上記の行列の逆行列
 	XMMATRIX mvpvInv = XMMatrixInverse(nullptr, mvpv);
 	//スクリーン座標
