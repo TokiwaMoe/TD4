@@ -63,6 +63,12 @@ float4 main(VSOutput input) : SV_TARGET
      //‚¸‚ç‚µ
      input.uv.x += timeFrac * (V + H);
 
-     return float4(tex.Sample(smp, input.uv).rgb, 1.0f);
+     float shift = 0.002;
+     float r = tex.Sample(smp, input.uv + float2(-shift, 0)).r;
+     float g = tex.Sample(smp, input.uv + float2(0, 0)).g;
+     float b = tex.Sample(smp, input.uv + float2(shift, 0)).b;
+     float4 col = float4(r, g, b, 1);
+
+     return col;
 }
 
