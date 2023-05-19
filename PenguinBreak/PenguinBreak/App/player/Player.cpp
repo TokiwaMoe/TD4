@@ -41,6 +41,7 @@ void Player::stageInit(int stageNo)
 
 void Player::Update(Stage* stage)
 {
+	ConvertParticlePos();
 	//移動
 	Move();
 	collide2Stage(stage);
@@ -64,7 +65,7 @@ void Player::Move()
 			else if ((float)Input::Get()->GetMouseMove().lX < 0) {
 				flipFlag = false;
 			}
-			
+
 		}
 		//パーティクルだす
 		//手のspを表示するか
@@ -74,13 +75,38 @@ void Player::Move()
 	{
 		isDraw = false;
 	}
-	/*moveParticle->ParticleAdd2(
-		Vec3(position.x, 0, 0), { 1,1,1,1 }, { 1,1,1,1 });
-	moveParticle->Update();*/
+	moveParticle->ParticleAdd2(
+		particlePos, { 1,1,1,1 }, { 1,1,1,1 });
+	moveParticle->Update();
+
 #if _DEBUG 
-	DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
+	//DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
 #endif
 }
+
+void Player::ConvertParticlePos()
+{
+	//
+	XMMATRIX mvpv = moveParticle->GetMat();
+	XMMATRIX mvpvInv = XMMatrixInverse(nullptr, mvpv);
+	Vec3 posNear = Vec3{ position.x,position.y,0 };
+	Vec3 posFar = Vec3{ position.x,position.y,1 };
+	XMVECTOR posNearV = XMLoadFloat3(&posNear);
+	XMVECTOR posFarV = XMLoadFloat3(&posFar);
+
+	posNearV = XMVector3TransformCoord(posNearV, mvpvInv);
+	posFarV = XMVector3TransformCoord(posFarV, mvpvInv);
+	XMVECTOR direction = posFarV - posNearV;
+	direction = XMVector3Normalize(direction);
+	const float distance = 0.1f;
+	direction *= distance;
+	particlePos.x = posNear.x + direction.m128_f32[0];
+	particlePos.y = posNear.y + direction.m128_f32[1];
+	particlePos.z = posNear.z + direction.m128_f32[2];
+	DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", particlePos.x, particlePos.y);
+}
+
+
 
 void Player::collide2Stage(Stage* stage)
 {
@@ -89,7 +115,7 @@ void Player::collide2Stage(Stage* stage)
 		//エフェクトだす
 		effect = true;
 	}
-	else if(!effect)
+	else if (!effect)
 	{
 		respawn = false;
 	}
@@ -119,7 +145,7 @@ void Player::collide2Stage(Stage* stage)
 		goalFlag = true;
 		DebugText::Get()->Print(100.0f, 300.0f, 4, "GOAL");
 	}
-	DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%d", deathTime);
+	//DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%d", deathTime);
 }
 
 int Player::CollisionCount(Stage* stage)
@@ -175,7 +201,7 @@ void Player::Draw()
 	//Vec2 position2D = { 200.0f,200.0f };
 	float width = 64.0f, height = 128.0f;
 	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
-	//moveParticle->Draw(p_Texture);
+	moveParticle->Draw(p_Texture);
 
 	if (isDraw)
 	{
