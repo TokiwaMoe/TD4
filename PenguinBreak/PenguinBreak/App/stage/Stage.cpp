@@ -1,6 +1,9 @@
 ﻿#include "Stage.h"
 #include <fstream>
 #include <json.hpp>
+#include "Input.h"
+
+Vec2 Stage::ROAD_SIZE = Vec2();
 
 Stage::GimmickParameter::GimmickParameter() :
 	flag(false),
@@ -298,22 +301,31 @@ void Stage::SetIndex()
 void Stage::EditerInit(const Vec2& playerSize)
 {
 	const float ROAD_OFFSET = 30.0f; //道の余白
-	const Vec2 ROAD_SIZE = playerSize;
+	ROAD_SIZE = playerSize + Vec2(ROAD_OFFSET, ROAD_OFFSET);
 
 	boxes.clear();
 
 	// スタートの追加
 	boxes.emplace_back();
 	boxes.back().type = RoadType::START;
-	boxes.back().size = { ROAD_SIZE.x + ROAD_OFFSET, ROAD_SIZE.y + ROAD_OFFSET };
-	boxes.back().offset = { ROAD_SIZE.x + ROAD_OFFSET, ROAD_SIZE.y + ROAD_OFFSET };
+	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
+	boxes.back().offset = { ROAD_SIZE.x, ROAD_SIZE.y };
 	boxes.back().Init();
 
 	// ゴールの追加
 	boxes.emplace_back();
 	boxes.back().type = RoadType::GOAL;
-	boxes.back().size = { ROAD_SIZE.x + ROAD_OFFSET, ROAD_SIZE.y + ROAD_OFFSET };
-	boxes.back().offset = { window_width - ROAD_SIZE.x + ROAD_OFFSET, window_height - ROAD_SIZE.y + ROAD_OFFSET };
+	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
+	boxes.back().offset = { window_width - ROAD_SIZE.x, window_height - ROAD_SIZE.y };
+	boxes.back().Init();
+}
+
+void Stage::Create()
+{
+	boxes.emplace_back();
+	boxes.back().type = RoadType::ROAD;
+	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
+	boxes.back().offset = Input::Get()->GetMousePos();
 	boxes.back().Init();
 }
 

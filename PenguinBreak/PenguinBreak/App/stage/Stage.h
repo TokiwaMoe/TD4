@@ -97,6 +97,9 @@ public: //サブクラス
 public: //定数
 	static const int STAGE_COUNT = 2;
 
+private: //静的メンバ変数
+	static Vec2 ROAD_SIZE;
+
 private: //メンバ変数
 	std::vector<Road> boxes;
 	size_t startIndex;
@@ -135,6 +138,8 @@ public: //メンバ関数
 	/* エディター用関数*/
 	// 初期化(エディター用)
 	void EditerInit(const Vec2& playerSize);
+	// 道の生成
+	void Create();
 private:
 	// 道が狭まるギミック(全方向)
 	void ScaleGimmick(Road& road);

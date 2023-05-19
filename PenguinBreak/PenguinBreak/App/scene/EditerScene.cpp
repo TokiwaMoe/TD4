@@ -23,6 +23,7 @@ void EditerScene::Init()
 
 	//デバッグテキスト
 	operationText.push_back("Mouse:Move");
+	operationText.push_back("C:Create");
 	operationText.push_back("S:Save");
 	operationText.push_back("P:Clear Check");
 	operationText.push_back("Esc:Title");
@@ -42,6 +43,12 @@ void EditerScene::Update()
 		stage->SetIndex();
 		BaseScene* scene = new GameScene();
 		sceneManager_->SetNextScene(scene);
+	}
+
+	// 道の生成
+	if (Input::Get()->KeybordTrigger(DIK_C))
+	{
+		stage->Create();
 	}
 
 	// ステージ出力
