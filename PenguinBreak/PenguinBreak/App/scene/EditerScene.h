@@ -1,30 +1,30 @@
 ﻿#pragma once
 #include "DirectXBase.h"
 #include"DebugText.h"
-#include"ParticleManager.h"
 #include<memory>
 #include"BaseScene.h"
-#include<LightGroup.h>
-#include"FBXObject3d.h"
 #include"Player.h"
 #include"../stage/Stage.h"
+#include<vector>
+#include<string>
+
 extern const int window_width;
 extern const int window_height;
 
 /// <summary>
 /// ゲームシーン
 /// </summary>
-class GameScene :public BaseScene
+class EditerScene :public BaseScene
 {
 public:
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
-	GameScene();
+	EditerScene();
 	/// <summary>
 	/// デスコンストラクタ
 	/// </summary>
-	~GameScene();
+	~EditerScene();
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -44,17 +44,26 @@ public:
 
 	void Finalize()override;
 	bool GetEffect()override;
-
-	static void SetEditer() { isEditer = true; }
 private:
-	std::unique_ptr<LightGroup>lightGroup;
+	/// <summary>
+	/// 操作説明の描画
+	/// </summary>
+	void OperationDraw();
+	/// <summary>
+	/// マウスカーソルがどの道にいるか
+	/// </summary>
+	/// <returns>ステージのインデックス（-1の時はどこにも属していない）</returns>
+	int GetStageIndex2MousePos();
+
 private://定義
-	//2d
-	SpriteData background;
+	SpriteData cursor;
+	SpriteData frame;
 
 	std::unique_ptr<Player>player;
 	Stage* stage = nullptr;
-	int stageNumber = 1;
-	static bool isEditer;
 
+	int roadIndex = -1;
+	bool isClick = false;
+
+	std::vector<std::string> operationText;
 };
