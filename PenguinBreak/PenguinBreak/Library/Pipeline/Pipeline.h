@@ -51,10 +51,7 @@ public:
 
 	//ポストエフェクト
 	static PipelineSet PostPipeline;
-	//ポストブルーム
-	static PipelineSet PostBlurPipeline;
-	//ブルーム
-	static PipelineSet PostReversalPipeline;
+	static PipelineSet PostWaterPipeline;
 
 	//2枚用
 	//仮

@@ -7,8 +7,7 @@
 enum class PostEffectType
 {
 	NORMAL,		//’Êí
-	REVERSAL,	//”½“]
-	BLUR,       //‚Ú‚©‚µ
+	WATERRIPPLES,//…‚Ì”g–ä
 };
 
 /// <summary>
