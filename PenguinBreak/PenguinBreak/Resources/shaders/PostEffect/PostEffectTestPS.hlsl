@@ -63,7 +63,7 @@ float4 main(VSOutput input) : SV_TARGET
      //‚¸‚ç‚µ
      input.uv.x += timeFrac * (V + H);
 
-     float shift = 0.003;
+     float shift = 0.002;
      float r = tex.Sample(smp, input.uv + float2(-shift, 0)).r;
      float g = tex.Sample(smp, input.uv + float2(0, 0)).g;
      float b = tex.Sample(smp, input.uv + float2(shift, 0)).b;
