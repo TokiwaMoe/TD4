@@ -85,9 +85,6 @@ void Player::Move()
 	{
 		isDraw = false;
 	}
-	moveParticle->ParticleAdd2(
-		particlePos, { 1,1,1,1 }, { 1,1,1,1 });
-	moveParticle->Update();
 
 #if _DEBUG 
 	//DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
@@ -100,7 +97,8 @@ void Player::ConvertParticlePos()
 	XMVECTOR two = XMVectorSet(0.0f, -2.0f / 720.0f, 0.0f, 0.0f);
 	XMVECTOR three = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 	XMVECTOR four = XMVectorSet(-1.0f, 1.0f, 0.0f, 1.0f);
-	XMMATRIX mvp = XMMATRIX(one, two, three, four);
+	XMMATRIX mvp = XMMatrixIdentity();
+	mvp = XMMATRIX(one, two, three, four);
 	//ビュープロジェクションビューポート合成行列
 	XMMATRIX mvpv = moveParticle->GetMat() * mvp;
 	//上記の行列の逆行列
@@ -126,6 +124,9 @@ void Player::ConvertParticlePos()
 
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", particlePos.x, particlePos.y);
 	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);
+	moveParticle->ParticleAdd2(
+		particlePos, { 0,1,0,1 }, { 0,1,0,1 });
+	moveParticle->Update();
 }
 
 
