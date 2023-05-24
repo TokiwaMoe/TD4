@@ -17,6 +17,7 @@ void TitleScene::Init()
 {
 	//スプライト作成の仕方
 	sprite = Sprite::Get()->SpriteCreate(L"Resources/gutitubo.png");
+	PostEffect::Get()->SetPipeline(static_cast<int>(PostEffectType::NORMAL));
 }
 
 void TitleScene::Update()
