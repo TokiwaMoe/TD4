@@ -13,7 +13,8 @@ SelectScene::~SelectScene()
 void SelectScene::Init()
 {
 	//スプライト作成の仕方
-	backGround = Sprite::Get()->SpriteCreate(L"Resources/Select/select.png");
+	backGround[0] = Sprite::Get()->SpriteCreate(L"Resources/background.png");
+	backGround[1] = Sprite::Get()->SpriteCreate(L"Resources/Select/select.png");
 
 
 	stageData[0] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum1.png");
@@ -66,7 +67,8 @@ void SelectScene::Update()
 void SelectScene::Draw()
 {
 	const float width = 1280, height = 720;
-	Sprite::Get()->Draw(backGround, {}, width, height);
+	Sprite::Get()->Draw(backGround[0], {}, width, height);
+	Sprite::Get()->Draw(backGround[1], {}, width, height);
 	const float length = 94.0f;
 
 	for (int i = 0; i < Stage::STAGE_COUNT; i++)
