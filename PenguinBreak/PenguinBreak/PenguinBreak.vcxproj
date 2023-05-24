@@ -317,6 +317,7 @@
     <ClInclude Include="App\scene\GameScene.h" />
     <ClInclude Include="App\scene\ResultScene.h" />
     <ClInclude Include="App\scene\SceneManager.h" />
+    <ClInclude Include="App\scene\SelectScene.h" />
     <ClInclude Include="App\scene\TitleScene.h" />
     <ClInclude Include="App\stage\Stage.h" />
     <ClInclude Include="Library\2d\DebugText.h" />
@@ -372,6 +373,7 @@
     <ClCompile Include="App\scene\GameScene.cpp" />
     <ClCompile Include="App\scene\ResultScene.cpp" />
     <ClCompile Include="App\scene\SceneManager.cpp" />
+    <ClCompile Include="App\scene\SelectScene.cpp" />
     <ClCompile Include="App\scene\TitleScene.cpp" />
     <ClCompile Include="App\stage\Stage.cpp" />
     <ClCompile Include="Library\2d\DebugText.cpp" />

@@ -18,18 +18,6 @@ GameScene::~GameScene()
 
 void GameScene::Init()
 {
-	//ライトグループクラス作成
-	lightGroup = std::make_unique<LightGroup>();
-	lightGroup->Initialize();
-	// 3Dオブエクトにライトをセット
-	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
-	lightGroup->SetShadowDir(Vec3(0, 1, 0));
-	//音データ読み込み
-	//カメラ位置をセット
-	Camera::Get()->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
-	FBXObject3d::SetLight(lightGroup.get());
-	Object::SetLight(lightGroup.get());
 
 	//スプライト作成の仕方
 	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
@@ -38,6 +26,7 @@ void GameScene::Init()
 	// ステージ
 	stage = Stage::GetInstance();
 	stage->Init();
+	stageNumber = nextStage;
 	if (isEditer == false)
 	{
 		stage->ChengeStage(stageNumber);
@@ -79,7 +68,6 @@ void GameScene::Update()
 	stage->GimmickUpdate();
 	player->Update(stage);
 
-	lightGroup->Update();
 }
 void GameScene::Draw()
 {
