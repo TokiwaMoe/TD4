@@ -20,7 +20,7 @@ private:
 	
 	XMMATRIX m_matViewProjection;
 
-	Vec3 m_eye = {}, m_target = {}, m_up = {};
+	Vec3 m_eye = { 0,0,-1 }, m_target = {}, m_up = { 0, 1, 0 };
 
 	//ƒJƒƒ‰’Ç]
 	bool m_followDirty = false;

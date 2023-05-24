@@ -10,6 +10,13 @@ class SceneManager :public Singleton<SceneManager>
 {
 private:
 	friend Singleton<SceneManager>;
+
+	enum BlockOutType
+	{
+		Stand_By,
+		First_Half,
+		Latter_Half
+	};
 public:
 	/// <summary>
 	/// コンストラクタ
@@ -38,6 +45,10 @@ public:
 
 	//次のシーン予約
 	void SetNextScene(BaseScene* nextScene) { nextScene_ = nextScene; }
+	//シーンチェンジ時の演出
+	void BlackOut();
+	//シーンチェンジ時の演出
+	void BlackOutDraw();
 private://定義
 	//今のシーン
 	BaseScene* scene_ = nullptr;
@@ -47,4 +58,10 @@ private://定義
 	ShadowMap  m_shadowMapFar;
 
 	float time = 0;
+
+
+	SpriteData blackOut;//暗転用画像
+	Vec3 blackPos[2] = {};
+	float blackOutTime = 0.0f;
+	int blackOutFlag = Stand_By;
 };

@@ -41,8 +41,6 @@ public:
 	
 	void Finalize()override;
 	bool GetEffect()override;
-private:
-	std::unique_ptr<LightGroup>lightGroup;
 private://定義
 	SpriteData sprite = {};//スプライトデータ
 
