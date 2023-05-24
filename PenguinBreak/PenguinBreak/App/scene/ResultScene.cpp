@@ -11,17 +11,7 @@ ResultScene::~ResultScene()
 {}
 void ResultScene::Init()
 {	
-	// ライトグループクラス作成
-	lightGroup = std::make_unique<LightGroup>();
-	lightGroup->Initialize();
-	// 3Dオブエクトにライトをセット
-	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
-	lightGroup->SetShadowDir(Vec3(0, 1, 0));
-
-	Camera::Get()->SetCamera(Vec3{ 0,0,-15 }, Vec3{ 0, -3, 0 }, Vec3{ 0, 1, 0 });
-	FBXObject3d::SetLight(lightGroup.get());
-	Object::SetLight(lightGroup.get());
+	
 }
 
 void ResultScene::Update()
@@ -36,7 +26,6 @@ void ResultScene::Update()
 
 
 	DebugText::Get()->Print(100.0f, 100.0f, 10, "Result");
-	lightGroup->Update();
 }
 
 void ResultScene::Draw()

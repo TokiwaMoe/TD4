@@ -27,7 +27,7 @@ public: //サブクラス
 		BACK,  //背景オブジェクト
 	};
 
-	// 道のタイプ
+	// 背景オブジェクトのタイプ
 	enum BackType
 	{
 		PALM, //ヤシの木
@@ -97,6 +97,9 @@ public: //サブクラス
 public: //定数
 	static const int STAGE_COUNT = 2;
 
+private: //静的メンバ変数
+	static Vec2 ROAD_SIZE;
+
 private: //メンバ変数
 	std::vector<Road> boxes;
 	size_t startIndex;
@@ -117,15 +120,34 @@ public: //メンバ関数
 	// ステージの切り替え
 	void ChengeStage(int stageNumber);
 
-	size_t GetBoxSize() { return boxes.size(); }
-	// 座標
+	size_t GetBoxSize() const { return boxes.size(); }
+	// 座標の取得
 	Vec2 GetPos(size_t num) const { return boxes[num].pos + boxes[num].offset; }
-	//スプライトサイズ
+	// スプライトサイズの取得
 	Vec2 GetSize(size_t num) const { return boxes[num].size; }
+	// 種類の取得
+	RoadType GetType(size_t num) const { return boxes[num].type; }
 	Vec2 GetStartPos() const { return GetPos(startIndex); }
 	size_t GetStart() const { return startIndex; }
 	Vec2 GetGoalPos() const { return GetPos(goalIndex); }
 	size_t GetGoal() const { return goalIndex; }
+
+	// 座標の設定
+	void SetPos(size_t num, const Vec2& pos) { boxes[num].offset = pos; }
+	// サイズの設定
+	void SetSize(size_t num, const Vec2& size) { boxes[num].size = size; }
+	// 各インデックスの設定
+	void SetIndex();
+
+	void Anchorpoint2Center(size_t num, const Vec2& anchorpoint);
+
+	/* エディター用関数*/
+	// 初期化(エディター用)
+	void EditerInit(const Vec2& playerSize);
+	// 道の生成
+	void Create();
+	// 道の削除
+	void Delete(size_t num);
 private:
 	// 道が狭まるギミック(全方向)
 	void ScaleGimmick(Road& road);

@@ -6,6 +6,9 @@
 #include"Shape.h"
 #include"SceneManager.h"
 #include"ResultScene.h"
+#include"EditerScene.h"
+
+bool GameScene::isEditer = false;
 
 GameScene::GameScene()
 {}
@@ -15,18 +18,6 @@ GameScene::~GameScene()
 
 void GameScene::Init()
 {
-	//ライトグループクラス作成
-	lightGroup = std::make_unique<LightGroup>();
-	lightGroup->Initialize();
-	// 3Dオブエクトにライトをセット
-	lightGroup->SetDirLightActive(0, true);
-	lightGroup->SetDirLightDir(0, XMVECTOR{ 0,-1,0,0 });
-	lightGroup->SetShadowDir(Vec3(0, 1, 0));
-	//音データ読み込み
-	//カメラ位置をセット
-	Camera::Get()->SetCamera(Vec3{ 0,0,-200 }, Vec3{ 0, 0, 0 }, Vec3{ 0, 1, 0 });
-	FBXObject3d::SetLight(lightGroup.get());
-	Object::SetLight(lightGroup.get());
 
 	//スプライト作成の仕方
 	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
@@ -35,7 +26,11 @@ void GameScene::Init()
 	// ステージ
 	stage = Stage::GetInstance();
 	stage->Init();
-	stage->ChengeStage(stageNumber);
+	stageNumber = nextStage;
+	if (isEditer == false)
+	{
+		stage->ChengeStage(stageNumber);
+	}
 	//プレイヤー
 	player->Initialize();
 	player->Init(stage);
@@ -44,10 +39,19 @@ void GameScene::Init()
 void GameScene::Update()
 {
 	//シーンの変更の仕方
-	if (player->GetGoalFlag() == true ||
-		Input::Get()->KeybordTrigger(DIK_SPACE))
+	if (player->GetGoalFlag() == true
+#ifdef _DEBUG
+		|| Input::Get()->KeybordTrigger(DIK_SPACE)
+#endif // _DEBUG
+		)
 	{
-		if (stageNumber < Stage::STAGE_COUNT)
+		if (isEditer == true)
+		{
+			isEditer = false;
+			BaseScene* scene = new EditerScene();
+			sceneManager_->SetNextScene(scene);
+		}
+		else if (stageNumber < Stage::STAGE_COUNT)
 		{
 			// ステージ切り替え
 			stageNumber++;
@@ -61,16 +65,9 @@ void GameScene::Update()
 		}
 	}
 
-	// ステージ出力（デバッグ実行用）
-	if (Input::Get()->KeybordTrigger(DIK_1))
-	{
-		stage->WriteStage("write_test");
-	}
-
 	stage->GimmickUpdate();
 	player->Update(stage);
 
-	lightGroup->Update();
 }
 void GameScene::Draw()
 {
@@ -78,6 +75,11 @@ void GameScene::Draw()
 	Sprite::Get()->Draw(background, { 0,0 }, width, height);
 	stage->Draw();
 	player->Draw();
+
+	if (isEditer == true)
+	{
+		DebugText::Get()->Print(100.0f, 100.0f, 2, "Clear Check");
+	}
 }
 
 void GameScene::ShadowDraw()

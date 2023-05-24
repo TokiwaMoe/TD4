@@ -96,6 +96,9 @@
     <Filter Include="ソース ファイル\Player">
       <UniqueIdentifier>{5dfc0fd6-ebe4-48ce-ab6f-f34d2fb0cb4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Stage">
+      <UniqueIdentifier>{f09b0eb6-a7c5-46bd-afff-97d78cb43d4e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\ParticleGS.hlsl">
@@ -394,7 +397,13 @@
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
     <ClInclude Include="App\stage\Stage.h">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="App\scene\EditerScene.h">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="App\scene\SelectScene.h">
+      <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -527,11 +536,17 @@
     <ClCompile Include="App\scene\BaseScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="App\stage\Stage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="App\player\Player.cpp">
       <Filter>ソース ファイル\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\Stage.cpp">
+      <Filter>ソース ファイル\Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="App\scene\EditerScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="App\scene\SelectScene.cpp">
+      <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

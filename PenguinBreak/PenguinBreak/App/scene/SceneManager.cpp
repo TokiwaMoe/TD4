@@ -6,7 +6,9 @@
 #include"PostEffect.h"
 #include"GameScene.h"
 #include"TitleScene.h"
+#include"SelectScene.h"
 #include"ResultScene.h"
+#include<Easing.h>
 SceneManager::SceneManager()
 {}
 SceneManager::~SceneManager()
@@ -51,17 +53,11 @@ void SceneManager::Initialize()
 	PostEffect::Get()->Initialize(DirectXBase::Get()->GetDevice());
 	//音作成
 	Audio::Get()->Init();
+	blackOut = Sprite::Get()->SpriteCreate(L"Resources/white1x1.png");
 	Texture::Get()->KeepTexture();
 	//シーンをタイトルに設定
 	BaseScene* scene = new TitleScene();
 	SetNextScene(scene);
-}
-
-void SceneManager::Update()
-{
-	Input::Get()->Update();
-	time += 0.01f;
-	//次のシーンの予約があるなら
 	if (nextScene_)
 	{
 		if (scene_)
@@ -72,12 +68,36 @@ void SceneManager::Update()
 		//シーン切り替え
 		scene_ = nextScene_;
 		nextScene_ = nullptr;
-
 		scene_->SetSceneManager(this);
 		//次のシーンを初期化する
 		scene_->Init();
 	}
+}
 
+void SceneManager::Update()
+{
+	Input::Get()->Update();
+	time += 0.01f;
+	BlackOut();
+	//次のシーンの予約があるなら
+	if (nextScene_ && blackOutFlag == Stand_By)
+	{
+		blackOutFlag = First_Half;
+	}
+	else if (blackOutFlag == Latter_Half && nextScene_)
+	{
+		if (scene_)
+		{
+			scene_->Finalize();
+			delete scene_;
+		}
+		//シーン切り替え
+		scene_ = nextScene_;
+		nextScene_ = nullptr;
+		scene_->SetSceneManager(this);
+		//次のシーンを初期化する
+		scene_->Init();
+	}
 	//更新
 	scene_->Update();
 }
@@ -88,12 +108,14 @@ void SceneManager::Draw()
 	Object::InitDraw(), Sprite::Get()->PreDraw();
 	//カメラ目線の描画
 	scene_->Draw();
+	BlackOutDraw();
 	DebugText::Get()->DrawAll();
 
 	PostEffect::Get()->PostDrawScene(DirectXBase::Get()->GetCmandList());
 	DirectXBase::Get()->PreDraw();
 	////ポストエフェクトの描画
-	PostEffect::Get()->Draw(DirectXBase::Get()->GetCmandList(), Vec4{ 1.0f,1.0f,1.0f,1.0f }, time,scene_->GetEffect());
+	PostEffect::Get()->Draw(DirectXBase::Get()->GetCmandList(), Vec4{ 1.0f,1.0f,1.0f,1.0f }, time, scene_->GetEffect());
+	DebugText::Get()->DrawAll();
 	//UI描画
 	DirectXBase::Get()->ResourceBarrier();
 }
@@ -102,4 +124,67 @@ void SceneManager::Delete()
 {
 	Object::Delete();
 	FbxLoader::GetInstance()->Finalize();
+}
+
+void SceneManager::BlackOut()
+{
+	if (blackOutFlag == Stand_By)
+	{
+		blackOutTime = 0.0f;
+		for (int i = 0; i < 2; i++)
+		{
+			blackPos[0] = { -1280.0f,-720.0f,0.0f };
+
+		}
+	}
+	if (blackOutFlag == First_Half)
+	{
+		const Vec3 outStartL = { -640.0f ,0.0f,0.0f };
+		const Vec3 outEndL = { 0.0f ,0.0f,0.0f };
+		//左
+		blackPos[0] = Easing::easeOut(outStartL, outEndL, blackOutTime);
+		const Vec3 outStarR = { 1280.0f,0.0f,0.0f };
+		const Vec3 outEndR = { 640.0f ,0.0f,0.0f };
+		//右
+		blackPos[1] = Easing::easeOut(outStarR, outEndR, blackOutTime);
+		blackOutTime += 0.02f;
+		if (blackOutTime >= 1.0f)
+		{
+			blackOutFlag = Latter_Half;
+			blackOutTime = 0.0f;
+		}
+	}
+	if (blackOutFlag == Latter_Half)
+	{
+		const Vec3 outStartL = { 0.0f ,0.0f,0.0f };
+		const Vec3 outEndL = { 0.0f ,-360.0f,0.0f };
+		//左
+		blackPos[0] = Easing::easeIn(outStartL, outEndL, blackOutTime);
+		const Vec3 outStarR = { 0.0f,360.0f,0.0f };
+		const Vec3 outEndR = { 0.0f ,720.0f,0.0f };
+		//右
+		blackPos[1] = Easing::easeIn(outStarR, outEndR, blackOutTime);
+		blackOutTime += 0.02f;
+		if (blackOutTime >= 1.0f)
+		{
+			blackOutFlag = Stand_By;
+			blackOutTime = 0.0f;
+		}
+	}
+}
+
+void SceneManager::BlackOutDraw()
+{
+	if (blackOutFlag == First_Half)
+	{
+		const float width = 640.0f, height = 720.0f;
+		Sprite::Get()->Draw(blackOut, Vec2(blackPos[0].x, 0.0f), width, height, {}, Vec4(0.0f, 0.0f, 0.0f, 1.0f));
+		Sprite::Get()->Draw(blackOut, Vec2(blackPos[1].x, 0.0f), width, height, {}, Vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	}
+	else if (blackOutFlag == Latter_Half)
+	{
+		const float width = 1280.0f, height = 360.0f;
+		Sprite::Get()->Draw(blackOut, Vec2(0.0f, blackPos[0].y), width, height, {}, Vec4(0.0f, 0.0f, 0.0f, 1.0f));
+		Sprite::Get()->Draw(blackOut, Vec2(0.0f, blackPos[1].y), width, height, {}, Vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	}
 }
