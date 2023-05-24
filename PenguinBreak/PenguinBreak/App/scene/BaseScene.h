@@ -30,6 +30,9 @@ public:
 	virtual void SetSceneManager(SceneManager* sceneManager) { sceneManager_ = sceneManager; }
 
 	virtual bool GetEffect() = 0;
+public:
+	//ステージの次の数（セレクト）
+	int nextStage = 1;
 protected:
 	SceneManager* sceneManager_ = nullptr;
 };

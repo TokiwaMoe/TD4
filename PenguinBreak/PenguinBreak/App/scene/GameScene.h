@@ -46,8 +46,7 @@ public:
 	bool GetEffect()override;
 
 	static void SetEditer() { isEditer = true; }
-private:
-	std::unique_ptr<LightGroup>lightGroup;
+
 private://定義
 	//2d
 	SpriteData background;

@@ -108,6 +108,7 @@ void DebugText::Print(const float x, const  float y, const  float size,std::stri
 
 void DebugText::DrawAll()
 {
+#ifdef _DEBUG
 	sprite->PreDraw();
 	// 全ての文字のスプライトについて
 	for (size_t i = 0; i < m_spriteIndex; i++)
@@ -116,5 +117,6 @@ void DebugText::DrawAll()
 		sprite->DebugDraw(m_sprites[i]);
 	}
 	m_spriteIndex = 0;
+#endif
 }
 

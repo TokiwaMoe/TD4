@@ -6,6 +6,7 @@
 #include"PostEffect.h"
 #include"GameScene.h"
 #include"TitleScene.h"
+#include"SelectScene.h"
 #include"ResultScene.h"
 SceneManager::SceneManager()
 {}
@@ -94,6 +95,7 @@ void SceneManager::Draw()
 	DirectXBase::Get()->PreDraw();
 	////ポストエフェクトの描画
 	PostEffect::Get()->Draw(DirectXBase::Get()->GetCmandList(), Vec4{ 1.0f,1.0f,1.0f,1.0f }, time,scene_->GetEffect());
+	DebugText::Get()->DrawAll();
 	//UI描画
 	DirectXBase::Get()->ResourceBarrier();
 }
