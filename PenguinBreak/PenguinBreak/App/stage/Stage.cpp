@@ -5,65 +5,11 @@
 
 Vec2 Stage::ROAD_SIZE = Vec2();
 
-Stage::GimmickParameter::GimmickParameter() :
-	flag(false),
-	speed(0.0f),
-	limit{}
-{
-}
-
-Stage::GimmickParameter::GimmickParameter(bool flag,float speed, const Vec2& limit) :
-	flag(flag),
-	speed(speed),
-	limit(limit)
-{
-}
-
-Stage::Road::Road() :
-	sprite{},
-	pos{},
-	size{},
-	type(RoadType::ROAD),
-	gimmick(Gimmick::NO_GIMMICK),
-	parameter{},
-	back(BackType::PALM),
-	isFlipX(false),
-	isFlipY(false),
-	initPos(pos),
-	initSize(size)
-{
-}
-
-void Stage::Road::Init()
-{
-	initPos = pos;
-	initSize = size;
-
-	if (type != BACK)
-	{
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/white1x1.png");
-		return;
-	}
-
-	switch (back)
-	{
-		// ヤシの木
-	case PALM:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/palm.png");
-		break;
-		// 鹿
-	case DEER:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/shika.png");
-		break;
-	default:
-		break;
-	}
-}
-
 Stage::Stage() :
 	boxes{},
 	startIndex(0),
-	goalIndex(0)
+	goalIndex(0),
+	roadCount(2)
 {
 }
 
@@ -81,13 +27,13 @@ void Stage::GimmickUpdate()
 	{
 		switch (i.gimmick)
 		{
-		case Gimmick::SCALE:
+		case Road::Gimmick::SCALE:
 			ScaleGimmick(i);
 			break;
-		case Gimmick::DIRECTION_SCALE:
+		case Road::Gimmick::DIRECTION_SCALE:
 			DirectionScaleGimmick(i);
 			break;
-		case Gimmick::MOVE:
+		case Road::Gimmick::MOVE:
 			MoveGimmick(i);
 			break;
 		default:
@@ -105,18 +51,21 @@ void Stage::Draw(float offsetX, float offsetY)
 
 		switch (i.type)
 		{
-		case RoadType::START:
+		case Road::RoadType::START:
 			color = Vec4(0.0f, 0.0f, 1.0f, 1.0f);
 			break;
-		case RoadType::GOAL:
+		case Road::RoadType::GOAL:
 			color = Vec4(1.0f, 0.0f, 0.0f, 1.0f);
+			break;
+		case Road::RoadType::HOLE:
+			color = Vec4(1.0f, 1.0f, 0.0f, 1.0f);
 			break;
 		default:
 			color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 			break;
 		}
 
-		Sprite::Get()->Draw(i.GetSprite(), i.pos + i.offset + Vec2(offsetX, offsetY), i.size.x, i.size.y, Vec2(0.5f, 0.5f), color, i.isFlipX, i.isFlipY);
+		Sprite::Get()->Draw(i.GetSprite(), i.pos + i.offset + Vec2(offsetX, offsetY), i.size.x, i.size.y, i.anchorpoint, color, i.isFlipX, i.isFlipY);
 	}
 }
 
@@ -164,7 +113,7 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		objectData.offset = Vec2(object["offset"][0], object["offset"][1]);
 
 		// 背景オブジェクトの読み込み
-		if (objectData.type == RoadType::BACK)
+		if (objectData.type == Road::RoadType::BACK)
 		{
 			objectData.back = object["back"];
 			objectData.isFlipX = object["flipX"];
@@ -174,23 +123,23 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		objectData.Init();
 
 		// ギミックタイプの読み込み
-		if (objectData.type == RoadType::ROAD || objectData.type == RoadType::BACK)
+		if (objectData.type == Road::RoadType::ROAD || objectData.type == Road::RoadType::BACK)
 		{
 			objectData.gimmick = object["gimmick"];
 		}
 		else
 		{
-			objectData.gimmick = Gimmick::NO_GIMMICK;
+			objectData.gimmick = Road::Gimmick::NO_GIMMICK;
 		}
 
 		// ギミック用のパラメータの読み込み
-		if (objectData.gimmick != Gimmick::NO_GIMMICK)
+		if (objectData.gimmick != Road::Gimmick::NO_GIMMICK)
 		{
 			bool flag = object["parameter"]["flag"];
 			float speed = object["parameter"]["speed"];
 			Vec2 limit = { object["parameter"]["limit"][0], object["parameter"]["limit"][1]};
 
-			objectData.parameter = GimmickParameter(flag, speed, limit);
+			objectData.parameter = Road::GimmickParameter(flag, speed, limit);
 		}
 	}
 
@@ -244,7 +193,7 @@ void Stage::WriteStage(const std::string& stageName)
 		};
 
 		// 背景オブジェクトの種類の書き込み
-		if (boxes[i].type == RoadType::BACK)
+		if (boxes[i].type == Road::RoadType::BACK)
 		{
 			objectData["back"] = boxes[i].gimmick;
 			objectData["flipX"] = boxes[i].isFlipX;
@@ -252,13 +201,13 @@ void Stage::WriteStage(const std::string& stageName)
 		}
 
 		// ギミックタイプの書き込み
-		if (boxes[i].type == RoadType::ROAD || boxes[i].type == RoadType::BACK)
+		if (boxes[i].type == Road::RoadType::ROAD || boxes[i].type == Road::RoadType::BACK)
 		{
 			objectData["gimmick"] = boxes[i].gimmick;
 		}
 
 		// ギミック用のパラメータの書き込み
-		if (boxes[i].gimmick != Gimmick::NO_GIMMICK)
+		if (boxes[i].gimmick != Road::Gimmick::NO_GIMMICK)
 		{
 			objectData["parameter"] = {
 				{"flag", boxes[i].parameter.GetFlag()},
@@ -277,15 +226,19 @@ void Stage::SetIndex()
 	bool isStart = false; //startIndexを設定したかどうか
 	bool isGoal = false;   //goalIndexを設定したかどうか
 
+	roadCount = 2;
 	for (size_t i = 0; i < boxes.size(); i++)
 	{
 		switch (boxes[i].type)
 		{
-		case Stage::START:
+		case Road::RoadType::ROAD:
+			roadCount++;
+			break;
+		case Road::RoadType::START:
 			startIndex = i;
 			isStart = true;
 			break;
-		case Stage::GOAL:
+		case Road::RoadType::GOAL:
 			goalIndex = i;
 			isGoal = true;
 			break;
@@ -298,16 +251,6 @@ void Stage::SetIndex()
 			break;
 		}
 	}
-}
-
-void Stage::Anchorpoint2Center(size_t num, const Vec2& anchorpoint)
-{
-	const Vec2 center = { 0.5f, 0.5f };
-	const Vec2 centerPos = (anchorpoint - center) * (-1.0f);
-
-	if (centerPos.x == 0.0f && centerPos.y == 0.0f) return;
-
-	boxes[num].offset += Vec2(boxes[num].size.x * centerPos.x, boxes[num].size.y * centerPos.y) / 2.0f;
 }
 
 void Stage::ScaleGimmick(Road& road)
@@ -512,14 +455,14 @@ void Stage::EditerInit(const Vec2& playerSize)
 
 	// スタートの追加
 	boxes.emplace_back();
-	boxes.back().type = RoadType::START;
+	boxes.back().type = Road::RoadType::START;
 	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
 	boxes.back().offset = { ROAD_SIZE.x, ROAD_SIZE.y };
 	boxes.back().Init();
 
 	// ゴールの追加
 	boxes.emplace_back();
-	boxes.back().type = RoadType::GOAL;
+	boxes.back().type = Road::RoadType::GOAL;
 	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
 	boxes.back().offset = { window_width - ROAD_SIZE.x, window_height - ROAD_SIZE.y };
 	boxes.back().Init();
@@ -528,7 +471,7 @@ void Stage::EditerInit(const Vec2& playerSize)
 void Stage::Create()
 {
 	boxes.emplace_back();
-	boxes.back().type = RoadType::ROAD;
+	boxes.back().type = Road::RoadType::ROAD;
 	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
 	boxes.back().offset = Input::Get()->GetMousePos();
 	boxes.back().Init();

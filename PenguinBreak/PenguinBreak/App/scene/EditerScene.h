@@ -52,10 +52,16 @@ private:
 	/// <summary>
 	/// マウスカーソルがどの道にいるか
 	/// </summary>
+	/// <param name="distance">距離（出力用）</param>
 	/// <returns>ステージのインデックス（-1の時はどこにも属していない）</returns>
-	int GetStageIndex2MousePos();
+	int GetStageIndex2MousePos(Vec2* distance = nullptr);
+
+	// 値の極値化
+	float Extremism(float x, int split);
 
 private://定義
+	const float frameWidth = 10.0f;
+
 	SpriteData cursor;
 	SpriteData frame;
 
