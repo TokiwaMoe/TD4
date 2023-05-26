@@ -1,6 +1,6 @@
 #include "ShaderManager.h"
 
-ComPtr<ID3DBlob> LoadShader(const LPCWSTR &VshaderName, const LPCSTR &Vtarget, const LPCSTR &entryPoint)
+ComPtr<ID3DBlob> LoadShader(const LPCWSTR& VshaderName, const LPCSTR& Vtarget, const LPCSTR& entryPoint)
 {
 	HRESULT result = S_FALSE;
 	ComPtr<ID3DBlob> Blob;
@@ -33,13 +33,13 @@ Shader ShaderManager::spriteShader;
 Shader ShaderManager::spriteBlurShader;
 Shader ShaderManager::doubleTextureShader;
 Shader ShaderManager::particleShader;
+
 Shader ShaderManager::postNormalShader;
-Shader ShaderManager::postReversalShader;
-Shader ShaderManager::postBlurShader;
+Shader ShaderManager::postWaterShader;
 
 
 void ShaderManager::LoadShaders()
-{	
+{
 	//スプライト
 	spriteShader.vsBlob = LoadShader(L"Resources/shaders/Sprite/SpriteVS.hlsl", "vs_5_0");
 	spriteShader.psBlob = LoadShader(L"Resources/shaders/Sprite/SpritePS.hlsl", "ps_5_0");
@@ -54,10 +54,11 @@ void ShaderManager::LoadShaders()
 	particleShader.vsBlob = LoadShader(L"Resources/shaders/ParticleVS.hlsl", "vs_5_0");
 	particleShader.psBlob = LoadShader(L"Resources/shaders/ParticlePS.hlsl", "ps_5_0");
 	particleShader.gsBlob = LoadShader(L"Resources/shaders/ParticleGS.hlsl", "gs_5_0");
+
 	//ポストエフェクト通常
-	postNormalShader.vsBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectTestVS.hlsl", "vs_5_0");
-	postNormalShader.psBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectTestPS.hlsl", "ps_5_0");
-	//ブルーム
-	postBlurShader.vsBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectTestVS.hlsl", "vs_5_0");
-	postBlurShader.psBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectTestPS.hlsl", "ps_5_0");
+	postNormalShader.vsBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectNormalVS.hlsl", "vs_5_0");
+	postNormalShader.psBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectNormalPS.hlsl", "ps_5_0");
+	//水の波紋
+	postWaterShader.vsBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectTestVS.hlsl", "vs_5_0");
+	postWaterShader.psBlob = LoadShader(L"Resources/shaders/PostEffect/PostEffectTestPS.hlsl", "ps_5_0");
 }

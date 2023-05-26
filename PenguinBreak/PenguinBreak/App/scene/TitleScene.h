@@ -5,7 +5,7 @@
 #include"Audio.h"
 #include"FBXObject3d.h"
 #include"Object.h"
-#include"Sprite.h"
+#include<PostEffect.h>
 #include<memory>
 #include"BaseScene.h"
 extern const int window_width;

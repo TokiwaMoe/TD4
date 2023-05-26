@@ -8,8 +8,7 @@ Pipeline::PipelineSet Pipeline::DoubleTexturePipeline;
 
 //ポストエフェクト
 Pipeline::PipelineSet Pipeline::PostPipeline;
-Pipeline::PipelineSet Pipeline::PostBlurPipeline;
-Pipeline::PipelineSet Pipeline::PostReversalPipeline;
+Pipeline::PipelineSet Pipeline::PostWaterPipeline;
 
 int Pipeline::pipelineType;
 void Pipeline::CreatePipeline(ID3D12Device* dev)
@@ -19,13 +18,10 @@ void Pipeline::CreatePipeline(ID3D12Device* dev)
 	SpriteBlurPipeline = SpriteCreateGraphicsPipeline(dev, ShaderManager::spriteBlurShader);
 
 	PostPipeline = PostNormalCreateGraphicsPipeline(dev, ShaderManager::postNormalShader);
-	PostBlurPipeline = PostNormalCreateGraphicsPipeline(dev, ShaderManager::postBlurShader);
-	//PostReversalPipeline = PostNormalCreateGraphicsPipeline(dev, ShaderManager::postReversalShader);
+	PostWaterPipeline = PostNormalCreateGraphicsPipeline(dev, ShaderManager::postWaterShader);
 
 	//2枚用テクスチャスプライトパイプライン
 	DoubleTexturePipeline = SpriteCreateDoubleGraphicsPipeline(dev,ShaderManager::doubleTextureShader);
-
-
 }
 
 bool Pipeline::SetPipeline(int type)
