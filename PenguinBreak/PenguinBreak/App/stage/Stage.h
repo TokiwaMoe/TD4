@@ -1,7 +1,6 @@
 ﻿#pragma once
-#include "Sprite.h"
+#include "Road.h"
 #include <vector>
-#include "./../../Library/Helper/LoadJson.h"
 
 class Stage final
 {
@@ -16,78 +15,6 @@ public:
 		static Stage instance;
 		return &instance;
 	}
-
-public: //サブクラス
-	// 道のタイプ
-	enum RoadType
-	{
-		ROAD,  //道
-		START, //スタート
-		GOAL,  //ゴール
-		BACK,  //背景オブジェクト
-	};
-
-	// 背景オブジェクトのタイプ
-	enum BackType
-	{
-		PALM, //ヤシの木
-		DEER, //鹿
-	};
-
-	// ギミックのタイプ
-	enum Gimmick
-	{
-		NO_GIMMICK,      //ギミック無し
-		SCALE,           //道が狭まるギミック(全方向)
-		MOVE,            //道が移動するギミック
-		DIRECTION_SCALE, //道が狭まるギミック(単一の方向)
-	};
-
-	// ギミックを動かす為に使う値
-	class GimmickParameter
-	{
-	private:
-		bool flag;
-		float speed;
-		Vec2 limit;
-
-	public:
-		GimmickParameter();
-		GimmickParameter(bool flag, float speed, const Vec2& limit);
-
-		void ChangeFlag() { flag = !flag; }
-		const bool GetFlag() const { return flag; }
-		const float GetSpeed() const { return speed; }
-		const Vec2 GetLimit() const { return limit; }
-	};
-
-	class Road
-	{
-	private:
-		SpriteData sprite;
-
-		Vec2 initPos;
-		Vec2 initSize;
-	public:
-		RoadType type;
-		Gimmick gimmick;
-		GimmickParameter parameter;
-		BackType back; //背景オブジェクトの種類
-		bool isFlipX;
-		bool isFlipY;
-
-		Vec2 pos;
-		Vec2 size;
-		Vec2 offset;
-
-	public:
-		Road();
-		void Init();
-
-		SpriteData& GetSprite() { return sprite; }
-		const Vec2 GetInitPos() const { return initPos; }
-		const Vec2 GetInitSize() const { return initSize; }
-	};
 
 	struct JsonData
 	{
@@ -125,8 +52,10 @@ public: //メンバ関数
 	Vec2 GetPos(size_t num) const { return boxes[num].pos + boxes[num].offset; }
 	// スプライトサイズの取得
 	Vec2 GetSize(size_t num) const { return boxes[num].size; }
+	// アンカーポイントの取得
+	Vec2 GetAnchorpoint(size_t num) const { return boxes[num].anchorpoint; }
 	// 種類の取得
-	RoadType GetType(size_t num) const { return boxes[num].type; }
+	Road::RoadType GetType(size_t num) const { return boxes[num].type; }
 	Vec2 GetStartPos() const { return GetPos(startIndex); }
 	size_t GetStart() const { return startIndex; }
 	Vec2 GetGoalPos() const { return GetPos(goalIndex); }
@@ -139,7 +68,8 @@ public: //メンバ関数
 	// 各インデックスの設定
 	void SetIndex();
 
-	void Anchorpoint2Center(size_t num, const Vec2& anchorpoint);
+	// アンカーポイントを指定した場所に持ってくる
+	void MoveAnchorpoint(size_t num, const Vec2& anchorpoint) { boxes[num].anchorpoint = anchorpoint; }
 
 	/* エディター用関数*/
 	// 初期化(エディター用)
