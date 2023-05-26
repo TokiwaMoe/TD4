@@ -31,6 +31,7 @@ private: //メンバ変数
 	std::vector<Road> boxes;
 	size_t startIndex;
 	size_t goalIndex;
+	size_t roadCount;
 
 public: //メンバ関数
 	// 初期化
@@ -56,6 +57,8 @@ public: //メンバ関数
 	Vec2 GetAnchorpoint(size_t num) const { return boxes[num].anchorpoint; }
 	// 種類の取得
 	Road::RoadType GetType(size_t num) const { return boxes[num].type; }
+	// 道の数
+	size_t GetRoadCount() const { return roadCount; }
 	Vec2 GetStartPos() const { return GetPos(startIndex); }
 	size_t GetStart() const { return startIndex; }
 	Vec2 GetGoalPos() const { return GetPos(goalIndex); }

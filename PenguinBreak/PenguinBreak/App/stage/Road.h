@@ -10,6 +10,7 @@ public: //サブクラス
 		ROAD,  //道
 		START, //スタート
 		GOAL,  //ゴール
+		HOLE,  //穴
 		BACK,  //背景オブジェクト
 	};
 

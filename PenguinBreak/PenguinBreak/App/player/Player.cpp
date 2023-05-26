@@ -130,7 +130,7 @@ void Player::ConvertParticlePos()
 
 void Player::collide2Stage(Stage* stage)
 {
-	if (stage->GetInstance()->GetBoxSize() == CollisionCount(stage))
+	if (stage->GetRoadCount() == CollisionCount(stage))
 	{
 		//エフェクトだす
 		effect = true;
@@ -182,11 +182,26 @@ void Player::collide2Stage(Stage* stage)
 int Player::CollisionCount(Stage* stage)
 {
 	int count = 0;
-	for (int i = 0; i < stage->GetInstance()->GetBoxSize(); i++)
+	for (int i = 0; i < stage->GetBoxSize(); i++)
 	{
-		if (OutStage(position, stage, i))
+		if (stage->GetType(i) == Road::RoadType::HOLE)
 		{
-			count++;
+			if (!OutStage(position, stage, i))
+			{
+				count = static_cast<int>(stage->GetRoadCount());
+				break;
+			}
+		}
+		else if (stage->GetType(i) == Road::RoadType::BACK)
+		{
+			continue;
+		}
+		else
+		{
+			if (OutStage(position, stage, i))
+			{
+				count++;
+			}
 		}
 	}
 

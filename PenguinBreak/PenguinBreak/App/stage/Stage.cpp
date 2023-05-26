@@ -8,7 +8,8 @@ Vec2 Stage::ROAD_SIZE = Vec2();
 Stage::Stage() :
 	boxes{},
 	startIndex(0),
-	goalIndex(0)
+	goalIndex(0),
+	roadCount(2)
 {
 }
 
@@ -55,6 +56,9 @@ void Stage::Draw(float offsetX, float offsetY)
 			break;
 		case Road::RoadType::GOAL:
 			color = Vec4(1.0f, 0.0f, 0.0f, 1.0f);
+			break;
+		case Road::RoadType::HOLE:
+			color = Vec4(1.0f, 1.0f, 0.0f, 1.0f);
 			break;
 		default:
 			color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -222,10 +226,14 @@ void Stage::SetIndex()
 	bool isStart = false; //startIndexを設定したかどうか
 	bool isGoal = false;   //goalIndexを設定したかどうか
 
+	roadCount = 2;
 	for (size_t i = 0; i < boxes.size(); i++)
 	{
 		switch (boxes[i].type)
 		{
+		case Road::RoadType::ROAD:
+			roadCount++;
+			break;
 		case Road::RoadType::START:
 			startIndex = i;
 			isStart = true;
