@@ -2,14 +2,199 @@
     "name": "stage",
     "objects": [
         {
-            "gimmick": 0,
-            "pos" : [
-                640,
-                360
+            "back" : 1,
+            "flipX" : false,
+            "flipY" : false,
+            "gimmick": 2,
+            "parameter": {
+                "flag": true,
+                "limit": [
+                    0.0,
+                    60.0
+                ],
+                "speed": 6.0
+            },
+            "pos": [
+                0.0,
+                357.0
             ],
-            "size" : [
-                1000,
-                158
+            "size": [
+                110.0,
+                176.0
+            ],
+            "offset": [
+                640.0,
+                250.0
+            ],
+            "type": 4
+        },
+        {
+            "back" : 0,
+            "flipX" : false,
+            "flipY" : false,
+            "gimmick": 3,
+            "parameter": {
+                "flag": true,
+                "limit": [
+                    0.0,
+                    -40.0
+                ],
+                "speed": 6.0
+            },
+            "pos": [
+                0.0,
+                0.0
+            ],
+            "size": [
+                305.0,
+                437.0
+            ],
+            "offset": [
+                152.5,
+                501.5
+            ],
+            "type": 4
+        },
+        {
+            "back" : 0,
+            "flipX" : true,
+            "flipY" : false,
+            "gimmick": 3,
+            "parameter": {
+                "flag": true,
+                "limit": [
+                    0.0,
+                    -40.0
+                ],
+                "speed": 6.0
+            },
+            "pos": [
+                0.0,
+                0.0
+            ],
+            "size": [
+                305.0,
+                437.0
+            ],
+            "offset": [
+                1127.5,
+                501.5
+            ],
+            "type": 4
+        },
+        {
+            "gimmick": 0,
+            "pos": [
+                150.0,
+                360.0
+            ],
+            "size": [
+                100.0,
+                478.0
+            ],
+            "offset": [
+                0.0,
+                0.0
+            ],
+            "type": 0
+        },
+        {
+            "gimmick": 0,
+            "pos": [
+                640.0,
+                279.0
+            ],
+            "size": [
+                100.0,
+                316.0
+            ],
+            "offset": [
+                0.0,
+                0.0
+            ],
+            "type": 0
+        },
+        {
+            "gimmick": 0,
+            "pos": [
+                1130.0,
+                200.0
+            ],
+            "size": [
+                100.0,
+                158.0
+            ],
+            "offset": [
+                0.0,
+                0.0
+            ],
+            "type": 0
+        },
+        {
+            "gimmick": 1,
+            "parameter": {
+                "flag": true,
+                "limit": [
+                    100.0,
+                    0.0
+                ],
+                "speed": 1.0
+            },
+            "pos": [
+                1130.0,
+                360.0
+            ],
+            "size": [
+                100.0,
+                478.0
+            ],
+            "offset": [
+                0.0,
+                0.0
+            ],
+            "type": 0
+        },
+        {
+            "gimmick": 2,
+            "parameter": {
+                "flag": false,
+                "limit": [
+                    150.0,
+                    0.0
+                ],
+                "speed": 2.0
+            },
+            "pos": [
+                400.0,
+                200.0
+            ],
+            "size": [
+                300.0,
+                158.0
+            ],
+            "offset": [
+                0.0,
+                0.0
+            ],
+            "type": 0
+        },
+        {
+            "gimmick": 2,
+            "parameter": {
+                "flag": false,
+                "limit": [
+                    150.0,
+                    0.0
+                ],
+                "speed": 2.0
+            },
+            "pos": [
+                880.0,
+                200.0
+            ],
+            "size": [
+                300.0,
+                158.0
             ],
             "offset": [
                 0.0,
@@ -20,7 +205,7 @@
         {
             "pos": [
                 150.0,
-                360.0
+                520.0
             ],
             "size": [
                 100.0,
@@ -34,16 +219,16 @@
         },
         {
             "pos": [
-                1130.0,
-                360.0
+                0.0,
+                0.0
             ],
             "size": [
                 100.0,
                 158.0
             ],
             "offset": [
-                0.0,
-                0.0
+                1130.0,
+                520.0
             ],
             "type": 2
         }
