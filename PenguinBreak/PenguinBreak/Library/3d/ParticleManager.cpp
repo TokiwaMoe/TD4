@@ -115,23 +115,23 @@ void ParticleManager::ParticleAdd2(const Vec3 &Pos, const Vec4 &start_color,cons
 	for (int i = 0; i < 1; i++)
 	{
 		//X,Y,Z全て{-5.0f,+5.0f}でランダムに分布
-		const float md_pos = 0.5f;
+		const float md_pos = 0.05f;
 		Vec3 pos = Pos;
 		pos.x += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.y += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.z += (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		////X,Y,Z全て{-0.05f,+0.05f}でランダムに分布
-		const float md_vel = 0.1f;
+		const float md_vel = 0.0001f;
 		Vec3 vel{};
 		vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		//重力に見立ててYのみ{-0.001f,0}でランダム分布
 		Vec3 acc{};
-		const float md_acc = 0.001f;
+		const float md_acc = 0.0001f;
 		acc.y = (float)rand() / RAND_MAX * md_acc;
 			//追加
-		Add(90, pos, vel, acc, 4.0f, 8.0f, start_color, end_color);
+		Add(90, pos, vel, acc, 0.1f, 0.1f, start_color, end_color);
 	}
 }
 

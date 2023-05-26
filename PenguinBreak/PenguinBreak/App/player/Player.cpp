@@ -54,7 +54,7 @@ void Player::Update(Stage* stage)
 	ConvertParticlePos();
 	//移動
 	Move();
-	collide2Stage(stage);
+	//collide2Stage(stage);
 	Input::Get()->SetCursor(false);
 }
 
@@ -122,10 +122,10 @@ void Player::ConvertParticlePos()
 	particlePos.y = posNear.y + direction.m128_f32[1] * distance;
 	particlePos.z = posNear.z + direction.m128_f32[2] * distance;
 
-	DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", particlePos.x, particlePos.y);
+	DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", position.x / 1280, position.y/720);
 	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);
 	moveParticle->ParticleAdd2(
-		particlePos, { 0,1,0,1 }, { 0,1,0,1 });
+		Vec3{ -position.x/1280.0f,-position.y/720,0 }, { 1,1,1,1 }, { 1,1,1,1 });
 	moveParticle->Update();
 }
 
