@@ -282,12 +282,9 @@ void PostEffect::SetPipeline(int num)
 	case static_cast<int>(PostEffectType::NORMAL):
 		m_pipelineSet = Pipeline::PostPipeline;
 		break;
-	case static_cast<int>(PostEffectType::REVERSAL):
-		//m_pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev, ShaderManager::postReversalShader);
-		break;
-	case static_cast<int>(PostEffectType::BLUR):
-		m_pipelineSet = Pipeline::PostBlurPipeline;
-		break;
+	case static_cast<int>(PostEffectType::WATERRIPPLES):
+		m_pipelineSet = Pipeline::PostNormalCreateGraphicsPipeline(dev, ShaderManager::postWaterShader);
+		break;	
 	default:
 		break;
 	}

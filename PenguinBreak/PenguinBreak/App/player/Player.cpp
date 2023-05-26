@@ -164,6 +164,11 @@ void Player::collide2Stage(Stage* stage)
 				stage->GetInstance()->GetStartPos().x,
 				stage->GetInstance()->GetStartPos().y
 			};
+
+			if (deathCount >= DEATH_MAX)
+			{
+				deathCount = 0;
+			}
 		}
 		else if (respawn == false) {
 			effect = true;

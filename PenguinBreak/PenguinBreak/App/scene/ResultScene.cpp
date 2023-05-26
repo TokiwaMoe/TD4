@@ -5,13 +5,14 @@
 #include<Input.h>
 #include"TitleScene.h"
 #include"SceneManager.h"
+#include <PostEffect.h>
 ResultScene::ResultScene()
 {}
 ResultScene::~ResultScene()
 {}
 void ResultScene::Init()
 {	
-	
+	PostEffect::Get()->SetPipeline(static_cast<int>(PostEffectType::NORMAL));
 }
 
 void ResultScene::Update()
