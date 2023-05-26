@@ -32,8 +32,7 @@ public:
 	/// ポストエフェクト
 	/// </summary>
 	static Shader postNormalShader;	//ポストエフェクト（通常）
-	static Shader postReversalShader;//反射
-	static Shader postBlurShader;
+	static Shader postWaterShader;//水の波紋
 	/// <summary>
 	/// パーティクル
 	/// </summary>

@@ -7,6 +7,7 @@
 #include"SceneManager.h"
 #include"ResultScene.h"
 #include"EditerScene.h"
+#include <PostEffect.h>
 
 bool GameScene::isEditer = false;
 
@@ -18,7 +19,7 @@ GameScene::~GameScene()
 
 void GameScene::Init()
 {
-
+	PostEffect::Get()->SetPipeline(static_cast<int>(PostEffectType::WATERRIPPLES));
 	//スプライト作成の仕方
 	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
 
