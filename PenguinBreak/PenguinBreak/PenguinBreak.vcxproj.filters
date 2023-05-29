@@ -99,6 +99,9 @@
     <Filter Include="ソース ファイル\Stage">
       <UniqueIdentifier>{f09b0eb6-a7c5-46bd-afff-97d78cb43d4e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\ResultStating">
+      <UniqueIdentifier>{5d9eb78a-ce01-415d-9e33-1326c1b1030f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\ParticleGS.hlsl">
@@ -405,6 +408,10 @@
     <ClInclude Include="App\scene\SelectScene.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="App\stage\Road.h" />
+    <ClInclude Include="App\ResultStating\ResultStating.h">
+      <Filter>ソース ファイル\ResultStating</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -547,6 +554,12 @@
     </ClCompile>
     <ClCompile Include="App\scene\SelectScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\Road.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="App\ResultStating\ResultStating.cpp">
+      <Filter>ソース ファイル\ResultStating</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
