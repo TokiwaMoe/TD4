@@ -4,6 +4,7 @@
 #include<Audio.h>
 #include"BaseScene.h"
 #include<Sprite.h>
+#include"../ResultStating/ResultStating.h"
 /// <summary>
 /// リザルトシーン
 /// </summary>
@@ -40,5 +41,6 @@ public:
 	void Finalize()override;
 	bool GetEffect()override;
 private:
-	
+	//リザルト演出
+	ResultStating resultStating;
 };
