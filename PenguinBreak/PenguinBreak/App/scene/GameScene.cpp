@@ -53,16 +53,11 @@ void GameScene::Update()
 			BaseScene* scene = new EditerScene();
 			sceneManager_->SetNextScene(scene);
 		}
-		else if (stageNumber < Stage::STAGE_COUNT)
-		{
-			// ステージ切り替え
-			stageNumber++;
-			stage->ChengeStage(stageNumber);
-			player->Init(stage);
-		}
 		else
 		{
+			// ステージ切り替え
 			BaseScene* scene = new ResultScene();
+			scene->nextStage = stageNumber + 1;
 			sceneManager_->SetNextScene(scene);
 		}
 	}
@@ -86,7 +81,7 @@ void GameScene::Draw()
 
 void GameScene::ShadowDraw()
 {
-	
+
 }
 
 void GameScene::Finalize()
