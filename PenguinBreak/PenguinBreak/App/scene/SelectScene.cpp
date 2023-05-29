@@ -146,11 +146,10 @@ void SelectScene::StageDecision()
 
 void SelectScene::DecisionScale()
 {
-	const float scaleMax = 1.0f;
-	const float scaleMin = 0.8f;
+	const float scaleMax = 1.0f,scaleMin = 0.8f,speed = 0.01f;
 	if (decScaleFlag == true)
 	{
-		scale += 0.01f;
+		scale += speed;
 		if (scale >= scaleMax)
 		{
 			decScaleFlag = false;
@@ -158,7 +157,7 @@ void SelectScene::DecisionScale()
 	}
 	else
 	{
-		scale -= 0.01f;
+		scale -= speed;
 		if (scale <= scaleMin)
 		{
 			decScaleFlag = true;
