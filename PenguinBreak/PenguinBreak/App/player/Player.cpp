@@ -52,10 +52,11 @@ void Player::stageInit(int stageNo)
 
 void Player::Update(Stage* stage)
 {
+	//スクリーン座標からワールド座標に変換する処理
 	ConvertParticlePos();
 	//移動
 	Move();
-	collide2Stage(stage);
+	//collide2Stage(stage);
 	Input::Get()->SetCursor(false);
 }
 
@@ -81,6 +82,8 @@ void Player::Move()
 		//パーティクルだす
 		//手のspを表示するか
 		isDraw = true;
+		moveParticle->ParticleAdd2(particlePos, { 1,0,1,1 }, { 1,0,1,1 });
+
 	}
 	else
 	{
@@ -125,7 +128,6 @@ void Player::ConvertParticlePos()
 
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", particlePos.x, particlePos.z);
 	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);
-	moveParticle->ParticleAdd2(particlePos, { 1,0,1,1 }, { 1,0,1,1 });
 	moveParticle->Update();
 }
 
