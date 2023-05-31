@@ -16,19 +16,42 @@ public:
 		return &instance;
 	}
 
+public: //サブクラス
+	class Back : public Road
+	{
+	public:
+		// 背景オブジェクトのタイプ
+		enum BackType
+		{
+			PALM, //ヤシの木
+			DEER, //鹿
+		};
+
+	public: //メンバ変数
+		BackType back = BackType::PALM; //背景オブジェクトの種類
+		bool isFlipX = false;
+		bool isFlipY = false;
+
+	public: //メンバ関数
+		Road ConvertRoad() { return *this; }
+		void Init() override;
+	};
+
 	struct JsonData
 	{
-		std::vector<Road> objects = {};
+		std::vector<Back> objects = {};
 	};
 
 public: //定数
-	static const int STAGE_COUNT = 2;
+	static const int STAGE_COUNT = 2; //ステージの数
+	static const int BACK_COUNT = 1;  //背景の数
 
 private: //静的メンバ変数
 	static Vec2 ROAD_SIZE;
 
 private: //メンバ変数
-	std::vector<Road> boxes;
+	std::vector<Road> boxes; //道のオブジェクト
+	std::vector<Back> backObjects; //背景オブジェクト
 	size_t startIndex;
 	size_t goalIndex;
 	size_t roadCount;
@@ -47,18 +70,24 @@ public: //メンバ関数
 	JsonData* LoadStage(const std::string& jsonFile);
 	// ステージの切り替え
 	void ChengeStage(int stageNumber);
+	// 背景オブジェクトの読み込み
+	JsonData* LoadBack(const std::string& jsonFile);
+	// 背景オブジェクトの切り替え
+	void ChengeBack(int backNumber);
 
 	size_t GetBoxSize() const { return boxes.size(); }
-	// 座標の取得
-	Vec2 GetPos(size_t num) const { return boxes[num].pos + boxes[num].offset; }
+	// 道の数の取得
+	size_t GetRoadCount() const { return roadCount; }
+	// 中心座標の取得
+	Vec2 GetPos(size_t num) const { return boxes[num].GetAnchorpointPos(Vec2(0.5f, 0.5f)); }
 	// スプライトサイズの取得
 	Vec2 GetSize(size_t num) const { return boxes[num].size; }
 	// アンカーポイントの取得
 	Vec2 GetAnchorpoint(size_t num) const { return boxes[num].anchorpoint; }
+	// 指定したアンカーポイントに対応する座標の取得
+	Vec2 GetAnchorpointPos(size_t num, const Vec2& anchorpoint) const { return boxes[num].GetAnchorpointPos(anchorpoint); }
 	// 種類の取得
 	Road::RoadType GetType(size_t num) const { return boxes[num].type; }
-	// 道の数
-	size_t GetRoadCount() const { return roadCount; }
 	Vec2 GetStartPos() const { return GetPos(startIndex); }
 	size_t GetStart() const { return startIndex; }
 	Vec2 GetGoalPos() const { return GetPos(goalIndex); }
