@@ -26,7 +26,7 @@ void EditerScene::Init()
 	operationText.push_back("Drag:Move");
 	operationText.push_back("C:Create");
 	operationText.push_back("drag corner:Size Change");
-	operationText.push_back("Left Click+D:Delete");
+	operationText.push_back("D:Delete");
 	operationText.push_back("R:Reset");
 	operationText.push_back("S:Save");
 	operationText.push_back("P:Clear Check");
@@ -56,20 +56,20 @@ void EditerScene::Update()
 
 	if (isClick)
 	{
-		if (fabsf(distance.x) < (stage->GetSize(roadIndex) / 2.0f).x &&
-			fabsf(distance.y) < (stage->GetSize(roadIndex) / 2.0f).y)
+		const Vec2 center = { 0.5f, 0.5f };
+
+		Vec2 anchorpoint = { distance.x / stage->GetSize(roadIndex).x, distance.y / stage->GetSize(roadIndex).y };
+		anchorpoint += center;
+		anchorpoint = Vec2(Extremism(anchorpoint.x, 3), Extremism(anchorpoint.y, 3));
+		stage->MoveAnchorpoint(roadIndex, anchorpoint);
+
+		if (fabsf(distance.x) < stage->GetSize(roadIndex).x * (center - stage->GetAnchorpoint(roadIndex)).x &&
+			fabsf(distance.y) < stage->GetSize(roadIndex).y * (center - stage->GetAnchorpoint(roadIndex)).y)
 		{
 			stage->SetPos(roadIndex, Input::Get()->GetMousePos());
 		}
 		else
 		{
-			const Vec2 center = { 0.5f, 0.5f };
-
-			Vec2 anchorpoint = { distance.x / stage->GetSize(roadIndex).x, distance.y / stage->GetSize(roadIndex).y };
-			anchorpoint += center;
-			anchorpoint = Vec2(Extremism(anchorpoint.x, 3), Extremism(anchorpoint.y, 3));
-			stage->MoveAnchorpoint(roadIndex, anchorpoint);
-
 			Vec2 size = stage->GetSize(roadIndex);
 			if (anchorpoint.x != 0.5f)
 			{
@@ -91,10 +91,10 @@ void EditerScene::Update()
 		stage->Create();
 	}
 	// 道の削除
-	if (Input::Get()->KeybordTrigger(DIK_D) && isClick)
+	if (Input::Get()->KeybordTrigger(DIK_D))
 	{
 		stage->Delete(roadIndex);
-		isClick = false;
+		roadIndex = -1;
 	}
 	// リセット
 	if (Input::Get()->KeybordTrigger(DIK_R))
@@ -155,15 +155,13 @@ int EditerScene::GetStageIndex2MousePos(Vec2* distance)
 
 	for (int i = 0; i < stage->GetBoxSize(); i++)
 	{
-		const float left = stage->GetPos(i).x - stage->GetSize(i).x * stage->GetAnchorpoint(i).x - frameWidth;
-		const float right = stage->GetPos(i).x + stage->GetSize(i).x * stage->GetAnchorpoint(i).x + frameWidth;
-		const float up = stage->GetPos(i).y - stage->GetSize(i).y * stage->GetAnchorpoint(i).y - frameWidth;
-		const float down = stage->GetPos(i).y + stage->GetSize(i).y * stage->GetAnchorpoint(i).y + frameWidth;
+		const Vec2 leftTop = stage->GetAnchorpointPos(i, Vec2(0.0f, 0.0f)) + Vec2(frameWidth, frameWidth);
+		const Vec2 rightBottom = stage->GetAnchorpointPos(i, Vec2(1.0f, 1.0f)) + Vec2(frameWidth, frameWidth);
 
-		if (Input::Get()->GetMousePos().x > left &&
-			Input::Get()->GetMousePos().x < right &&
-			Input::Get()->GetMousePos().y > up &&
-			Input::Get()->GetMousePos().y < down)
+		if (Input::Get()->GetMousePos().x > leftTop.x &&
+			Input::Get()->GetMousePos().x < rightBottom.x &&
+			Input::Get()->GetMousePos().y > leftTop.y &&
+			Input::Get()->GetMousePos().y < rightBottom.y)
 		{
 			result = i;
 
