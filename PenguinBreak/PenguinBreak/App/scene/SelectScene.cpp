@@ -77,14 +77,13 @@ void SelectScene::Draw()
 		Sprite::Get()->Draw(backButton, backButtonPos, length, length, { 0.5f,0.5f });
 	}
 	//Žè
+	Vec2 hPos = Input::Get()->GetMousePos();
 	if (isDraw)
 	{
-		Vec2 hPos = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y };
 		Sprite::Get()->Draw(hand_g, hPos, 32, 32, { 0.5f,0.5f });
 	}
 	else
 	{
-		Vec2 hPos = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y };
 		Sprite::Get()->Draw(hand_p, hPos, 32, 32, { 0.5f,0.5f });
 	}
 }
