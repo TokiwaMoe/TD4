@@ -16,7 +16,7 @@ void TitleScene::Init()
 	//スプライト作成の仕方
 	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
 
-	titleGraph = Sprite::Get()->SpriteCreate(L"Resources/Title/title.png");
+	titleGraph = Sprite::Get()->SpriteCreate(L"Resources/Title/title_test.png");
 	button = Sprite::Get()->SpriteCreate(L"Resources/Title/start.png");
 	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
 	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
@@ -56,7 +56,7 @@ void TitleScene::Draw()
 	Sprite::Get()->Draw(background, Vec2(), width, height);
 
 	Vec2  anchorpoint = { 0.5f,0.5f };
-	Sprite::Get()->Draw(titleGraph, Vec2(652.0f, 200.0f), 450.0f, 162.0f, anchorpoint);
+	Sprite::Get()->Draw(titleGraph, {0,0}, width, height);
 
 	if (isScale)
 	{
