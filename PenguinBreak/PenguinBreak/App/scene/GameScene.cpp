@@ -70,7 +70,7 @@ void GameScene::Draw()
 {
 	float width = 1280, height = 720;
 	Sprite::Get()->Draw(background, { 0,0 }, width, height);
-	//stage->Draw();
+	stage->Draw();
 	player->Draw();
 
 	if (isEditer == true)

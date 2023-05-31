@@ -4,6 +4,7 @@
 #include "Input.h"
 #include"Debugtext.h"
 #include"Texture.h"
+
 using namespace DirectX;
 
 void Player::Initialize()
@@ -54,7 +55,7 @@ void Player::Update(Stage* stage)
 	ConvertParticlePos();
 	//移動
 	Move();
-	//collide2Stage(stage);
+	collide2Stage(stage);
 	Input::Get()->SetCursor(false);
 }
 
@@ -93,19 +94,19 @@ void Player::Move()
 
 void Player::ConvertParticlePos()
 {
-	XMVECTOR one = XMVectorSet(2.0f / 1280.0f, 0.0f, 0.0f, 0.0f);
-	XMVECTOR two = XMVectorSet(0.0f, -2.0f / 720.0f, 0.0f, 0.0f);
-	XMVECTOR three = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
-	XMVECTOR four = XMVectorSet(-1.0f, 1.0f, 0.0f, 1.0f);
+	//ビューポート行列
 	XMMATRIX mvp = XMMatrixIdentity();
-	mvp = XMMATRIX(one, two, three, four);
+	mvp.r[0].m128_f32[0] = 1280.0f / 2.0f;
+	mvp.r[1].m128_f32[1] = -720.0f / 2.0f;
+	mvp.r[3].m128_f32[0] = 1280.0f / 2.0f;
+	mvp.r[3].m128_f32[1] = 720.0f / 2.0f;
 	//ビュープロジェクションビューポート合成行列
 	XMMATRIX mvpv = moveParticle->GetMat() * mvp;
 	//上記の行列の逆行列
 	XMMATRIX mvpvInv = XMMatrixInverse(nullptr, mvpv);
 	//スクリーン座標
-	Vec3 posNear = Vec3{ position.x,position.y,0 };
-	Vec3 posFar = Vec3{ position.x,position.y,1 };
+	Vec3 posNear = Vec3(position.x, position.y, 0);
+	Vec3 posFar = Vec3(position.x, position.y, 1);
 	XMVECTOR posNearV = XMLoadFloat3(&posNear);
 	XMVECTOR posFarV = XMLoadFloat3(&posFar);
 	//スクリーン座標系からワールド座標系へ
@@ -115,17 +116,16 @@ void Player::ConvertParticlePos()
 	XMVECTOR direction = posFarV - posNearV;
 	//ベクトルの正規化
 	direction = XMVector3Normalize(direction);
-	const float distance = 0.01f;
+	const float distance = 0.0f;
 
 
-	particlePos.x = posNear.x + direction.m128_f32[0] * distance;
-	particlePos.y = posNear.y + direction.m128_f32[1] * distance;
-	particlePos.z = posNear.z + direction.m128_f32[2] * distance;
+	particlePos.x = posNearV.m128_f32[0] - direction.m128_f32[0] * distance;
+	particlePos.y = posNearV.m128_f32[1] - direction.m128_f32[1] * distance;
+	particlePos.z = posNearV.m128_f32[2] - direction.m128_f32[2] * distance;
 
-	DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", position.x / 1280, position.y/720);
+	DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", particlePos.x, particlePos.z);
 	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);
-	moveParticle->ParticleAdd2(
-		Vec3{ -position.x/1280.0f,-position.y/720,0 }, { 1,1,1,1 }, { 1,1,1,1 });
+	moveParticle->ParticleAdd2(particlePos, { 1,0,1,1 }, { 1,0,1,1 });
 	moveParticle->Update();
 }
 
@@ -256,8 +256,8 @@ void Player::Draw()
 	}
 	//Vec2 position2D = { 200.0f,200.0f };
 	float width = 64.0f, height = 128.0f;
-	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
 	moveParticle->Draw(p_Texture);
+	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
 
 	if (isDraw)
 	{

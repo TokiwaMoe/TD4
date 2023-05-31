@@ -131,7 +131,7 @@ void ParticleManager::ParticleAdd2(const Vec3 &Pos, const Vec4 &start_color,cons
 		const float md_acc = 0.0001f;
 		acc.y = (float)rand() / RAND_MAX * md_acc;
 			//追加
-		Add(90, pos, vel, acc, 0.1f, 0.1f, start_color, end_color);
+		Add(90, pos, vel, acc, 0.05f, 0.05f, start_color, end_color);
 	}
 }
 
