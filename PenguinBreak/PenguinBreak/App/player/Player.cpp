@@ -4,6 +4,7 @@
 #include "Input.h"
 #include"Debugtext.h"
 #include"Texture.h"
+
 using namespace DirectX;
 
 void Player::Initialize()
@@ -93,36 +94,38 @@ void Player::Move()
 
 void Player::ConvertParticlePos()
 {
-	//ビューポート
-	XMMATRIX matV = XMMatrixIdentity();
-	//合成
-	XMMATRIX mvpv = moveParticle->GetMat() * matV;
-	//合成行列の逆行列
+	//ビューポート行列
+	XMMATRIX mvp = XMMatrixIdentity();
+	mvp.r[0].m128_f32[0] = 1280.0f / 2.0f;
+	mvp.r[1].m128_f32[1] = -720.0f / 2.0f;
+	mvp.r[3].m128_f32[0] = 1280.0f / 2.0f;
+	mvp.r[3].m128_f32[1] = 720.0f / 2.0f;
+	//ビュープロジェクションビューポート合成行列
+	XMMATRIX mvpv = moveParticle->GetMat() * mvp;
+	//上記の行列の逆行列
 	XMMATRIX mvpvInv = XMMatrixInverse(nullptr, mvpv);
 	//スクリーン座標
-	Vec3 posNear = Vec3{ position.x,position.y,0 };
-	Vec3 posFar = Vec3{ position.x,position.y,1 };
-	//スクリーン座標をベクトルに直す
+	Vec3 posNear = Vec3(position.x, position.y, 0);
+	Vec3 posFar = Vec3(position.x, position.y, 1);
 	XMVECTOR posNearV = XMLoadFloat3(&posNear);
 	XMVECTOR posFarV = XMLoadFloat3(&posFar);
-	//スクリーン座標からワールド座標へ
-	posNearV = XMVector3TransformCoord(posNearV, mvpvInv);
+	//スクリーン座標系からワールド座標系へ
+	posNearV = XMVector3TransformCoord(posNearV, mvpvInv);//座標に行列をかけてwを除算
 	posFarV = XMVector3TransformCoord(posFarV, mvpvInv);
-	//マウスレイの方向
+	//レイの方向
 	XMVECTOR direction = posFarV - posNearV;
-	//正規化
+	//ベクトルの正規化
 	direction = XMVector3Normalize(direction);
-	const float distance = 0.01f;
-	direction *= distance;
-	//カメラから照準オブジェクトの距離
-	particlePos.x = position.x + direction.m128_f32[0];
-	particlePos.y = position.y + direction.m128_f32[1];
-	particlePos.z = posNear.z + direction.m128_f32[2];
-	DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", particlePos.x, particlePos.y);
-	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);
+	const float distance = 0.0f;
 
-	moveParticle->ParticleAdd2(
-		particlePos, { 0,1,0,1 }, { 0,1,0,1 });
+
+	particlePos.x = posNearV.m128_f32[0] - direction.m128_f32[0] * distance;
+	particlePos.y = posNearV.m128_f32[1] - direction.m128_f32[1] * distance;
+	particlePos.z = posNearV.m128_f32[2] - direction.m128_f32[2] * distance;
+
+	DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", particlePos.x, particlePos.z);
+	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);
+	moveParticle->ParticleAdd2(particlePos, { 1,0,1,1 }, { 1,0,1,1 });
 	moveParticle->Update();
 }
 
@@ -156,7 +159,7 @@ void Player::collide2Stage(Stage* stage)
 			deathPos[deathCount - 1] = position;
 			//死んだ場所に描画するスプライトのフラグをture
 			isDeathDraw[deathCount - 1] = true;
- 			//ロード外に出たらスタート位置に戻す
+			//ロード外に出たらスタート位置に戻す
 			position = {
 				stage->GetInstance()->GetStartPos().x,
 				stage->GetInstance()->GetStartPos().y
@@ -253,8 +256,8 @@ void Player::Draw()
 	}
 	//Vec2 position2D = { 200.0f,200.0f };
 	float width = 64.0f, height = 128.0f;
-	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
 	moveParticle->Draw(p_Texture);
+	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
 
 	if (isDraw)
 	{
@@ -266,5 +269,5 @@ void Player::Draw()
 		Vec2 hPos = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y };
 		Sprite::Get()->Draw(hand_p, hPos, 32, 32, { 0.5f,0.5f });
 	}
-	
+
 }

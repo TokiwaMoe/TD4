@@ -1,8 +1,6 @@
 #include"TitleScene.h"
 #include<sstream>
 #include<iomanip>
-#include"Camera.h"
-#include"Shape.h"
 #include"Input.h"
 #include"Texture.h"
 #include"SceneManager.h"
@@ -16,19 +14,25 @@ TitleScene::~TitleScene()
 void TitleScene::Init()
 {
 	//スプライト作成の仕方
-	sprite = Sprite::Get()->SpriteCreate(L"Resources/gutitubo.png");
+	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
+
+	titleGraph = Sprite::Get()->SpriteCreate(L"Resources/Title/title_test.png");
+	button = Sprite::Get()->SpriteCreate(L"Resources/Title/start.png");
+	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
+	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
+
 	PostEffect::Get()->SetPipeline(static_cast<int>(PostEffectType::NORMAL));
 }
 
 void TitleScene::Update()
 {
+#ifdef _DEBUG
 	//シーンの変更の仕方
 	if (Input::Get()->KeybordTrigger(DIK_SPACE))
 	{
 		BaseScene* scene = new SelectScene();
 		sceneManager_->SetNextScene(scene);
 	}
-#ifdef _DEBUG
 	else if (Input::Get()->KeybordTrigger(DIK_E))
 	{
 		// エディター
@@ -37,30 +41,44 @@ void TitleScene::Update()
 	}
 #endif // _DEBUG
 
-	DebugText::Get()->Print(100.0f, 100.0f, 5, "Title");
 #ifdef _DEBUG
 	DebugText::Get()->Print(16.0f, window_height - 16.0f, 2, "E:Editer");
 #endif // _DEBUG
+	StageDecision();
+
+	DecisionScale();
 }
 
 void TitleScene::Draw()
 {
-	Vec3 position = {};
-	Vec3 scale = { 1.0f,1.0f,1.0f };
-	Vec3 angle = {};
+	//背景
+	const float width = 1280, height = 720;
+	Sprite::Get()->Draw(background, Vec2(), width, height);
 
-	//2D描画
-	Vec2 position2D = { 200.0f,200.0f };
-	float width = 140.0f, height = 100.0f;
-	Sprite::Get()->Draw(sprite, position2D, width, height);
+	Vec2  anchorpoint = { 0.5f,0.5f };
+	Sprite::Get()->Draw(titleGraph, {0,0}, width, height);
 
+	if (isScale)
+	{
+		Sprite::Get()->Draw(button, bPos, bSize.x * scale, bSize.y * scale, anchorpoint);
+	}
+	else
+	{
+		Sprite::Get()->Draw(button, bPos, bSize.x, bSize.y, anchorpoint);
+	}
+	//手
+	if (isDraw)
+	{
+		Sprite::Get()->Draw(hand_g, hPos, 32, 32, anchorpoint);
+	}
+	else
+	{
+		Sprite::Get()->Draw(hand_p, hPos, 32, 32, anchorpoint);
+	}
 }
 
 void TitleScene::ShadowDraw()
-{
-
-
-}
+{}
 
 void TitleScene::Finalize()
 {
@@ -71,4 +89,49 @@ void TitleScene::Finalize()
 bool TitleScene::GetEffect()
 {
 	return false;
+}
+
+void TitleScene::StageDecision()
+{
+	const Vec2 mSize = { 6.0f,6.0f };
+	if (Input::Get()->MousePushLeft()) {
+		if (Collision::BoxCollision(bPos, Input::Get()->GetMousePos(), bSize - Vec2(180.0f, 80.0f), mSize)) {
+			BaseScene* scene = new SelectScene();
+			sceneManager_->SetNextScene(scene);
+		}
+		isDraw = true;
+	}
+	else {
+		if (Collision::BoxCollision(bPos, Input::Get()->GetMousePos(), bSize - Vec2(180.0f, 80.0f), mSize)) {
+			isScale = true;
+		}
+		else
+		{
+			isScale = false;
+		}
+		isDraw = false;
+	}
+	hPos = Input::Get()->GetMousePos();
+}
+
+void TitleScene::DecisionScale()
+{
+	const float scaleMax = 1.05f;
+	const float scaleMin = 0.95f;
+	if (decScaleFlag)
+	{
+		scale += 0.005f;
+		if (scaleMax < scale)
+		{
+			decScaleFlag = false;
+		}
+	}
+	else
+	{
+		scale -= 0.005f;
+		if (scaleMin > scale)
+		{
+			decScaleFlag = true;
+		}
+	}
 }
