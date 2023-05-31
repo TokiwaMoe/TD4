@@ -48,7 +48,7 @@ private://’è‹`
 	SpriteData background = {};//”wŒi
 	SpriteData titleGraph = {};
 	SpriteData button = {};
-	const Vec2 bPos = { 630.0f, 500.0f };
+	const Vec2 bPos = { 630.0f, 580.0f };
 	const Vec2 bSize = { 400.0f, 160.0f };
 	float scale = 1.0f;
 	bool isScale = false;
