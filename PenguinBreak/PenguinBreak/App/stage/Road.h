@@ -14,13 +14,6 @@ public: //サブクラス
 		BACK,  //背景オブジェクト
 	};
 
-	// 背景オブジェクトのタイプ
-	enum BackType
-	{
-		PALM, //ヤシの木
-		DEER, //鹿
-	};
-
 	// ギミックのタイプ
 	enum Gimmick
 	{
@@ -49,17 +42,14 @@ public: //サブクラス
 	};
 
 private: //変数
-	SpriteData sprite;
-
 	Vec2 initPos;
 	Vec2 initSize;
+protected:
+	SpriteData sprite;
 public:
 	RoadType type;
 	Gimmick gimmick;
 	GimmickParameter parameter;
-	BackType back; //背景オブジェクトの種類
-	bool isFlipX;
-	bool isFlipY;
 
 	Vec2 pos;
 	Vec2 size;
@@ -68,9 +58,11 @@ public:
 
 public: //関数
 	Road();
-	void Init();
+	virtual void Init();
 
 	SpriteData& GetSprite() { return sprite; }
+	const Vec2 GetPos() const { return pos + offset; }
 	const Vec2 GetInitPos() const { return initPos; }
 	const Vec2 GetInitSize() const { return initSize; }
+	const Vec2 GetAnchorpointPos(const Vec2& uv) const;
 };

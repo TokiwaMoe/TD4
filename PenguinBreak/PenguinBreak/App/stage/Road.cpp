@@ -22,9 +22,6 @@ Road::Road() :
 	type(RoadType::ROAD),
 	gimmick(Gimmick::NO_GIMMICK),
 	parameter{},
-	back(BackType::PALM),
-	isFlipX(false),
-	isFlipY(false),
 	initPos(pos),
 	initSize(size)
 {
@@ -35,23 +32,12 @@ void Road::Init()
 	initPos = pos;
 	initSize = size;
 
-	if (type != BACK)
-	{
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/white1x1.png");
-		return;
-	}
+	if (type == BACK) return;
+	sprite = Sprite::Get()->SpriteCreate(L"Resources/white1x1.png");
+}
 
-	switch (back)
-	{
-		// ヤシの木
-	case PALM:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/palm.png");
-		break;
-		// 鹿
-	case DEER:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/shika.png");
-		break;
-	default:
-		break;
-	}
+const Vec2 Road::GetAnchorpointPos(const Vec2& uv) const
+{
+	Vec2 uvPos = uv - anchorpoint;
+	return GetPos() + Vec2(size.x * uvPos.x, size.y * uvPos.y);
 }

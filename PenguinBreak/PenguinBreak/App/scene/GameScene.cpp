@@ -32,6 +32,7 @@ void GameScene::Init()
 	{
 		stage->ChengeStage(stageNumber);
 	}
+	stage->ChengeBack(backNumber);
 	//プレイヤー
 	player->Initialize();
 	player->Init(stage);

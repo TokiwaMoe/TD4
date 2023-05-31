@@ -5,8 +5,27 @@
 
 Vec2 Stage::ROAD_SIZE = Vec2();
 
+void Stage::Back::Init()
+{
+	Road::Init();
+
+	if (type != RoadType::BACK) return;
+	switch (back)
+	{
+	case Stage::Back::PALM:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/palm.png");
+		break;
+	case Stage::Back::DEER:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/shika.png");
+		break;
+	default:
+		break;
+	}
+}
+
 Stage::Stage() :
 	boxes{},
+	backObjects{},
 	startIndex(0),
 	goalIndex(0),
 	roadCount(2)
@@ -23,6 +42,27 @@ void Stage::Init()
 
 void Stage::GimmickUpdate()
 {
+	// 背景オブジェクトの更新
+	for (auto& i : backObjects)
+	{
+		switch (i.gimmick)
+		{
+		case Road::Gimmick::SCALE:
+			ScaleGimmick(i);
+			break;
+		case Road::Gimmick::DIRECTION_SCALE:
+			DirectionScaleGimmick(i);
+			break;
+		case Road::Gimmick::MOVE:
+			MoveGimmick(i);
+			break;
+		default:
+			continue;
+			break;
+		}
+	}
+
+	// 道の更新
 	for (auto& i : boxes)
 	{
 		switch (i.gimmick)
@@ -45,6 +85,13 @@ void Stage::GimmickUpdate()
 
 void Stage::Draw(float offsetX, float offsetY)
 {
+	// 背景オブジェクトの描画
+	for (auto& i : backObjects)
+	{
+		Sprite::Get()->Draw(i.GetSprite(), i.GetPos() + Vec2(offsetX, offsetY), i.size.x, i.size.y, i.anchorpoint, Vec4(1.0f, 1.0f, 1.0f, 1.0f), i.isFlipX, i.isFlipY);
+	}
+
+	// 道の描画
 	for (auto& i : boxes)
 	{
 		Vec4 color = Vec4();
@@ -65,7 +112,7 @@ void Stage::Draw(float offsetX, float offsetY)
 			break;
 		}
 
-		Sprite::Get()->Draw(i.GetSprite(), i.pos + i.offset + Vec2(offsetX, offsetY), i.size.x, i.size.y, i.anchorpoint, color, i.isFlipX, i.isFlipY);
+		Sprite::Get()->Draw(i.GetSprite(), i.GetPos() + Vec2(offsetX, offsetY), i.size.x, i.size.y, i.anchorpoint, color);
 	}
 }
 
@@ -91,10 +138,12 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 	// 解凍
 	file >> deserialized;
 
-	// 正しいレベルファイルかチェック
+	// 正しいファイルかチェック
 	assert(deserialized.is_object());
 	assert(deserialized.contains("name"));
 	assert(deserialized["name"].is_string());
+	std::string name = deserialized["name"];
+	assert(name.compare("stage") == 0);
 
 	// レベルデータ格納用インスタンスを生成
 	JsonData* levelData = new JsonData();
@@ -112,18 +161,10 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		objectData.size = Vec2(object["size"][0], object["size"][1]);
 		objectData.offset = Vec2(object["offset"][0], object["offset"][1]);
 
-		// 背景オブジェクトの読み込み
-		if (objectData.type == Road::RoadType::BACK)
-		{
-			objectData.back = object["back"];
-			objectData.isFlipX = object["flipX"];
-			objectData.isFlipY = object["flipY"];
-		}
-
 		objectData.Init();
 
 		// ギミックタイプの読み込み
-		if (objectData.type == Road::RoadType::ROAD || objectData.type == Road::RoadType::BACK)
+		if (objectData.type == Road::RoadType::ROAD)
 		{
 			objectData.gimmick = object["gimmick"];
 		}
@@ -152,8 +193,83 @@ void Stage::ChengeStage(int stageNumber)
 
 	auto file = LoadStage("stage" + std::to_string(stageNumber));
 	boxes.clear();
-	boxes = file->objects;
+	for (auto& i : file->objects) boxes.push_back(i.ConvertRoad());
 	SetIndex();
+	delete file;
+}
+
+Stage::JsonData* Stage::LoadBack(const std::string& jsonFile)
+{
+	// 連結してフルパスを得る
+	const std::string fullpath = std::string("Resources/") + jsonFile + ".json";
+
+	// ファイルストリーム
+	std::ifstream file;
+
+	// ファイルを開く
+	file.open(fullpath);
+	// ファイルオープン失敗をチェック
+	if (file.fail())
+	{
+		assert(0);
+	}
+
+	// JSON文字列から解凍したデータ
+	nlohmann::json deserialized;
+
+	// 解凍
+	file >> deserialized;
+
+	// 正しいファイルかチェック
+	assert(deserialized.is_object());
+	assert(deserialized.contains("name"));
+	assert(deserialized["name"].is_string());
+	std::string name = deserialized["name"];
+	assert(name.compare("back") == 0);
+
+	// レベルデータ格納用インスタンスを生成
+	JsonData* backData = new JsonData();
+
+	// "objects"の全オブジェクトを走査
+	for (nlohmann::json& object : deserialized["objects"])
+	{
+		assert(object.contains("back"));
+
+		// 要素を追加
+		backData->objects.emplace_back();
+		auto& objectData = backData->objects.back();
+		objectData.type = Road::RoadType::BACK;
+		objectData.pos = Vec2(object["pos"][0], object["pos"][1]);
+		objectData.size = Vec2(object["size"][0], object["size"][1]);
+		objectData.offset = Vec2(object["offset"][0], object["offset"][1]);
+		objectData.gimmick = object["gimmick"];
+		objectData.back = object["back"];
+		objectData.isFlipX = object["flipX"];
+		objectData.isFlipY = object["flipY"];
+
+		objectData.Init();
+
+		// ギミック用のパラメータの読み込み
+		if (objectData.gimmick != Road::Gimmick::NO_GIMMICK)
+		{
+			bool flag = object["parameter"]["flag"];
+			float speed = object["parameter"]["speed"];
+			Vec2 limit = { object["parameter"]["limit"][0], object["parameter"]["limit"][1] };
+
+			objectData.parameter = Road::GimmickParameter(flag, speed, limit);
+		}
+	}
+
+	return backData;
+}
+
+void Stage::ChengeBack(int backNumber)
+{
+	if (backNumber <= 0 || backNumber > BACK_COUNT) return;
+
+	auto file = LoadBack("back" + std::to_string(backNumber));
+	backObjects.clear();
+	backObjects = file->objects;
 	delete file;
 }
 
@@ -191,14 +307,6 @@ void Stage::WriteStage(const std::string& stageName)
 			{"size", {boxes[i].size.x, boxes[i].size.y}},
 			{"offset", {boxes[i].offset.x, boxes[i].offset.y}},
 		};
-
-		// 背景オブジェクトの種類の書き込み
-		if (boxes[i].type == Road::RoadType::BACK)
-		{
-			objectData["back"] = boxes[i].gimmick;
-			objectData["flipX"] = boxes[i].isFlipX;
-			objectData["flipY"] = boxes[i].isFlipY;
-		}
 
 		// ギミックタイプの書き込み
 		if (boxes[i].type == Road::RoadType::ROAD || boxes[i].type == Road::RoadType::BACK)
