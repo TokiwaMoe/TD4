@@ -88,7 +88,7 @@ void Stage::Draw(float offsetX, float offsetY)
 	// 背景オブジェクトの描画
 	for (auto& i : backObjects)
 	{
-		Sprite::Get()->Draw(i.GetSprite(), i.GetPos() + Vec2(offsetX, offsetY), i.size.x, i.size.y, i.anchorpoint, Vec4(1.0f, 1.0f, 1.0f, 1.0f), i.isFlipX, i.isFlipY);
+		Sprite::Get()->Draw(i.GetSprite(), i.GetPos() + Vec2(offsetX, offsetY), i.size.x, i.size.y, Vec2(0.5f, 0.5f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), i.isFlipX, i.isFlipY);
 	}
 
 	// 道の描画
@@ -112,7 +112,7 @@ void Stage::Draw(float offsetX, float offsetY)
 			break;
 		}
 
-		Sprite::Get()->Draw(i.GetSprite(), i.GetPos() + Vec2(offsetX, offsetY), i.size.x, i.size.y, i.anchorpoint, color);
+		Sprite::Get()->Draw(i.GetSprite(), i.GetPos() + Vec2(offsetX, offsetY), i.size.x, i.size.y, Vec2(0.5f, 0.5f), color);
 	}
 }
 

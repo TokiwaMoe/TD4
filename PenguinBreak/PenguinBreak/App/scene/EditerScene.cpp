@@ -16,6 +16,10 @@ void EditerScene::Init()
 {
 	cursor = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
 	frame = Sprite::Get()->SpriteCreate(L"Resources/white1x1.png");
+	for (auto& i : whiteBox)
+	{
+		i = Sprite::Get()->SpriteCreate(L"Resources/white1x1.png");
+	}
 
 	player = std::make_unique<Player>();
 	// ステージ
@@ -41,7 +45,7 @@ void EditerScene::Update()
 		BaseScene* scene = new TitleScene();
 		sceneManager_->SetNextScene(scene);
 	}
-	else if(Input::Get()->KeybordTrigger(DIK_P))
+	else if (Input::Get()->KeybordTrigger(DIK_P))
 	{
 		GameScene::SetEditer();
 		stage->SetIndex();
@@ -49,39 +53,73 @@ void EditerScene::Update()
 		sceneManager_->SetNextScene(scene);
 	}
 
+	const Vec2 center = { 0.5f, 0.5f };
+	Vec2 mousePos = Input::Get()->GetMousePos();
+	Vec2 leftTop;
+	Vec2 rightBottom;
 	Vec2 distance;
 	roadIndex = GetStageIndex2MousePos(&distance);
-	isClick = Input::Get()->MousePushLeft() && roadIndex != -1;
-	DebugText::Get()->Print(12.0f, 24.0f, 1.5f, "x:%f y:%f", distance.x, distance.y);
 
-	if (isClick)
+	if (roadIndex == -1)
 	{
-		const Vec2 center = { 0.5f, 0.5f };
+		cursorState = CursorState::NONE;
+	}
+	else
+	{
+		stage->MoveAnchorpoint(roadIndex, center);
+		leftTop = stage->GetAnchorpointPos(roadIndex, Vec2(0.0f, 0.0f));
+		rightBottom = stage->GetAnchorpointPos(roadIndex, Vec2(1.0f, 1.0f));
 
-		Vec2 anchorpoint = { distance.x / stage->GetSize(roadIndex).x, distance.y / stage->GetSize(roadIndex).y };
-		anchorpoint += center;
-		anchorpoint = Vec2(Extremism(anchorpoint.x, 3), Extremism(anchorpoint.y, 3));
-		stage->MoveAnchorpoint(roadIndex, anchorpoint);
+		if (Input::Get()->MousePushLeft() == false)
+		{
+			if (mousePos.x > leftTop.x &&
+				mousePos.x < rightBottom.x &&
+				mousePos.y > leftTop.y &&
+				mousePos.y < rightBottom.y)
+			{
+				cursorState = CursorState::MOVE;
+			}
+			else if (mousePos.x > leftTop.x - frameWidth &&
+					 mousePos.x < rightBottom.x + frameWidth &&
+					 mousePos.y > leftTop.y - frameWidth &&
+					 mousePos.y < rightBottom.y + frameWidth)
+			{
+				cursorState = CursorState::SCALE;
+			}
+			else
+			{
+				cursorState = CursorState::NONE;
+			}
+		}
+	}
 
-		if (fabsf(distance.x) < stage->GetSize(roadIndex).x * (center - stage->GetAnchorpoint(roadIndex)).x &&
-			fabsf(distance.y) < stage->GetSize(roadIndex).y * (center - stage->GetAnchorpoint(roadIndex)).y)
+	if (Input::Get()->MousePushLeft())
+	{
+		if (cursorState == CursorState::MOVE)
 		{
 			stage->SetPos(roadIndex, Input::Get()->GetMousePos());
 		}
-		else
+		else if (cursorState == CursorState::SCALE)
 		{
+			const Vec2 centerPos = stage->GetAnchorpointPos(roadIndex, center);
+
+			Vec2 anchorpoint = { distance.x / stage->GetSize(roadIndex).x, distance.y / stage->GetSize(roadIndex).y };
+			anchorpoint += center;
+			anchorpoint = Vec2(Extremism(anchorpoint.x, 3), Extremism(anchorpoint.y, 3));
+			stage->MoveAnchorpoint(roadIndex, anchorpoint);
+
 			Vec2 size = stage->GetSize(roadIndex);
+			Vec2 oldSize = size;
 			if (anchorpoint.x != 0.5f)
 			{
-				size.x = (distance * 2.0f).x;
+				size.x = fabsf((mousePos - centerPos).x * 2.0f);
 			}
 			if (anchorpoint.y != 0.5f)
 			{
-				size.y = (distance * 2.0f).y;
+				size.y = fabsf((mousePos - centerPos).y * 2.0f);
 			}
 			stage->SetSize(roadIndex, size);
-
-			//stage->MoveAnchorpoint(roadIndex, center);
+			stage->SetPos(roadIndex, stage->GetPos(roadIndex) + ((oldSize - size) / 2.0f));
 		}
 	}
 
@@ -113,18 +151,50 @@ void EditerScene::Draw()
 {
 	DebugText::Get()->Print(100.0f, 100.0f, 5, "Editer");
 
-	if (roadIndex != -1)
+	if (cursorState == CursorState::MOVE)
 	{
 		Sprite::Get()->Draw(frame,
 							stage->GetPos(roadIndex),
 							stage->GetSize(roadIndex).x + frameWidth,
 							stage->GetSize(roadIndex).y + frameWidth,
-							{ 0.5f,0.5f },
+							stage->GetAnchorpoint(roadIndex),
 							{ 0.5f, 0.5f, 0.5f, 1.0f });
+	}
+	if (cursorState == CursorState::SCALE)
+	{
+		for (size_t i = 0; i < whiteBox.size(); i++)
+		{
+			Vec2 pos = stage->GetPos(roadIndex);
+			size_t x = (i + (i >= (whiteBox.size() / 2))) % 3;
+			size_t y = (i + (i >= (whiteBox.size() / 2))) / 3;
+			if (x == 0)
+			{
+				pos.x -= (stage->GetSize(roadIndex) / 2.0f).x + frameWidth;
+			}
+			else if (x == 2)
+			{
+				pos.x += (stage->GetSize(roadIndex) / 2.0f).x + frameWidth;
+			}
+			if (y == 0)
+			{
+				pos.y -= (stage->GetSize(roadIndex) / 2.0f).y + frameWidth;
+			}
+			else if (y == 2)
+			{
+				pos.y += (stage->GetSize(roadIndex) / 2.0f).y + frameWidth;
+			}
+
+			Sprite::Get()->Draw(whiteBox[i],
+								pos,
+								frameWidth,
+								frameWidth,
+								stage->GetAnchorpoint(roadIndex),
+								{ 1.0f, 1.0f, 1.0f, 1.0f });
+		}
 	}
 	stage->Draw();
 
-	Sprite::Get()->Draw(cursor, Input::Get()->GetMousePos(), 32, 32, { 0.5f,0.5f });
+	//Sprite::Get()->Draw(cursor, Input::Get()->GetMousePos(), 32, 32, { 0.5f,0.5f });
 	OperationDraw();
 }
 
@@ -155,7 +225,7 @@ int EditerScene::GetStageIndex2MousePos(Vec2* distance)
 
 	for (int i = 0; i < stage->GetBoxSize(); i++)
 	{
-		const Vec2 leftTop = stage->GetAnchorpointPos(i, Vec2(0.0f, 0.0f)) + Vec2(frameWidth, frameWidth);
+		const Vec2 leftTop = stage->GetAnchorpointPos(i, Vec2(0.0f, 0.0f)) - Vec2(frameWidth, frameWidth);
 		const Vec2 rightBottom = stage->GetAnchorpointPos(i, Vec2(1.0f, 1.0f)) + Vec2(frameWidth, frameWidth);
 
 		if (Input::Get()->GetMousePos().x > leftTop.x &&
