@@ -29,7 +29,8 @@ public: //サブクラス
 			FUGU, //ふぐ
 			CAT,  //猫
 			LAZY, //なまけもの
-			EYE   //目
+			EYE,  //目
+			FISH  //サカナ
 		};
 
 	public: //メンバ変数
