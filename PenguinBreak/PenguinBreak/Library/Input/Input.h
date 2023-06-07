@@ -81,7 +81,11 @@ public://マウス
 	/// </summary>
 	/// <returns>トリガーか</returns>
 	bool MouseTriggerMiddle();
-
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	bool MouseReleaseLeft();
 	/// <summary>
 	/// マウス移動量を取得
 	/// </summary>
