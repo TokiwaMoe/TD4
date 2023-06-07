@@ -21,6 +21,18 @@ void Stage::Back::Init()
 	case Stage::Back::HAND:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/hand.png");
 		break;
+	case Stage::Back::FUGU:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/fugu.png");
+		break;
+	case Stage::Back::CAT:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/cat.png");
+		break;
+	case Stage::Back::LAZY:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/namake.png");
+		break;
+	case Stage::Back::EYE:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/eye.png");
+		break;
 	default:
 		break;
 	}
@@ -73,7 +85,7 @@ void Stage::Draw(float offsetX, float offsetY)
 		case Road::RoadType::GOAL:
 			color = Vec4(1.0f, 0.0f, 0.0f, 1.0f);
 			break;
-		case Road::RoadType::HOLE:
+		case Road::RoadType::WALL:
 			color = Vec4(1.0f, 1.0f, 0.0f, 1.0f);
 			break;
 		default:
@@ -139,7 +151,7 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		objectData.Init();
 
 		// ギミックタイプの読み込み
-		if (objectData.type == Road::RoadType::ROAD || objectData.type == Road::RoadType::HOLE)
+		if (objectData.type == Road::RoadType::ROAD || objectData.type == Road::RoadType::WALL)
 		{
 			objectData.gimmick = object["gimmick"];
 		}

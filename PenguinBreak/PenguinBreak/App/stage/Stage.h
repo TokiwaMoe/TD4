@@ -25,7 +25,11 @@ public: //サブクラス
 		{
 			PALM, //ヤシの木
 			DEER, //鹿
-			HAND  //手
+			HAND, //手
+			FUGU, //ふぐ
+			CAT,  //猫
+			LAZY, //なまけもの
+			EYE   //目
 		};
 
 	public: //メンバ変数
