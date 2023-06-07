@@ -67,7 +67,12 @@ float4 main(VSOutput input) : SV_TARGET
      float r = tex.Sample(smp, input.uv + float2(-shift, 0)).r;
      float g = tex.Sample(smp, input.uv + float2(0, 0)).g;
      float b = tex.Sample(smp, input.uv + float2(shift, 0)).b;
-     float4 col = float4(r, g, b, 1);
+
+     //“_–Å
+     float3 cool = float3(abs(sin(time)), 0, 0) * 0.5;
+     float4 a3 = float4(cool, 0.2f);
+
+     float4 col = float4(r, g, b, 1) + a3;
 
      return col;
 }
