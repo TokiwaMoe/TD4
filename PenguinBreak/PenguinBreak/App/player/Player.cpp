@@ -230,8 +230,8 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 	//2つの矩形の和を算出
 	Vec2 size_num =
 	{
-		((stage->GetInstance()->GetSize(num).x / 2.0f) - radius.x),
-		((stage->GetInstance()->GetSize(num).y / 2.0f) - radius.y)
+		(stage->GetInstance()->GetSize(num).x / 2.0f),
+		(stage->GetInstance()->GetSize(num).y / 2.0f)
 	};
 	//距離がサイズの和より小さいor以下
 	if (distance.x <= size_num.x && distance.y <= size_num.y)
