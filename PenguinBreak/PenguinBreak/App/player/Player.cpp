@@ -24,7 +24,6 @@ void Player::Initialize()
 
 void Player::Init(Stage* stage)
 {
-	//position = { 50,50 };
 	position = {
 	stage->GetInstance()->GetStartPos().x/* + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)*/,
 	stage->GetInstance()->GetStartPos().y/* + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)*/
@@ -40,6 +39,7 @@ void Player::Init(Stage* stage)
 		deathPos[i] = { 0,0 };
 		isDeathDraw[i] = false;
 	}
+	SetSize(Vec2(64.0f, 128.0f) / static_cast<float>(stage->GetPlayerSize()));
 }
 
 void Player::stageInit(int stageNo)
@@ -189,7 +189,7 @@ int Player::CollisionCount(Stage* stage)
 	int count = 0;
 	for (int i = 0; i < stage->GetBoxSize(); i++)
 	{
-		if (stage->GetType(i) == Road::RoadType::HOLE)
+		if (stage->GetType(i) == Road::RoadType::WALL)
 		{
 			if (!OutStage(position, stage, i))
 			{
@@ -256,8 +256,6 @@ void Player::Draw()
 			Sprite::Get()->Draw(death[i], deathPos[i], 32, 32, { 0.5f,0.5f });
 		}
 	}
-	//Vec2 position2D = { 200.0f,200.0f };
-	float width = 64.0f, height = 128.0f;
 	moveParticle->Draw(p_Texture);
 	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
 
@@ -272,4 +270,11 @@ void Player::Draw()
 		Sprite::Get()->Draw(hand_p, hPos, 32, 32, { 0.5f,0.5f });
 	}
 
+}
+
+void Player::SetSize(const Vec2& size)
+{
+	width = size.x;
+	height = size.y;
+	radius = (size / 2) - Vec2(4.0f, 4.0f);
 }

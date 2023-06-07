@@ -62,7 +62,7 @@ void GameScene::Update()
 		}
 	}
 
-	stage->GimmickUpdate();
+	stage->Update();
 	player->Update(stage);
 
 }
