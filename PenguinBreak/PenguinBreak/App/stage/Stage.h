@@ -25,7 +25,11 @@ public: //サブクラス
 		{
 			PALM, //ヤシの木
 			DEER, //鹿
-			HAND  //手
+			HAND, //手
+			FUGU, //ふぐ
+			CAT,  //猫
+			LAZY, //なまけもの
+			EYE   //目
 		};
 
 	public: //メンバ変数
@@ -45,7 +49,7 @@ public: //サブクラス
 
 public: //定数
 	static const int STAGE_COUNT = 3; //ステージの数
-	static const int BACK_COUNT = 1;  //背景の数
+	static const int BACK_COUNT = 3;  //背景の数
 
 private: //静的メンバ変数
 	static Vec2 ROAD_SIZE;

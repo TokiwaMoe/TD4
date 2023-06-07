@@ -21,6 +21,18 @@ void Stage::Back::Init()
 	case Stage::Back::HAND:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/hand.png");
 		break;
+	case Stage::Back::FUGU:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/fugu.png");
+		break;
+	case Stage::Back::CAT:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/cat.png");
+		break;
+	case Stage::Back::LAZY:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/namake.png");
+		break;
+	case Stage::Back::EYE:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/eye.png");
+		break;
 	default:
 		break;
 	}
