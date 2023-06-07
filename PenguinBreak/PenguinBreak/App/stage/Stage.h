@@ -25,6 +25,7 @@ public: //サブクラス
 		{
 			PALM, //ヤシの木
 			DEER, //鹿
+			HAND  //手
 		};
 
 	public: //メンバ変数
