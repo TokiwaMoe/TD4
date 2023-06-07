@@ -49,7 +49,7 @@ public: //サブクラス
 
 public: //定数
 	static const int STAGE_COUNT = 3; //ステージの数
-	static const int BACK_COUNT = 1;  //背景の数
+	static const int BACK_COUNT = 3;  //背景の数
 
 private: //静的メンバ変数
 	static Vec2 ROAD_SIZE;
