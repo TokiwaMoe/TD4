@@ -73,7 +73,7 @@ void Stage::Draw(float offsetX, float offsetY)
 		case Road::RoadType::GOAL:
 			color = Vec4(1.0f, 0.0f, 0.0f, 1.0f);
 			break;
-		case Road::RoadType::HOLE:
+		case Road::RoadType::WALL:
 			color = Vec4(1.0f, 1.0f, 0.0f, 1.0f);
 			break;
 		default:
@@ -139,7 +139,7 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		objectData.Init();
 
 		// ギミックタイプの読み込み
-		if (objectData.type == Road::RoadType::ROAD || objectData.type == Road::RoadType::HOLE)
+		if (objectData.type == Road::RoadType::ROAD || objectData.type == Road::RoadType::WALL)
 		{
 			objectData.gimmick = object["gimmick"];
 		}
