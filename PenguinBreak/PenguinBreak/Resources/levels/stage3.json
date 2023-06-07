@@ -35,17 +35,17 @@
             "type": 0
         },
         {
-            "gimmick": 2,
+            "gimmick": 4,
             "parameter": {
                 "flag": false,
                 "limit": [
-                    700.0,
+                    350.0,
                     0.0
                 ],
                 "speed": 10.0
             },
             "pos" : [
-                0.0,
+                -350.0,
                 0.0
             ],
             "size" : [

@@ -187,7 +187,7 @@ int Player::CollisionCount(Stage* stage)
 	int count = 0;
 	for (int i = 0; i < stage->GetBoxSize(); i++)
 	{
-		if (stage->GetType(i) == Road::RoadType::HOLE)
+		if (stage->GetType(i) == Road::RoadType::WALL)
 		{
 			if (!OutStage(position, stage, i))
 			{
