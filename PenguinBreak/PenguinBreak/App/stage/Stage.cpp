@@ -150,6 +150,7 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		objectData.pos = Vec2(object["pos"][0], object["pos"][1]);
 		objectData.size = Vec2(object["size"][0], object["size"][1]);
 		objectData.offset = Vec2(object["offset"][0], object["offset"][1]);
+		objectData.pos += objectData.offset;
 
 		objectData.Init();
 
@@ -232,6 +233,7 @@ Stage::JsonData* Stage::LoadBack(const std::string& jsonFile)
 		objectData.pos = Vec2(object["pos"][0], object["pos"][1]);
 		objectData.size = Vec2(object["size"][0], object["size"][1]);
 		objectData.offset = Vec2(object["offset"][0], object["offset"][1]);
+		objectData.pos += objectData.offset;
 		objectData.gimmick = object["gimmick"];
 		objectData.back = object["back"];
 		objectData.isFlipX = object["flipX"];
