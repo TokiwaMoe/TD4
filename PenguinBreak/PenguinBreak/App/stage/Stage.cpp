@@ -18,6 +18,9 @@ void Stage::Back::Init()
 	case Stage::Back::DEER:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/shika.png");
 		break;
+	case Stage::Back::HAND:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/hand.png");
+		break;
 	default:
 		break;
 	}

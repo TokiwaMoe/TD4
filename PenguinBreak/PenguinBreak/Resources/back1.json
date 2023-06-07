@@ -28,7 +28,7 @@
             ]
         },
         {
-            "back" : 0,
+            "back" : 2,
             "flipX" : false,
             "flipY" : false,
             "gimmick": 3,
@@ -54,7 +54,7 @@
             ]
         },
         {
-            "back" : 0,
+            "back" : 2,
             "flipX" : true,
             "flipY" : false,
             "gimmick": 3,
