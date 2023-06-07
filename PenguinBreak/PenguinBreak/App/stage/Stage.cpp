@@ -31,7 +31,8 @@ Stage::Stage() :
 	backObjects{},
 	startIndex(0),
 	goalIndex(0),
-	roadCount(2)
+	roadCount(2),
+	playerSize(1)
 {
 }
 
@@ -43,47 +44,12 @@ void Stage::Init()
 {
 }
 
-void Stage::GimmickUpdate()
+void Stage::Update()
 {
 	// 背景オブジェクトの更新
-	for (auto& i : backObjects)
-	{
-		switch (i.gimmick)
-		{
-		case Road::Gimmick::SCALE:
-			ScaleGimmick(i);
-			break;
-		case Road::Gimmick::DIRECTION_SCALE:
-			DirectionScaleGimmick(i);
-			break;
-		case Road::Gimmick::MOVE:
-			MoveGimmick(i);
-			break;
-		default:
-			continue;
-			break;
-		}
-	}
-
+	GimmickUpdate(backObjects);
 	// 道の更新
-	for (auto& i : boxes)
-	{
-		switch (i.gimmick)
-		{
-		case Road::Gimmick::SCALE:
-			ScaleGimmick(i);
-			break;
-		case Road::Gimmick::DIRECTION_SCALE:
-			DirectionScaleGimmick(i);
-			break;
-		case Road::Gimmick::MOVE:
-			MoveGimmick(i);
-			break;
-		default:
-			continue;
-			break;
-		}
-	}
+	GimmickUpdate(boxes);
 }
 
 void Stage::Draw(float offsetX, float offsetY)
@@ -107,7 +73,7 @@ void Stage::Draw(float offsetX, float offsetY)
 		case Road::RoadType::GOAL:
 			color = Vec4(1.0f, 0.0f, 0.0f, 1.0f);
 			break;
-		case Road::RoadType::HOLE:
+		case Road::RoadType::WALL:
 			color = Vec4(1.0f, 1.0f, 0.0f, 1.0f);
 			break;
 		default:
@@ -143,10 +109,16 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 
 	// 正しいファイルかチェック
 	assert(deserialized.is_object());
+
 	assert(deserialized.contains("name"));
 	assert(deserialized["name"].is_string());
 	std::string name = deserialized["name"];
 	assert(name.compare("stage") == 0);
+
+	assert(deserialized.contains("player"));
+	assert(deserialized["player"].is_number());
+	playerSize = deserialized["player"];
+	assert(playerSize != 0);
 
 	// レベルデータ格納用インスタンスを生成
 	JsonData* levelData = new JsonData();
@@ -167,7 +139,7 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		objectData.Init();
 
 		// ギミックタイプの読み込み
-		if (objectData.type == Road::RoadType::ROAD)
+		if (objectData.type == Road::RoadType::ROAD || objectData.type == Road::RoadType::WALL)
 		{
 			objectData.gimmick = object["gimmick"];
 		}
@@ -538,6 +510,27 @@ void Stage::MoveGimmick(Road& road)
 		{
 			road.parameter.ChangeFlag();
 		}
+	}
+}
+
+void Stage::LoopMoveGimmick(Road& road)
+{
+	Vec2 limit = road.GetInitPos() + road.parameter.GetLimit();
+	// 軸単位で動かすかどうか
+	Vec2 moveDir = {};
+	if (road.parameter.GetLimit().x > 0) { moveDir.x = +1.0f; }
+	else if (road.parameter.GetLimit().x < 0) { moveDir.x = -1.0f; }
+	if (road.parameter.GetLimit().y > 0) { moveDir.y = +1.0f; }
+	else if (road.parameter.GetLimit().y < 0) { moveDir.y = -1.0f; }
+
+	road.pos += moveDir * road.parameter.GetSpeed();
+
+	if ((moveDir.x > 0 && (road.pos.x >= limit.x)) ||
+		(moveDir.x < 0 && (road.pos.x <= limit.x)) ||
+		(moveDir.y > 0 && (road.pos.y >= limit.y)) ||
+		(moveDir.y < 0 && (road.pos.y <= limit.y)))
+	{
+		road.pos = road.GetInitPos() - road.parameter.GetLimit();
 	}
 }
 
