@@ -96,11 +96,11 @@
     <Filter Include="ソース ファイル\Player">
       <UniqueIdentifier>{5dfc0fd6-ebe4-48ce-ab6f-f34d2fb0cb4a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Stage">
-      <UniqueIdentifier>{f09b0eb6-a7c5-46bd-afff-97d78cb43d4e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\ResultStating">
       <UniqueIdentifier>{5d9eb78a-ce01-415d-9e33-1326c1b1030f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Scene\Stage">
+      <UniqueIdentifier>{f09b0eb6-a7c5-46bd-afff-97d78cb43d4e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -400,7 +400,7 @@
       <Filter>ソース ファイル\Player</Filter>
     </ClInclude>
     <ClInclude Include="App\stage\Stage.h">
-      <Filter>ソース ファイル\Stage</Filter>
+      <Filter>ソース ファイル\Scene\Stage</Filter>
     </ClInclude>
     <ClInclude Include="App\scene\EditerScene.h">
       <Filter>ソース ファイル\Scene</Filter>
@@ -547,7 +547,7 @@
       <Filter>ソース ファイル\Player</Filter>
     </ClCompile>
     <ClCompile Include="App\stage\Stage.cpp">
-      <Filter>ソース ファイル\Stage</Filter>
+      <Filter>ソース ファイル\Scene\Stage</Filter>
     </ClCompile>
     <ClCompile Include="App\scene\EditerScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>

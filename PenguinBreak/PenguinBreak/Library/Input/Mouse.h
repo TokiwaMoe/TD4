@@ -47,6 +47,11 @@ public://メンバ関数
 	/// </summary>
 	/// <returns>トリガーか</returns>
 	bool TriggerMouseLeft();
+	/// <summary>
+	/// キーの左ボタンを離した瞬間をチェック
+	/// </summary>
+	/// <returns></returns>
+	bool ReleseMouseLeft();
 
 	/// <summary>
 	/// キーの中ボタントリガーをチェック
