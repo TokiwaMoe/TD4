@@ -55,6 +55,8 @@ public:
 	//死
 	int GetDeathCount() { return deathCount; }
 	//setter
+	//スプライトサイズ
+	void SetSize(const Vec2& size);
 
 private:
 	static const int DEATH_MAX = 30;
