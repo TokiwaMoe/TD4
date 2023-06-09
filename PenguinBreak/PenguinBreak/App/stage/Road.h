@@ -62,7 +62,7 @@ public: //関数
 	virtual void Init();
 
 	SpriteData& GetSprite() { return sprite; }
-	const Vec2 GetPos() const { return pos + offset; }
+	const Vec2 GetPos() const { return pos; }
 	const Vec2 GetInitPos() const { return initPos; }
 	const Vec2 GetInitSize() const { return initSize; }
 	const Vec2 GetAnchorpointPos(const Vec2& uv) const;
