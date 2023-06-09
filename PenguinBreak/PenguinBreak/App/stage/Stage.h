@@ -30,7 +30,9 @@ public: //サブクラス
 			CAT,  //猫
 			LAZY, //なまけもの
 			EYE,  //目
-			FISH  //サカナ
+			FISH, //サカナ
+			SEA,  //海
+			SUN,  //太陽
 		};
 
 	public: //メンバ変数

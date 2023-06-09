@@ -67,7 +67,7 @@ void Player::Move()
 	circle.radius = 128;
 	ray.start = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y,0 };
 	ray.dir = { 1,0,0,0 };
-	if (Input::Get()->MousePushLeft()) {
+	if (Input::Get()->MousePushLeft() && !effect) {
 		if (Collision::CheckRay2Sphere(ray, circle)) {
 			position = Input::Get()->GetMousePos();
 			//プレイヤーの画像によってはいらない処理
