@@ -230,10 +230,11 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 	if (distance.x < 0.0f) { distance.x *= -1.0f; }
 	if (distance.y < 0.0f) { distance.y *= -1.0f; }
 	//2つの矩形の和を算出
+	const float outSize = 20.0f;
 	Vec2 size_num =
 	{
-		(stage->GetInstance()->GetSize(num).x / 2.0f),
-		(stage->GetInstance()->GetSize(num).y / 2.0f)
+		(stage->GetInstance()->GetSize(num).x / 2.0f) - outSize,
+		(stage->GetInstance()->GetSize(num).y / 2.0f) - outSize
 	};
 	//距離がサイズの和より小さいor以下
 	if (distance.x <= size_num.x && distance.y <= size_num.y)
