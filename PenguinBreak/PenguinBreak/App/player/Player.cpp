@@ -56,7 +56,7 @@ void Player::Update(Stage* stage)
 	ConvertParticlePos();
 	//移動
 	Move();
-	//collide2Stage(stage);
+	collide2Stage(stage);
 	Input::Get()->SetCursor(false);
 }
 
