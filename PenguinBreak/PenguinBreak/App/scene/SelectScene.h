@@ -35,6 +35,8 @@ private:
 	void StageDecision();
 	//選択時大きさが変わる処理
 	void DecisionScale();
+	//うごくスプライト
+	void Move();
 private://定義
 
 	SpriteData backGround[2];            //背景
@@ -51,5 +53,9 @@ private://定義
 	SpriteData hand_p = {};
 	SpriteData hand_g = {};
 	bool isDraw = false;
+
+	Vec2 rulePos = { 640,370 };
+	SpriteData rule = {};
+	bool isChange = false;
 };
 
