@@ -64,7 +64,7 @@ void Player::Move()
 {
 	//円とレイの判定を使っている
 	circle.center = { position.x, position.y, 0 };
-	circle.radius = 128;
+	circle.radius = 64;
 	ray.start = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y,0 };
 	ray.dir = { 1,0,0,0 };
 	if (Input::Get()->MousePushLeft() && !effect) {
