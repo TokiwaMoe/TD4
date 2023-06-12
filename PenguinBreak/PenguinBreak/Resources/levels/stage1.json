@@ -1,5 +1,6 @@
 {
     "name": "stage",
+    "player" : 1,
     "objects": [
         {
             "gimmick": 0,
@@ -112,6 +113,7 @@
             "type": 2
         },
         {
+            "gimmick": 0,
             "pos": [
                 0.0,
                 0.0
@@ -127,6 +129,7 @@
             "type": 3
         },
         {
+            "gimmick": 0,
             "pos": [
                 0.0,
                 0.0

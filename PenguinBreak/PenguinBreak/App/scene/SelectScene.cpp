@@ -31,6 +31,8 @@ void SelectScene::Init()
 	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
 	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
 
+	rule = Sprite::Get()->SpriteCreate(L"Resources/rule.png");
+
 	Vec2 size = {};
 	for (int i = 0; i < Stage::STAGE_COUNT; i++)
 	{
@@ -47,14 +49,18 @@ void SelectScene::Update()
 	StageDecision();
 
 	DecisionScale();
+
+	Move();
 }
 
 void SelectScene::Draw()
 {
 	const float width = 1280, height = 720;
 	Sprite::Get()->Draw(backGround[0], {}, width, height);
+	Sprite::Get()->Draw(rule, rulePos, 500, 700, {0.5,0.5});
 	Sprite::Get()->Draw(backGround[1], {}, width, height);
 	const float length = 94.0f;
+	
 	//ステージ数字
 	for (int i = 0; i < Stage::STAGE_COUNT; i++)
 	{
@@ -107,24 +113,22 @@ void SelectScene::StageDecision()
 	//ステージの数字
 	const Vec2 sSize = { 40.0f ,40.0f };
 	const Vec2 mSize = { 6.0f,6.0f };
-	//マウスでステージ決定
-	if (Input::Get()->MousePushLeft()) {
+	//演出処理
+	if (Input::Get()->MousePushLeft())
+	{
+		//手のspを表示するか
+		isDraw = true;
+		scaleNumber = -1;//リセット数字
 		for (int i = 0; i < Stage::STAGE_COUNT; i++)
 		{
 			if (Collision::BoxCollision(stagePos[i], Input::Get()->GetMousePos(), sSize, mSize)) {
-				BaseScene* scene = new GameScene();
-				scene->nextStage = i + 1;
-				sceneManager_->SetNextScene(scene);
-				break;
+				scaleNumber = i;
 			}
 		}
 		//タイトル戻るボタン
 		if (Collision::BoxCollision(backButtonPos, Input::Get()->GetMousePos(), sSize, mSize)) {
-			BaseScene* scene = new TitleScene();
-			sceneManager_->SetNextScene(scene);
+			scaleNumber = -2;
 		}
-		//手のspを表示するか
-		isDraw = true;
 	}
 	else
 	{
@@ -141,11 +145,29 @@ void SelectScene::StageDecision()
 		}
 		isDraw = false;
 	}
+
+	//マウスでステージ決定
+	if (Input::Get()->MouseReleaseLeft()) {
+		for (int i = 0; i < Stage::STAGE_COUNT; i++)
+		{
+			if (Collision::BoxCollision(stagePos[i], Input::Get()->GetMousePos(), sSize, mSize)) {
+				BaseScene* scene = new GameScene();
+				scene->nextStage = i + 1;
+				sceneManager_->SetNextScene(scene);
+				break;
+			}
+		}
+		//タイトル戻るボタン
+		if (Collision::BoxCollision(backButtonPos, Input::Get()->GetMousePos(), sSize, mSize)) {
+			BaseScene* scene = new TitleScene();
+			sceneManager_->SetNextScene(scene);
+		}
+	}
 }
 
 void SelectScene::DecisionScale()
 {
-	const float scaleMax = 1.0f,scaleMin = 0.8f,speed = 0.01f;
+	const float scaleMax = 1.0f, scaleMin = 0.8f, speed = 0.01f;
 	if (decScaleFlag == true)
 	{
 		scale += speed;
@@ -160,6 +182,41 @@ void SelectScene::DecisionScale()
 		if (scale <= scaleMin)
 		{
 			decScaleFlag = true;
+		}
+	}
+}
+
+void SelectScene::Move()
+{
+	Vec2 limit = { 640,370 };
+	Vec2 lim = { 300,0 };
+	const float speed = 3;
+	// 軸単位で動かすかどうか
+	const Vec2 isMove = {
+		(lim.x ? 1.0f : 0.0f),
+		(lim.y ? 1.0f : 0.0f)
+	};
+
+	if (isChange)
+	{
+		// +方向に移動する
+		limit += lim;
+		rulePos += isMove * speed;
+
+		if ((isMove.x && (rulePos.x >= limit.x)) || (isMove.y && (rulePos.y >= limit.y)))
+		{
+			isChange = false;
+		}
+	}
+	else
+	{
+		// -方向に移動する
+		limit -= lim;
+		rulePos -= isMove * speed;
+
+		if ((isMove.x && (rulePos.x <= limit.x)) || (isMove.y && (rulePos.y <= limit.y)))
+		{
+			isChange = true;
 		}
 	}
 }

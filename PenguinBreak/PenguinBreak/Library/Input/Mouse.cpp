@@ -8,7 +8,7 @@ bool Mouse::Init()
 	HRESULT result = S_FALSE;
 
 	// DirectInputオブジェクトの生成	
-	result = DirectInput8Create(Window::Get()->GetInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void **)&m_dinput, nullptr);
+	result = DirectInput8Create(Window::Get()->GetInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&m_dinput, nullptr);
 	if (FAILED(result)) {
 		assert(0);
 		return result;
@@ -47,7 +47,7 @@ void Mouse::Update()
 
 	// マウスの入力
 	result = m_devMouse->GetDeviceState(sizeof(m_mouseState), &m_mouseState);
-	
+
 	POINT p;
 	// マウス座標(スクリーン座標)を取得する
 	GetCursorPos(&p);
@@ -82,6 +82,17 @@ bool  Mouse::TriggerMouseLeft()
 {
 	// 前回が0で、今回が0でなければトリガー
 	if (!m_mouseStatePre.rgbButtons[0] && m_mouseState.rgbButtons[0]) {
+		return true;
+	}
+
+	// トリガーでない
+	return false;
+}
+
+bool Mouse::ReleseMouseLeft()
+{
+	// 前回が0で、今回が0でなければトリガー
+	if (m_mouseStatePre.rgbButtons[0] && !m_mouseState.rgbButtons[0]) {
 		return true;
 	}
 

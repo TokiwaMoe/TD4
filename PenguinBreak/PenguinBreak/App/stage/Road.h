@@ -10,7 +10,7 @@ public: //サブクラス
 		ROAD,  //道
 		START, //スタート
 		GOAL,  //ゴール
-		HOLE,  //穴
+		WALL,  //穴
 		BACK,  //背景オブジェクト
 	};
 
@@ -19,8 +19,9 @@ public: //サブクラス
 	{
 		NO_GIMMICK,      //ギミック無し
 		SCALE,           //道が狭まるギミック(全方向)
-		MOVE,            //道が移動するギミック
+		MOVE,            //道が移動するギミック（折り返し）
 		DIRECTION_SCALE, //道が狭まるギミック(単一の方向)
+		LOOP_MOVE,       //道が移動するギミック（ループ）
 	};
 
 	// ギミックを動かす為に使う値
@@ -61,7 +62,7 @@ public: //関数
 	virtual void Init();
 
 	SpriteData& GetSprite() { return sprite; }
-	const Vec2 GetPos() const { return pos + offset; }
+	const Vec2 GetPos() const { return pos; }
 	const Vec2 GetInitPos() const { return initPos; }
 	const Vec2 GetInitSize() const { return initSize; }
 	const Vec2 GetAnchorpointPos(const Vec2& uv) const;

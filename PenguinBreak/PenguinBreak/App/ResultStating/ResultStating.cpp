@@ -107,16 +107,13 @@ void ResultStating::StageDecision(const int nextStage)
 	//マウスでステージ決定
 	if (Input::Get()->MousePushLeft()) {
 
-		//ステージセレクトへ
-		if (Collision::BoxCollision(selectPos, Input::Get()->GetMousePos(), selectSize, mSize)) {
-			nextSceneStatus = BACK;
+		scaleNumber = -1;//リセット数字
+		if (Collision::BoxCollision(selectPos, Input::Get()->GetMousePos(), selectSize / 2, mSize)) {
+			scaleNumber = BACK;
 		}
-		//次のステージへ
-		if (nextStage < Stage::STAGE_COUNT + 1)
-		{
-			if (Collision::BoxCollision(nextStagePos, Input::Get()->GetMousePos(), selectSize, mSize)) {
-				nextSceneStatus = NEXT;
-			}
+		//タイトル戻るボタン
+		if (Collision::BoxCollision(nextStagePos, Input::Get()->GetMousePos(), selectSize / 2, mSize)) {
+			scaleNumber = NEXT;
 		}
 		//手のspを表示するか
 		isDraw = true;
@@ -132,6 +129,21 @@ void ResultStating::StageDecision(const int nextStage)
 			scaleNumber = NEXT;
 		}
 		isDraw = false;
+	}
+	//マウスでステージ決定
+	if (Input::Get()->MouseReleaseLeft())
+	{
+		//ステージセレクトへ
+		if (Collision::BoxCollision(selectPos, Input::Get()->GetMousePos(), selectSize / 2, mSize)) {
+			nextSceneStatus = BACK;
+		}
+		//次のステージへ
+		if (nextStage < Stage::STAGE_COUNT + 1)
+		{
+			if (Collision::BoxCollision(nextStagePos, Input::Get()->GetMousePos(), selectSize / 2, mSize)) {
+				nextSceneStatus = NEXT;
+			}
+		}
 	}
 }
 

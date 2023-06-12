@@ -1,5 +1,6 @@
 {
     "name": "stage",
+    "player" : 1,
     "objects": [
         {
             "gimmick": 0,

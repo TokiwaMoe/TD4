@@ -1,0 +1,57 @@
+{
+    "name": "back",
+  "objects": [
+    {
+      "back": 4,
+      "flipX": false,
+      "flipY": false,
+      "gimmick": 3,
+      "parameter": {
+        "flag": true,
+        "limit": [
+          120.0,
+          -60.0
+        ],
+        "speed": 10.0
+      },
+      "pos": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        505.0,
+        637.0
+      ],
+      "offset": [
+        252.5,
+        501.5
+      ]
+    },
+    {
+      "back": 4,
+      "flipX": true,
+      "flipY": false,
+      "gimmick": 3,
+      "parameter": {
+        "flag": true,
+        "limit": [
+          -120.0,
+          -60.0
+        ],
+        "speed": 10.0
+      },
+      "pos": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        505.0,
+        637.0
+      ],
+      "offset": [
+        1027.5,
+        501.5
+      ]
+    }
+  ]
+}

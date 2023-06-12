@@ -32,7 +32,7 @@ void GameScene::Init()
 	{
 		stage->ChengeStage(stageNumber);
 	}
-	stage->ChengeBack(backNumber);
+	stage->ChengeBack(stageNumber);
 	//プレイヤー
 	player->Initialize();
 	player->Init(stage);
@@ -62,7 +62,7 @@ void GameScene::Update()
 		}
 	}
 
-	stage->GimmickUpdate();
+	stage->Update();
 	player->Update(stage);
 
 }
@@ -70,7 +70,7 @@ void GameScene::Draw()
 {
 	float width = 1280, height = 720;
 	Sprite::Get()->Draw(background, { 0,0 }, width, height);
-	stage->Draw();
+stage->Draw();
 	player->Draw();
 
 	if (isEditer == true)

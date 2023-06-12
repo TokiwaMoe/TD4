@@ -24,7 +24,6 @@ void Player::Initialize()
 
 void Player::Init(Stage* stage)
 {
-	//position = { 50,50 };
 	position = {
 	stage->GetInstance()->GetStartPos().x/* + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)*/,
 	stage->GetInstance()->GetStartPos().y/* + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)*/
@@ -40,6 +39,7 @@ void Player::Init(Stage* stage)
 		deathPos[i] = { 0,0 };
 		isDeathDraw[i] = false;
 	}
+	SetSize(Vec2(64.0f, 128.0f) / static_cast<float>(stage->GetPlayerSize()));
 }
 
 void Player::stageInit(int stageNo)
@@ -52,6 +52,7 @@ void Player::stageInit(int stageNo)
 
 void Player::Update(Stage* stage)
 {
+	//スクリーン座標からワールド座標に変換する処理
 	ConvertParticlePos();
 	//移動
 	Move();
@@ -66,7 +67,7 @@ void Player::Move()
 	circle.radius = 128;
 	ray.start = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y,0 };
 	ray.dir = { 1,0,0,0 };
-	if (Input::Get()->MousePushLeft()) {
+	if (Input::Get()->MousePushLeft() && !effect) {
 		if (Collision::CheckRay2Sphere(ray, circle)) {
 			position = Input::Get()->GetMousePos();
 			//プレイヤーの画像によってはいらない処理
@@ -81,6 +82,8 @@ void Player::Move()
 		//パーティクルだす
 		//手のspを表示するか
 		isDraw = true;
+		moveParticle->ParticleAdd2(particlePos, { 1,0,1,1 }, { 1,0,1,1 });
+
 	}
 	else
 	{
@@ -125,7 +128,6 @@ void Player::ConvertParticlePos()
 
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", particlePos.x, particlePos.z);
 	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);
-	moveParticle->ParticleAdd2(particlePos, { 1,0,1,1 }, { 1,0,1,1 });
 	moveParticle->Update();
 }
 
@@ -187,7 +189,7 @@ int Player::CollisionCount(Stage* stage)
 	int count = 0;
 	for (int i = 0; i < stage->GetBoxSize(); i++)
 	{
-		if (stage->GetType(i) == Road::RoadType::HOLE)
+		if (stage->GetType(i) == Road::RoadType::WALL)
 		{
 			if (!OutStage(position, stage, i))
 			{
@@ -228,10 +230,11 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 	if (distance.x < 0.0f) { distance.x *= -1.0f; }
 	if (distance.y < 0.0f) { distance.y *= -1.0f; }
 	//2つの矩形の和を算出
+	const float outSize = 20.0f;
 	Vec2 size_num =
 	{
-		((stage->GetInstance()->GetSize(num).x / 2.0f) - radius.x),
-		((stage->GetInstance()->GetSize(num).y / 2.0f) - radius.y)
+		(stage->GetInstance()->GetSize(num).x / 2.0f) - outSize,
+		(stage->GetInstance()->GetSize(num).y / 2.0f) - outSize
 	};
 	//距離がサイズの和より小さいor以下
 	if (distance.x <= size_num.x && distance.y <= size_num.y)
@@ -254,8 +257,6 @@ void Player::Draw()
 			Sprite::Get()->Draw(death[i], deathPos[i], 32, 32, { 0.5f,0.5f });
 		}
 	}
-	//Vec2 position2D = { 200.0f,200.0f };
-	float width = 64.0f, height = 128.0f;
 	moveParticle->Draw(p_Texture);
 	Sprite::Get()->Draw(player, position, width, height, { 0.5f,0.5f }, { 1,1,1,1 }, flipFlag);
 
@@ -270,4 +271,11 @@ void Player::Draw()
 		Sprite::Get()->Draw(hand_p, hPos, 32, 32, { 0.5f,0.5f });
 	}
 
+}
+
+void Player::SetSize(const Vec2& size)
+{
+	width = size.x;
+	height = size.y;
+	radius = (size / 2) - Vec2(4.0f, 4.0f);
 }

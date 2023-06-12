@@ -1,0 +1,188 @@
+{
+    "name": "back",
+  "objects": [
+    {
+      "back": 8,
+      "flipX": false,
+      "flipY": false,
+      "gimmick": 0,
+      "parameter": {
+        "flag": true,
+        "limit": [
+          0.0,
+          0.0
+        ],
+        "speed": 0.0
+      },
+      "pos": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        2560.0,
+        1440.0
+      ],
+      "offset": [
+        0,
+        0
+      ]
+    },
+    {
+      "back": 7,
+      "flipX": false,
+      "flipY": false,
+      "gimmick": 4,
+      "parameter": {
+        "flag": true,
+        "limit": [
+          -200.0,
+          600.0
+        ],
+        "speed": 2.0
+      },
+      "pos": [
+        -200.0,
+        100.0
+      ],
+      "size": [
+        128.0,
+        128.0
+      ],
+      "offset": [
+        200,
+        600
+      ]
+    },
+    {
+      "back": 7,
+      "flipX": false,
+      "flipY": false,
+      "gimmick": 4,
+      "parameter": {
+        "flag": true,
+        "limit": [
+          -200.0,
+          600.0
+        ],
+        "speed": 5.0
+      },
+      "pos": [
+        100.0,
+        100.0
+      ],
+      "size": [
+        128.0,
+        128.0
+      ],
+      "offset": [
+        200,
+        600
+      ]
+    },
+    {
+      "back": 7,
+      "flipX": false,
+      "flipY": false,
+      "gimmick": 4,
+      "parameter": {
+        "flag": true,
+        "limit": [
+          -200.0,
+          600.0
+        ],
+        "speed": 2.0
+      },
+      "pos": [
+        400.0,
+        100.0
+      ],
+      "size": [
+        128.5,
+        128.0
+      ],
+      "offset": [
+        200.25,
+        600.0
+      ]
+    },
+    {
+      "back": 7,
+      "flipX": false,
+      "flipY": false,
+      "gimmick": 4,
+      "parameter": {
+        "flag": true,
+        "limit": [
+          -200.0,
+          600.0
+        ],
+        "speed": 5.0
+      },
+      "pos": [
+        700.0,
+        100.0
+      ],
+      "size": [
+        128.5,
+        128.0
+      ],
+      "offset": [
+        200.25,
+        600.0
+      ]
+    },
+    {
+      "back": 7,
+      "flipX": false,
+      "flipY": false,
+      "gimmick": 4,
+      "parameter": {
+        "flag": true,
+        "limit": [
+          -200.0,
+          600.0
+        ],
+        "speed": 2.0
+      },
+      "pos": [
+        1000.0,
+        100.0
+      ],
+      "size": [
+        128.5,
+        128.0
+      ],
+      "offset": [
+        200.25,
+        600.0
+      ]
+    },
+    {
+      "back": 3,
+      "flipX": true,
+      "flipY": false,
+      "gimmick": 2,
+      "parameter": {
+        "flag": true,
+        "limit": [
+          200.0,
+          0.0
+        ],
+        "speed": 10.0
+      },
+      "pos": [
+        0.0,
+        0.0
+      ],
+      "size": [
+        505.0,
+        637.0
+      ],
+      "offset": [
+        0.5,
+        150.5
+      ]
+    }
+
+  ]
+}
