@@ -20,7 +20,7 @@ void TitleScene::Init()
 	button = Sprite::Get()->SpriteCreate(L"Resources/Title/start.png");
 	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
 	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
-
+	explanation = Sprite::Get()->SpriteCreate(L"Resources/explanation.png");
 	PostEffect::Get()->SetPipeline(static_cast<int>(PostEffectType::NORMAL));
 }
 
@@ -57,7 +57,7 @@ void TitleScene::Draw()
 
 	Vec2  anchorpoint = { 0.5f,0.5f };
 	Sprite::Get()->Draw(titleGraph, { 0,0 }, width, height);
-
+	Sprite::Get()->Draw(explanation, Vec2(), width, height);
 	if (isScale)
 	{
 		Sprite::Get()->Draw(button, bPos, bSize.x * scale, bSize.y * scale, anchorpoint);

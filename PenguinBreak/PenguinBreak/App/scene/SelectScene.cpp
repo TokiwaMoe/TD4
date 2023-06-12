@@ -31,6 +31,8 @@ void SelectScene::Init()
 	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
 	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
 
+	rule = Sprite::Get()->SpriteCreate(L"Resources/rule.png");
+
 	Vec2 size = {};
 	for (int i = 0; i < Stage::STAGE_COUNT; i++)
 	{
@@ -47,14 +49,18 @@ void SelectScene::Update()
 	StageDecision();
 
 	DecisionScale();
+
+	Move();
 }
 
 void SelectScene::Draw()
 {
 	const float width = 1280, height = 720;
 	Sprite::Get()->Draw(backGround[0], {}, width, height);
+	Sprite::Get()->Draw(rule, rulePos, 500, 700, {0.5,0.5});
 	Sprite::Get()->Draw(backGround[1], {}, width, height);
 	const float length = 94.0f;
+	
 	//ステージ数字
 	for (int i = 0; i < Stage::STAGE_COUNT; i++)
 	{
@@ -176,6 +182,41 @@ void SelectScene::DecisionScale()
 		if (scale <= scaleMin)
 		{
 			decScaleFlag = true;
+		}
+	}
+}
+
+void SelectScene::Move()
+{
+	Vec2 limit = { 640,370 };
+	Vec2 lim = { 300,0 };
+	const float speed = 3;
+	// 軸単位で動かすかどうか
+	const Vec2 isMove = {
+		(lim.x ? 1.0f : 0.0f),
+		(lim.y ? 1.0f : 0.0f)
+	};
+
+	if (isChange)
+	{
+		// +方向に移動する
+		limit += lim;
+		rulePos += isMove * speed;
+
+		if ((isMove.x && (rulePos.x >= limit.x)) || (isMove.y && (rulePos.y >= limit.y)))
+		{
+			isChange = false;
+		}
+	}
+	else
+	{
+		// -方向に移動する
+		limit -= lim;
+		rulePos -= isMove * speed;
+
+		if ((isMove.x && (rulePos.x <= limit.x)) || (isMove.y && (rulePos.y <= limit.y)))
+		{
+			isChange = true;
 		}
 	}
 }

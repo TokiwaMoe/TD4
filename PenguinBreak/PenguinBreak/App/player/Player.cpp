@@ -52,6 +52,7 @@ void Player::stageInit(int stageNo)
 
 void Player::Update(Stage* stage)
 {
+	//スクリーン座標からワールド座標に変換する処理
 	ConvertParticlePos();
 	//移動
 	Move();
@@ -66,7 +67,7 @@ void Player::Move()
 	circle.radius = 128;
 	ray.start = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y,0 };
 	ray.dir = { 1,0,0,0 };
-	if (Input::Get()->MousePushLeft()) {
+	if (Input::Get()->MousePushLeft() && !effect) {
 		if (Collision::CheckRay2Sphere(ray, circle)) {
 			position = Input::Get()->GetMousePos();
 			//プレイヤーの画像によってはいらない処理
@@ -81,6 +82,8 @@ void Player::Move()
 		//パーティクルだす
 		//手のspを表示するか
 		isDraw = true;
+		moveParticle->ParticleAdd2(particlePos, { 1,0,1,1 }, { 1,0,1,1 });
+
 	}
 	else
 	{
@@ -125,7 +128,6 @@ void Player::ConvertParticlePos()
 
 	DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", particlePos.x, particlePos.z);
 	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);
-	moveParticle->ParticleAdd2(particlePos, { 1,0,1,1 }, { 1,0,1,1 });
 	moveParticle->Update();
 }
 
@@ -228,10 +230,11 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 	if (distance.x < 0.0f) { distance.x *= -1.0f; }
 	if (distance.y < 0.0f) { distance.y *= -1.0f; }
 	//2つの矩形の和を算出
+	const float outSize = 20.0f;
 	Vec2 size_num =
 	{
-		(stage->GetInstance()->GetSize(num).x / 2.0f),
-		(stage->GetInstance()->GetSize(num).y / 2.0f)
+		(stage->GetInstance()->GetSize(num).x / 2.0f) - outSize,
+		(stage->GetInstance()->GetSize(num).y / 2.0f) - outSize
 	};
 	//距離がサイズの和より小さいor以下
 	if (distance.x <= size_num.x && distance.y <= size_num.y)
