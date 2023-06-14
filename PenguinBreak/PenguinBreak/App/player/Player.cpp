@@ -39,7 +39,7 @@ void Player::Init(Stage* stage)
 		deathPos[i] = { 0,0 };
 		isDeathDraw[i] = false;
 	}
-	SetSize(Vec2(64.0f, 128.0f) / static_cast<float>(stage->GetPlayerSize()));
+	SetSize(Vec2(64.0f, 128.0f) / static_cast<float>(stage->GetScale()));
 }
 
 void Player::stageInit(int stageNo)

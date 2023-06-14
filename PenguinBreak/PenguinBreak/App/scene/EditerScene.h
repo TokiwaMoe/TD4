@@ -5,8 +5,9 @@
 #include"BaseScene.h"
 #include"Player.h"
 #include"../stage/Stage.h"
-#include<vector>
-#include<string>
+#include <array>
+#include <vector>
+#include <string>
 
 extern const int window_width;
 extern const int window_height;
@@ -16,6 +17,14 @@ extern const int window_height;
 /// </summary>
 class EditerScene :public BaseScene
 {
+public:
+	enum CursorState
+	{
+		NONE,
+		MOVE,
+		SCALE,
+	};
+
 public:
 	/// <summary>
 	/// コンストラクタ
@@ -64,11 +73,14 @@ private://定義
 
 	SpriteData cursor;
 	SpriteData frame;
+	std::array<SpriteData, 8> whiteBox;
 
-	std::unique_ptr<Player>player;
+	std::unique_ptr<Player> player;
 	Stage* stage = nullptr;
+	unsigned short scale = 1;
 
 	int roadIndex = -1;
+	CursorState cursorState = CursorState::NONE;
 	bool isClick = false;
 
 	std::vector<std::string> operationText;
