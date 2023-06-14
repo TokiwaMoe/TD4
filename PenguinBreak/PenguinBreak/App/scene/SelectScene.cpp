@@ -15,7 +15,7 @@ SelectScene::~SelectScene()
 void SelectScene::Init()
 {
 	//スプライト作成の仕方
-	backGround[0] = Sprite::Get()->SpriteCreate(L"Resources/background.png");
+	backGround[0] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectBack.png");
 	backGround[1] = Sprite::Get()->SpriteCreate(L"Resources/Select/select.png");
 
 
