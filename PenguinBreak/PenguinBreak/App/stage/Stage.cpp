@@ -579,6 +579,7 @@ bool Stage::IsDownOver(float* pos, float* size, float limit, float speed, float 
 void Stage::EditerInit(const Vec2& playerSize)
 {
 	PLAYER_SIZE = playerSize;
+	scale = 1;
 	ROAD_SIZE = (PLAYER_SIZE / scale) + (ROAD_OFFSET / scale);
 
 	boxes.clear();

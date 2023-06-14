@@ -138,17 +138,17 @@ void EditerScene::Update()
 	// ステージサイズ
 	if (Input::Get()->KeybordTrigger(DIK_UP))
 	{
-		if (scale + 1 <= 10)
+		if (scale - 1 >= 1)
 		{
-			scale++;
+			scale--;
 			stage->SetScale(scale);
 		}
 	}
 	else if (Input::Get()->KeybordTrigger(DIK_DOWN))
 	{
-		if (scale - 1 >= 1)
+		if (scale + 1 <= 10)
 		{
-			scale--;
+			scale++;
 			stage->SetScale(scale);
 		}
 	}
