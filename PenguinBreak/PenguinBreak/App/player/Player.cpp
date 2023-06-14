@@ -10,7 +10,7 @@ using namespace DirectX;
 void Player::Initialize()
 {
 	//スプライト作成の仕方
-	player = Sprite::Get()->SpriteCreate(L"Resources/Kari.png");
+	player = Sprite::Get()->SpriteCreate(L"Resources/uma.png");
 	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
 	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
 	moveParticle = std::make_unique <ParticleManager>();
