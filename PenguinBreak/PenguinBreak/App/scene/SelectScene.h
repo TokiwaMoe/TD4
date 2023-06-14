@@ -40,6 +40,7 @@ private:
 private://定義
 
 	SpriteData backGround[2];            //背景
+	SpriteData frame;            //背景
 	SpriteData stageData[10];            //ステージナンバー
 	Vec2 stagePos[10];                   //座標
 
@@ -54,7 +55,7 @@ private://定義
 	SpriteData hand_g = {};
 	bool isDraw = false;
 
-	Vec2 rulePos = { 640,370 };
+	Vec2 rulePos = { 670,410 };
 	SpriteData rule = {};
 	bool isChange = false;
 };

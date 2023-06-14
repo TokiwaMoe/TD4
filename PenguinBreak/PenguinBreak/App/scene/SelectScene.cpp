@@ -15,9 +15,9 @@ SelectScene::~SelectScene()
 void SelectScene::Init()
 {
 	//スプライト作成の仕方
-	backGround[0] = Sprite::Get()->SpriteCreate(L"Resources/background.png");
-	backGround[1] = Sprite::Get()->SpriteCreate(L"Resources/Select/select.png");
-
+	backGround[0] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectBack.png");
+	backGround[1] = Sprite::Get()->SpriteCreate(L"Resources/Select/frame.png");
+	frame = Sprite::Get()->SpriteCreate(L"Resources/Select/select.png");
 
 	stageData[0] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum1.png");
 	stageData[1] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum2.png");
@@ -57,8 +57,10 @@ void SelectScene::Draw()
 {
 	const float width = 1280, height = 720;
 	Sprite::Get()->Draw(backGround[0], {}, width, height);
-	Sprite::Get()->Draw(rule, rulePos, 500, 700, {0.5,0.5});
+	Sprite::Get()->Draw(rule, rulePos, 500, 600, { 0.5,0.5 });
 	Sprite::Get()->Draw(backGround[1], {}, width, height);
+	Sprite::Get()->Draw(frame, {}, width, height);
+	
 	const float length = 94.0f;
 	
 	//ステージ数字
@@ -188,7 +190,7 @@ void SelectScene::DecisionScale()
 
 void SelectScene::Move()
 {
-	Vec2 limit = { 640,370 };
+	Vec2 limit = { 670,430 };
 	Vec2 lim = { 300,0 };
 	const float speed = 3;
 	// 軸単位で動かすかどうか
