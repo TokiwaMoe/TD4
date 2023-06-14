@@ -61,9 +61,11 @@ void GameScene::Update()
 			sceneManager_->SetNextScene(scene);
 		}
 	}
-
+	else
+	{//ゴールしたらプレイヤーが止まる処理
+		player->Update(stage);
+	}
 	stage->Update();
-	player->Update(stage);
 
 }
 void GameScene::Draw()
