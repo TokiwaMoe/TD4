@@ -75,8 +75,9 @@ private://定義
 	SpriteData frame;
 	std::array<SpriteData, 8> whiteBox;
 
-	std::unique_ptr<Player>player;
+	std::unique_ptr<Player> player;
 	Stage* stage = nullptr;
+	unsigned short scale = 1;
 
 	int roadIndex = -1;
 	CursorState cursorState = CursorState::NONE;

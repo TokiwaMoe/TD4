@@ -53,9 +53,11 @@ public: //サブクラス
 public: //定数
 	static const int STAGE_COUNT = 3; //ステージの数
 	static const int BACK_COUNT = 3;  //背景の数
+	static const Vec2 ROAD_OFFSET; //道の余白分
 
 private: //静的メンバ変数
-	static Vec2 ROAD_SIZE;
+	static Vec2 ROAD_SIZE; //道の最低限の大きさ
+	static Vec2 PLAYER_SIZE; //プレイヤーの大きさ（エディター用変数）
 
 private: //メンバ変数
 	std::vector<Road> boxes; //道のオブジェクト
@@ -63,7 +65,7 @@ private: //メンバ変数
 	size_t startIndex;
 	size_t goalIndex;
 	size_t roadCount;
-	unsigned short playerSize; //プレイヤーのサイズ ※数字が小さいほどプレイヤーのサイズは大きくなる
+	unsigned short scale; //プレイヤーのサイズ ※数字が小さいほどプレイヤーのサイズは大きくなる
 
 public: //メンバ関数
 	// 初期化
@@ -96,7 +98,7 @@ public: //メンバ関数
 	// 指定したアンカーポイントに対応する座標の取得
 	Vec2 GetAnchorpointPos(size_t num, const Vec2& anchorpoint) const { return boxes[num].GetAnchorpointPos(anchorpoint); }
 	// プレイヤーのサイズ
-	unsigned short GetPlayerSize() const { return playerSize; }
+	unsigned short GetScale() const { return scale; }
 	// 種類の取得
 	Road::RoadType GetType(size_t num) const { return boxes[num].type; }
 	Vec2 GetStartPos() const { return GetPos(startIndex); }
@@ -105,7 +107,7 @@ public: //メンバ関数
 	size_t GetGoal() const { return goalIndex; }
 
 	// 座標の設定
-	void SetPos(size_t num, const Vec2& pos) { boxes[num].offset = pos; }
+	void SetPos(size_t num, const Vec2& pos) { boxes[num].pos = pos; }
 	// サイズの設定
 	void SetSize(size_t num, const Vec2& size) { boxes[num].size = size; }
 	// 各インデックスの設定
@@ -121,6 +123,10 @@ public: //メンバ関数
 	void Create();
 	// 道の削除
 	void Delete(size_t num);
+	// リセット
+	void Reset();
+	// プレイヤーのサイズ
+	void SetScale(unsigned short scale);
 private:
 	// ギミックの更新
 	template<class T>

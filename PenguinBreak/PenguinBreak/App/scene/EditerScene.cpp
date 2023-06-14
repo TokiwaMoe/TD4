@@ -30,6 +30,7 @@ void EditerScene::Init()
 	operationText.push_back("Drag:Move");
 	operationText.push_back("C:Create");
 	operationText.push_back("drag corner:Size Change");
+	operationText.push_back("Arrow Up/Down:Change Scale");
 	operationText.push_back("D:Delete");
 	operationText.push_back("R:Reset");
 	operationText.push_back("S:Save");
@@ -134,10 +135,27 @@ void EditerScene::Update()
 		stage->Delete(roadIndex);
 		roadIndex = -1;
 	}
+	// ステージサイズ
+	if (Input::Get()->KeybordTrigger(DIK_UP))
+	{
+		if (scale + 1 <= 10)
+		{
+			scale++;
+			stage->SetScale(scale);
+		}
+	}
+	else if (Input::Get()->KeybordTrigger(DIK_DOWN))
+	{
+		if (scale - 1 >= 1)
+		{
+			scale--;
+			stage->SetScale(scale);
+		}
+	}
 	// リセット
 	if (Input::Get()->KeybordTrigger(DIK_R))
 	{
-		stage->EditerInit(player->GetSize());
+		stage->Reset();
 	}
 
 	// ステージ出力
@@ -194,7 +212,7 @@ void EditerScene::Draw()
 	}
 	stage->Draw();
 
-	//Sprite::Get()->Draw(cursor, Input::Get()->GetMousePos(), 32, 32, { 0.5f,0.5f });
+	DebugText::Get()->Print(16.0f, 16.0f, 2, "Scale:%d", scale);
 	OperationDraw();
 }
 
@@ -206,7 +224,7 @@ void EditerScene::OperationDraw()
 {
 	for (int i = 0; i < operationText.size(); i++)
 	{
-		DebugText::Get()->Print(16.0f, window_height - 32.0f * (operationText.size() - i) + 16.0f, 2, operationText[i].c_str());
+		DebugText::Get()->Print(16.0f, window_height - 32.0f * (operationText.size() - i) + 16.0f, 2, operationText[i]);
 	}
 }
 

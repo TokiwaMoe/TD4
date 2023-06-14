@@ -3,7 +3,9 @@
 #include <json.hpp>
 #include "Input.h"
 
+const Vec2 Stage::ROAD_OFFSET = { 30.0f, 30.0f };
 Vec2 Stage::ROAD_SIZE = Vec2();
+Vec2 Stage::PLAYER_SIZE = Vec2();
 
 void Stage::Back::Init()
 {
@@ -53,7 +55,7 @@ Stage::Stage() :
 	startIndex(0),
 	goalIndex(0),
 	roadCount(2),
-	playerSize(1)
+	scale(1)
 {
 }
 
@@ -138,8 +140,8 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 
 	assert(deserialized.contains("player"));
 	assert(deserialized["player"].is_number());
-	playerSize = deserialized["player"];
-	assert(playerSize != 0);
+	scale = deserialized["player"];
+	assert(scale != 0);
 
 	// レベルデータ格納用インスタンスを生成
 	JsonData* levelData = new JsonData();
@@ -293,6 +295,7 @@ void Stage::WriteStage(const std::string& stageName)
 	json data;
 	data = json::object();
 	data["name"] = json::string_t("stage");
+	data["player"] = json::number_unsigned_t(scale);
 	data["objects"] = json::array();
 
 	for (size_t i = 0; i < boxes.size(); i++)
@@ -307,7 +310,7 @@ void Stage::WriteStage(const std::string& stageName)
 		};
 
 		// ギミックタイプの書き込み
-		if (boxes[i].type == Road::RoadType::ROAD || boxes[i].type == Road::RoadType::BACK)
+		if (boxes[i].type != Road::RoadType::START && boxes[i].type != Road::RoadType::GOAL)
 		{
 			objectData["gimmick"] = boxes[i].gimmick;
 		}
@@ -575,23 +578,23 @@ bool Stage::IsDownOver(float* pos, float* size, float limit, float speed, float 
 
 void Stage::EditerInit(const Vec2& playerSize)
 {
-	const float ROAD_OFFSET = 30.0f; //道の余白
-	ROAD_SIZE = playerSize + Vec2(ROAD_OFFSET, ROAD_OFFSET);
+	PLAYER_SIZE = playerSize;
+	ROAD_SIZE = (PLAYER_SIZE / scale) + (ROAD_OFFSET / scale);
 
 	boxes.clear();
 
 	// スタートの追加
 	boxes.emplace_back();
 	boxes.back().type = Road::RoadType::START;
+	boxes.back().pos = { ROAD_SIZE.x, ROAD_SIZE.y };
 	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
-	boxes.back().offset = { ROAD_SIZE.x, ROAD_SIZE.y };
 	boxes.back().Init();
 
 	// ゴールの追加
 	boxes.emplace_back();
 	boxes.back().type = Road::RoadType::GOAL;
+	boxes.back().pos = { window_width - ROAD_SIZE.x, window_height - ROAD_SIZE.y };
 	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
-	boxes.back().offset = { window_width - ROAD_SIZE.x, window_height - ROAD_SIZE.y };
 	boxes.back().Init();
 }
 
@@ -609,4 +612,37 @@ void Stage::Delete(size_t num)
 	if (num < 0 || num >= boxes.size()) return;
 
 	boxes.erase(boxes.begin() + num);
+}
+
+void Stage::Reset()
+{
+	boxes.clear();
+
+	// スタートの追加
+	boxes.emplace_back();
+	boxes.back().type = Road::RoadType::START;
+	boxes.back().pos = { ROAD_SIZE.x, ROAD_SIZE.y };
+	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
+	boxes.back().Init();
+
+	// ゴールの追加
+	boxes.emplace_back();
+	boxes.back().type = Road::RoadType::GOAL;
+	boxes.back().pos = { window_width - ROAD_SIZE.x, window_height - ROAD_SIZE.y };
+	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
+	boxes.back().Init();
+}
+
+void Stage::SetScale(unsigned short scale)
+{
+	unsigned short nowScale = this->scale;
+	this->scale = scale;
+
+	ROAD_SIZE = (PLAYER_SIZE / static_cast<float>(scale)) + (ROAD_OFFSET / static_cast<float>(scale));
+	float rate = static_cast<float>(nowScale) / static_cast<float>(scale);
+	for (auto& i : boxes)
+	{
+		i.pos *= rate;
+		i.size *= rate;
+	}
 }
