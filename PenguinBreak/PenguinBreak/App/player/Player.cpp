@@ -39,7 +39,7 @@ void Player::Init(Stage* stage)
 		deathPos[i] = { 0,0 };
 		isDeathDraw[i] = false;
 	}
-	SetSize(Vec2(64.0f, 128.0f) / static_cast<float>(stage->GetPlayerSize()));
+	SetSize(Vec2(64.0f, 128.0f) / static_cast<float>(stage->GetScale()));
 }
 
 void Player::stageInit(int stageNo)
@@ -68,7 +68,7 @@ void Player::Move()
 	ray.start = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y,0 };
 	ray.dir = { 1,0,0,0 };
 	if (Input::Get()->MousePushLeft() && !effect) {
-		if (Collision::CheckRay2Sphere(ray, circle)) {
+		if (Collision::CheckRay2Sphere(ray, circle) && !goalFlag) {
 			position = Input::Get()->GetMousePos();
 			//プレイヤーの画像によってはいらない処理
 			if ((float)Input::Get()->GetMouseMove().lX > 0) {
@@ -126,8 +126,8 @@ void Player::ConvertParticlePos()
 	particlePos.y = posNearV.m128_f32[1] - direction.m128_f32[1] * distance;
 	particlePos.z = posNearV.m128_f32[2] - direction.m128_f32[2] * distance;
 
-	DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", particlePos.x, particlePos.z);
-	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);
+	/*DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", particlePos.x, particlePos.z);
+	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);*/
 	moveParticle->Update();
 }
 
