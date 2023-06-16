@@ -128,10 +128,10 @@ void ParticleManager::ParticleAdd2(const Vec3 &Pos, const Vec4 &start_color,cons
 		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		//重力に見立ててYのみ{-0.001f,0}でランダム分布
 		Vec3 acc{};
-		const float md_acc = 0.0001f;
-		acc.y = (float)rand() / RAND_MAX * md_acc;
+		//const float md_acc = 0.0001f;
+		//acc.y = (float)rand() / RAND_MAX * md_acc;
 			//追加
-		Add(90, pos, vel, acc, 0.05f, 0.05f, start_color, end_color);
+		Add(90, pos, vel, acc, 0.03f, 0.03f, start_color, end_color);
 	}
 }
 
