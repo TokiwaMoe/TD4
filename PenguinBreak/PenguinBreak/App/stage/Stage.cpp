@@ -265,7 +265,8 @@ Stage::JsonData* Stage::LoadBack(const std::string& jsonFile)
 
 void Stage::ChengeBack(int backNumber)
 {
-	if (backNumber <= 0 || backNumber > BACK_COUNT) return;
+	if (BACK_COUNT - 1 <= 0) return;
+	if (backNumber <= 0 || backNumber > BACK_COUNT) backNumber = BACK_COUNT - 1;
 
 	auto file = LoadBack("back" + std::to_string(backNumber));
 	backObjects.clear();
@@ -603,8 +604,8 @@ void Stage::Create()
 {
 	boxes.emplace_back();
 	boxes.back().type = Road::RoadType::ROAD;
+	boxes.back().pos = Input::Get()->GetMousePos();
 	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
-	boxes.back().offset = Input::Get()->GetMousePos();
 	boxes.back().Init();
 }
 

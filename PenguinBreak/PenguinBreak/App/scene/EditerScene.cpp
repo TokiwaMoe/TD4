@@ -146,7 +146,7 @@ void EditerScene::Update()
 	}
 	else if (Input::Get()->KeybordTrigger(DIK_DOWN))
 	{
-		if (scale + 1 <= 10)
+		if (scale + 1 <= 5)
 		{
 			scale++;
 			stage->SetScale(scale);
