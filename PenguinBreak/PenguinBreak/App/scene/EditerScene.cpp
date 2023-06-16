@@ -59,7 +59,6 @@ void EditerScene::Update()
 	Vec2 leftTop;
 	Vec2 rightBottom;
 	Vec2 distance;
-	roadIndex = GetStageIndex2MousePos(&distance);
 
 	if (roadIndex == -1)
 	{
@@ -94,7 +93,16 @@ void EditerScene::Update()
 		}
 	}
 
-	if (Input::Get()->MousePushLeft())
+	if (cursorState == CursorState::NONE)
+	{
+		roadIndex = GetStageIndex2MousePos(&distance);
+
+		if (roadIndex != -1)
+		{
+			stage->BringForefront(roadIndex);
+		}
+	}
+	else if (Input::Get()->MousePushLeft())
 	{
 		if (cursorState == CursorState::MOVE)
 		{
@@ -155,7 +163,7 @@ void EditerScene::Update()
 	// リセット
 	if (Input::Get()->KeybordTrigger(DIK_R))
 	{
-		stage->Reset();
+		stage->EditerReset();
 	}
 
 	// ステージ出力
