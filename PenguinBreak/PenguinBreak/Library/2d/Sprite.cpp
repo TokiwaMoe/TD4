@@ -297,6 +297,8 @@ void Sprite::Update(SpriteData& sprite, const Vec2& position, float width, float
 		HRESULT result = constBuffer[spriteNum]->constBuff->Map(0, nullptr, (void**)&constMap);
 		constMap->mat = sprite.matWorld * spriteCommon.matProjection;
 		constMap->color = color;
+		constMap->isAlive = false;
+		constMap->time = 0;
 		constBuffer[spriteNum]->constBuff->Unmap(0, nullptr);
 	}
 	else
@@ -306,6 +308,8 @@ void Sprite::Update(SpriteData& sprite, const Vec2& position, float width, float
 		HRESULT result = constBuffer[spriteNum]->constBuff->Map(0, nullptr, (void**)&constMap);
 		constMap->mat = sprite.matWorld * sprite.parent->matWorld * spriteCommon.matProjection;
 		constMap->color = color;
+		constMap->isAlive = false;
+		constMap->time = 0;
 		constBuffer[spriteNum]->constBuff->Unmap(0, nullptr);
 	}
 
@@ -363,6 +367,8 @@ void Sprite::DebugUpdate(SpriteData& sprite)
 	HRESULT result = constBuffer[spriteNum]->constBuff->Map(0, nullptr, (void**)&constMap);
 	constMap->mat = sprite.matWorld * spriteCommon.matProjection;
 	constMap->color = { 1.0f,1.0f,1.0f,1.0f };
+	constMap->isAlive = false;
+	constMap->time = 0;
 	constBuffer[spriteNum]->constBuff->Unmap(0, nullptr);
 }
 
