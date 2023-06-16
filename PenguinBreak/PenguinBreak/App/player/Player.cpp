@@ -69,7 +69,7 @@ void Player::Move()
 	ray.dir = { 1,0,0,0 };
 	if (Input::Get()->MousePushLeft() && !effect) {
 		const Vec2 mouseSize = { 32.0f,32.0f };
-		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, Vec2(width, height) / 2)) {
+		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, Vec2(width, height) / 2) && !goalFlag) {
 			position = Input::Get()->GetMousePos();
 			//プレイヤーの画像によってはいらない処理
 			if ((float)Input::Get()->GetMouseMove().lX > 0) {
