@@ -72,8 +72,8 @@ public://構造体
 	//定数バッファ用データ構造体
 	struct ConstBufferData
 	{
-		Vec4 color;
 		XMMATRIX mat;//3D変換行列
+		Vec4 color;
 		float time;
 		bool isAlive;
 	};
