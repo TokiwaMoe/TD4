@@ -10,12 +10,12 @@ using namespace DirectX;
 void Player::Initialize()
 {
 	//スプライト作成の仕方
-	player = Sprite::Get()->SpriteCreate(L"Resources/Kari.png");
+	player = Sprite::Get()->SpriteCreate(L"Resources/uma.png");
 	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
 	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
 	moveParticle = std::make_unique <ParticleManager>();
 	moveParticle->Initialize();
-	p_Texture = Texture::Get()->LoadTexture(L"Resources/Paricle/particle.jpg");
+	p_Texture = Texture::Get()->LoadTexture(L"Resources/paricle/particle3.png");
 	for (int i = 0; i < DEATH_MAX; i++)
 	{
 		death[i] = Sprite::Get()->SpriteCreate(L"Resources/death.png");
@@ -82,7 +82,7 @@ void Player::Move()
 		//パーティクルだす
 		//手のspを表示するか
 		isDraw = true;
-		moveParticle->ParticleAdd2(particlePos, { 1,0,1,1 }, { 1,0,1,1 });
+		moveParticle->ParticleAdd2(particlePos, { 1,1,0.5,1 }, { 1,1,0.5,1 });
 
 	}
 	else

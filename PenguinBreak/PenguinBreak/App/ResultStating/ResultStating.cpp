@@ -24,7 +24,7 @@ void ResultStating::Init()
 	clearGraph[2] = Sprite::Get()->SpriteCreate(L"Resources/Result/a.png");
 	clearGraph[3] = Sprite::Get()->SpriteCreate(L"Resources/Result/-.png");
 
-	houseHumanGraph = Sprite::Get()->SpriteCreate(L"Resources/kari.png");
+	houseHumanGraph = Sprite::Get()->SpriteCreate(L"Resources/uma.png");
 	houseHumanGraph.rotation = 90.0f;
 
 	for (size_t i = 0; i < 4; i++)
