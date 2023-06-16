@@ -51,7 +51,7 @@ public: //サブクラス
 	};
 
 public: //定数
-	static const int STAGE_COUNT = 3; //ステージの数
+	static const int STAGE_COUNT = 4; //ステージの数
 	static const int BACK_COUNT = 3;  //背景の数
 	static const Vec2 ROAD_OFFSET; //道の余白分
 
