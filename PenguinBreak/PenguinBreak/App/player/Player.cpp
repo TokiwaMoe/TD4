@@ -39,7 +39,9 @@ void Player::Init(Stage* stage)
 		deathPos[i] = { 0,0 };
 		isDeathDraw[i] = false;
 	}
-	SetSize(Vec2(64.0f, 128.0f) / static_cast<float>(stage->GetScale()));
+	size = Vec2(width, height) / static_cast<float>(stage->GetScale());
+	radius = Vec2(28, 60) / static_cast<float>(stage->GetScale());
+	SetSize(size);
 }
 
 void Player::stageInit(int stageNo)
@@ -62,15 +64,12 @@ void Player::Update(Stage* stage)
 
 void Player::Move()
 {
-	//円とレイの判定を使っている
-	circle.center = { position.x, position.y, 0 };
-	circle.radius = 64;
-	ray.start = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y,0 };
-	ray.dir = { 1,0,0,0 };
 	if (Input::Get()->MousePushLeft() && !effect) {
-		const Vec2 mouseSize = { 32.0f,32.0f };
-		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, Vec2(width, height) / 2) && !goalFlag) {
-			position = Input::Get()->GetMousePos();
+		const Vec2 mouseSize = { 28.0f,28.0f };
+		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, radius) && !goalFlag) {
+			position.x += static_cast<float>(Input::Get()->GetMouseMove().lX);
+			position.y += static_cast<float>(Input::Get()->GetMouseMove().lY);
+			
 			//プレイヤーの画像によってはいらない処理
 			if ((float)Input::Get()->GetMouseMove().lX > 0) {
 				flipFlag = true;
@@ -92,7 +91,7 @@ void Player::Move()
 	}
 
 #if _DEBUG 
-	//DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
+	
 #endif
 }
 
