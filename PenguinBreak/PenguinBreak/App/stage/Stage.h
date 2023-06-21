@@ -124,7 +124,9 @@ public: //メンバ関数
 	// 道の削除
 	void Delete(size_t num);
 	// リセット
-	void Reset();
+	void EditerReset();
+	// 最前面に持ってくる
+	void BringForefront(size_t num);
 	// プレイヤーのサイズ
 	void SetScale(unsigned short scale);
 private:
