@@ -40,7 +40,6 @@ private:
 private://定義
 
 	SpriteData backGround[2];            //背景
-	SpriteData frame;            //背景
 	SpriteData stageData[10];            //ステージナンバー
 	Vec2 stagePos[10];                   //座標
 
