@@ -55,6 +55,10 @@ void EditerScene::Update()
 			stage->WriteStage("stage" + std::to_string(saveFileNumber));
 			isSave = false;
 		}
+		if (Input::Get()->KeybordTrigger(DIK_BACK))
+		{
+			isSave = false;
+		}
 	}
 	else
 	{
@@ -273,6 +277,9 @@ void EditerScene::Draw()
 
 		DebugText::Get()->Print(window_width / 2.0f - 82.0f, window_height / 2.0f - 80.0f, 2, "save stage");
 		DebugText::Get()->Print(window_width / 2.0f - 64.0f, window_height / 2.0f, 7, numText, saveFileNumber);
+
+		DebugText::Get()->Print(16.0f, window_height - 16.0f, 2, "Enter:Save");
+		DebugText::Get()->Print(16.0f, window_height - 48.0f, 2, "Back Space:Cancel");
 	}
 }
 
