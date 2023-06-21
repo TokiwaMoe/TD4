@@ -234,8 +234,8 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 	const float outSize = 10.0f;
 	Vec2 size_num =
 	{
-		(stage->GetInstance()->GetSize(num).x / 2.0f),
-		(stage->GetInstance()->GetSize(num).y / 2.0f)
+		(stage->GetInstance()->GetSize(num).x / 2.0f) - 1.5f,
+		(stage->GetInstance()->GetSize(num).y / 2.0f) - 1.5f
 	};
 	//距離がサイズの和より小さいor以下
 	if (distance.x <= size_num.x && distance.y <= size_num.y)

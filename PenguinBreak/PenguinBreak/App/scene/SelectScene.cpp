@@ -17,7 +17,6 @@ void SelectScene::Init()
 	//スプライト作成の仕方
 	backGround[0] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectBack.png");
 	backGround[1] = Sprite::Get()->SpriteCreate(L"Resources/Select/frame.png");
-	frame = Sprite::Get()->SpriteCreate(L"Resources/Select/select.png");
 
 	stageData[0] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum1.png");
 	stageData[1] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum2.png");
@@ -59,7 +58,6 @@ void SelectScene::Draw()
 	Sprite::Get()->Draw(backGround[0], {}, width, height);
 	Sprite::Get()->Draw(rule, rulePos, 500, 600, { 0.5,0.5 });
 	Sprite::Get()->Draw(backGround[1], {}, width, height);
-	Sprite::Get()->Draw(frame, {}, width, height);
 	
 	const float length = 94.0f;
 	
