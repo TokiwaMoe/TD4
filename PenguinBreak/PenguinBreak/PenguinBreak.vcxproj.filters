@@ -408,9 +408,11 @@
     <ClInclude Include="App\scene\SelectScene.h">
       <Filter>ソース ファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="App\stage\Road.h" />
     <ClInclude Include="App\ResultStating\ResultStating.h">
       <Filter>ソース ファイル\ResultStating</Filter>
+    </ClInclude>
+    <ClInclude Include="App\stage\Road.h">
+      <Filter>ソース ファイル\Scene\Stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -555,11 +557,11 @@
     <ClCompile Include="App\scene\SelectScene.cpp">
       <Filter>ソース ファイル\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="App\stage\Road.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="App\ResultStating\ResultStating.cpp">
       <Filter>ソース ファイル\ResultStating</Filter>
+    </ClCompile>
+    <ClCompile Include="App\stage\Road.cpp">
+      <Filter>ソース ファイル\Scene\Stage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

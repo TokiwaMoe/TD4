@@ -83,5 +83,8 @@ private://定義
 	CursorState cursorState = CursorState::NONE;
 	bool isClick = false;
 
+	bool isSave = false;
+	int saveFileNumber = 1;
+
 	std::vector<std::string> operationText;
 };
