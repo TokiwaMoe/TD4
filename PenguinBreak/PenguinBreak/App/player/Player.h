@@ -62,6 +62,8 @@ private:
 	static const int DEATH_MAX = 30;
 
 private:
+	Audio* audio = Audio::Get();
+	SoundData deathSound{};//死んだときの
 	void Move();
 	/// <summary>
 	/// playerの座標を3dに変換

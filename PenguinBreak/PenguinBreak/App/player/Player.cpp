@@ -20,6 +20,7 @@ void Player::Initialize()
 	{
 		death[i] = Sprite::Get()->SpriteCreate(L"Resources/death.png");
 	}
+	deathSound = Audio::SoundLoadWave("Resources/Sound/death.wav");
 }
 
 void Player::Init(Stage* stage)
@@ -153,6 +154,9 @@ void Player::collide2Stage(Stage* stage)
 		if (deathTime <= 0) {
 			deathTime = 20;
 			respawn = true;
+		}
+		else if (deathTime >= 19) {
+			audio->SoundSEPlayWave(deathSound);
 		}
 		if (respawn == true) {
 			effect = false;
