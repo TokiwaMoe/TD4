@@ -69,7 +69,8 @@ void Player::Move()
 		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, radius) && !goalFlag) {
 			if (static_cast<float>(Input::Get()->GetMouseMove().lX) < 15 && static_cast<float>(Input::Get()->GetMouseMove().lY) < 15)
 			{
-				position = Input::Get()->GetMousePos();
+				position.x += static_cast<float>(Input::Get()->GetMouseMove().lX);
+				position.y += static_cast<float>(Input::Get()->GetMouseMove().lY);
 			}
 			
 			
