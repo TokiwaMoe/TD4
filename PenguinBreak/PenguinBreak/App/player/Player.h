@@ -10,6 +10,7 @@
 #include"Stage.h"
 #include<memory>
 #include"ParticleManager.h"
+#include"Easing.h"
 
 
 class Player {
@@ -106,9 +107,7 @@ private:
 	int deathCount = 0;
 	Vec2 deathPos[DEATH_MAX];
 
-
-
-
-
-	bool hit = false;
+	//タイマー
+	float time = 0;
+	Easing* easing = nullptr;
 };
