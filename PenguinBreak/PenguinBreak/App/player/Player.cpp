@@ -39,7 +39,9 @@ void Player::Init(Stage* stage)
 		deathPos[i] = { 0,0 };
 		isDeathDraw[i] = false;
 	}
-	SetSize(Vec2(64.0f, 128.0f) / static_cast<float>(stage->GetScale()));
+	size = Vec2(width, height) / static_cast<float>(stage->GetScale());
+	radius = size / 2;
+	SetSize(size);
 }
 
 void Player::stageInit(int stageNo)
@@ -62,20 +64,20 @@ void Player::Update(Stage* stage)
 
 void Player::Move()
 {
-	//円とレイの判定を使っている
-	circle.center = { position.x, position.y, 0 };
-	circle.radius = 64;
-	ray.start = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y,0 };
-	ray.dir = { 1,0,0,0 };
 	if (Input::Get()->MousePushLeft() && !effect) {
-		const Vec2 mouseSize = { 32.0f,32.0f };
-		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, Vec2(width, height) / 2) && !goalFlag) {
-			position = Input::Get()->GetMousePos();
+		const Vec2 mouseSize = { 32,32 };
+		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, radius) && !goalFlag) {
+			if (static_cast<float>(Input::Get()->GetMouseMove().lX) < 15 && static_cast<float>(Input::Get()->GetMouseMove().lY) < 15)
+			{
+				position = Input::Get()->GetMousePos();
+			}
+			
+			
 			//プレイヤーの画像によってはいらない処理
-			if ((float)Input::Get()->GetMouseMove().lX > 0) {
+			if (static_cast<float>(Input::Get()->GetMouseMove().lX) > 0) {
 				flipFlag = true;
 			}
-			else if ((float)Input::Get()->GetMouseMove().lX < 0) {
+			else {
 				flipFlag = false;
 			}
 
@@ -90,9 +92,10 @@ void Player::Move()
 	{
 		isDraw = false;
 	}
-
+	DebugText::Get()->Print(100.0f, 100.0f, 3, "%f,%f", Input::Get()->GetMousePos().x, Input::Get()->GetMousePos().y);
+	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);
 #if _DEBUG 
-	//DebugText::Get()->Print(100.0f, 200.0f, 3, "%d", flipFlag);
+	
 #endif
 }
 
@@ -190,7 +193,7 @@ int Player::CollisionCount(Stage* stage)
 	int count = 0;
 	for (int i = 0; i < stage->GetBoxSize(); i++)
 	{
-		if (stage->GetType(i) == Road::RoadType::WALL)
+		if (stage->GetType(i) == Road::RoadType::WALL || effect)
 		{
 			if (!OutStage(position, stage, i))
 			{
@@ -210,12 +213,53 @@ int Player::CollisionCount(Stage* stage)
 			}
 		}
 	}
-
+	DebugText::Get()->Print(100.0f, 500.0f, 3, "%d", count);
 	return count;
 }
 
 bool Player::OutStage(Vec2 position, Stage* stage, int num)
 {
+	//Vec2 stage_radius = { stage->GetSize(num).x / 2, stage->GetSize(num).y / 2 };
+	////ステージ左上
+	//Vec2 stage_leftTop = { stage->GetPos(num).x - stage_radius.x, stage->GetPos(num).y - stage_radius.y };
+	////ステージ右下
+	//Vec2 stage_rightBottom = { stage->GetPos(num).x + stage_radius.x, stage->GetPos(num).y + stage_radius.y };
+	//
+	////プレイヤーとステージの右辺の関係チェック
+	//bool is_player_less_right = false;
+	//if (position.x < stage_rightBottom.x)
+	//{
+	//	is_player_less_right = true;
+	//}
+	////プレイヤーとステージのの左辺の関係チェック
+	//bool is_player_less_left = false;
+	//if (position.x > stage_leftTop.x)
+	//{
+	//	is_player_less_left = true;
+	//}
+
+	////プレイヤーとステージの下辺の関係チェック
+	//bool is_player_less_bottom = false;
+	//if (position.y < stage_rightBottom.y)
+	//{
+	//	is_player_less_bottom = true;
+	//}
+
+	////プレイヤーとステージの上辺の関係チェック
+	//bool is_player_less_top = false;
+	//if (position.y > stage_leftTop.y)
+	//{
+	//	is_player_less_top = true;
+	//}
+
+	//if (is_player_less_right && is_player_less_left && is_player_less_bottom && is_player_less_top)
+	//{
+	//	return false;
+	//}
+	//else
+	//{
+	//	return true;
+	//}
 	//ステージスプライトの中心座標
 	Vec2 stageCenter = {
 		stage->GetInstance()->GetPos(num).x,
@@ -234,8 +278,8 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 	const float outSize = 10.0f;
 	Vec2 size_num =
 	{
-		(stage->GetInstance()->GetSize(num).x / 2.0f) - 1.5f,
-		(stage->GetInstance()->GetSize(num).y / 2.0f) - 1.5f
+		((stage->GetInstance()->GetSize(num).x) / 2.0f),
+		((stage->GetInstance()->GetSize(num).y) / 2.0f)
 	};
 	//距離がサイズの和より小さいor以下
 	if (distance.x <= size_num.x && distance.y <= size_num.y)
