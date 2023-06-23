@@ -87,6 +87,7 @@ private:
 	Vec3 particlePos = { 0,0,0 };
 
 	//スプライトサイズ
+	Vec2 size = {};
 	float width = 64.0f, height = 128.0f;
 	bool flipFlag = false;
 	//半径 
@@ -106,4 +107,10 @@ private:
 	bool isDeathDraw[DEATH_MAX];
 	int deathCount = 0;
 	Vec2 deathPos[DEATH_MAX];
+
+
+
+
+
+	bool hit = false;
 };
