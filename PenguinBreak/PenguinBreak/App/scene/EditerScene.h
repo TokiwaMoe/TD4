@@ -54,6 +54,7 @@ public:
 	void Finalize()override;
 	bool GetEffect()override;
 private:
+	void ChangeSize(size_t num);
 	/// <summary>
 	/// 操作説明の描画
 	/// </summary>
