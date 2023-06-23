@@ -69,13 +69,14 @@ void Player::Move()
 	if (Input::Get()->MousePushLeft() && !effect) {
 		const Vec2 mouseSize = { 32,32 };
 		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, radius) && !goalFlag) {
+			if (static_cast<float>(Input::Get()->GetMouseMove().lX) > 0 && static_cast<float>(Input::Get()->GetMouseMove().lX) < 15 && static_cast<float>(Input::Get()->GetMouseMove().lY) < 15)
+			{
+				move = true;
+				position = Input::Get()->GetMousePos();
+				/*position.x += static_cast<float>(Input::Get()->GetMouseMove().lX);
+				position.y += static_cast<float>(Input::Get()->GetMouseMove().lY);*/
+			}
 
-			move = true;
-			//if (static_cast<float>(Input::Get()->GetMouseMove().lX) < 15 && static_cast<float>(Input::Get()->GetMouseMove().lY) < 15)
-			//{
-			//position.x += static_cast<float>(Input::Get()->GetMouseMove().lX);
-			//position.y += static_cast<float>(Input::Get()->GetMouseMove().lY);
-			//}
 			//プレイヤーの画像によってはいらない処理
 			if (static_cast<float>(Input::Get()->GetMouseMove().lX) > 0) {
 				flipFlag = true;
@@ -96,12 +97,11 @@ void Player::Move()
 	if (move == true) {
 		position = Input::Get()->GetMousePos();
 	}
-	DebugText::Get()->Print(100.0f, 100.0f, 3, "%f,%f", Input::Get()->GetMousePos().x, Input::Get()->GetMousePos().y);
-	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);
-#if _DEBUG 
+	/*DebugText::Get()->Print(100.0f, 100.0f, 3, "%f,%f", static_cast<float>(Input::Get()->GetMouseMove().lX), static_cast<float>(Input::Get()->GetMouseMove().lY));
+	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);*/
 
-#endif
 }
+
 
 void Player::ConvertParticlePos()
 {
@@ -128,7 +128,6 @@ void Player::ConvertParticlePos()
 	//ベクトルの正規化
 	direction = XMVector3Normalize(direction);
 	const float distance = 0.0f;
-
 
 	particlePos.x = posNearV.m128_f32[0] - direction.m128_f32[0] * distance;
 	particlePos.y = posNearV.m128_f32[1] - direction.m128_f32[1] * distance;
@@ -190,7 +189,7 @@ void Player::collide2Stage(Stage* stage)
 	//ゴールの判定
 	if (!OutStage(position, stage, static_cast<int>(stage->GetGoal()))) {
 		goalFlag = true;
-		DebugText::Get()->Print(100.0f, 300.0f, 4, "GOAL");
+		//DebugText::Get()->Print(100.0f, 300.0f, 4, "GOAL");
 	}
 	//DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%d", deathTime);
 }
@@ -220,53 +219,12 @@ int Player::CollisionCount(Stage* stage)
 			}
 		}
 	}
-	DebugText::Get()->Print(100.0f, 500.0f, 3, "%d", count);
+	//DebugText::Get()->Print(100.0f, 500.0f, 3, "%d", count);
 	return count;
 }
 
 bool Player::OutStage(Vec2 position, Stage* stage, int num)
 {
-	//Vec2 stage_radius = { stage->GetSize(num).x / 2, stage->GetSize(num).y / 2 };
-	////ステージ左上
-	//Vec2 stage_leftTop = { stage->GetPos(num).x - stage_radius.x, stage->GetPos(num).y - stage_radius.y };
-	////ステージ右下
-	//Vec2 stage_rightBottom = { stage->GetPos(num).x + stage_radius.x, stage->GetPos(num).y + stage_radius.y };
-	//
-	////プレイヤーとステージの右辺の関係チェック
-	//bool is_player_less_right = false;
-	//if (position.x < stage_rightBottom.x)
-	//{
-	//	is_player_less_right = true;
-	//}
-	////プレイヤーとステージのの左辺の関係チェック
-	//bool is_player_less_left = false;
-	//if (position.x > stage_leftTop.x)
-	//{
-	//	is_player_less_left = true;
-	//}
-
-	////プレイヤーとステージの下辺の関係チェック
-	//bool is_player_less_bottom = false;
-	//if (position.y < stage_rightBottom.y)
-	//{
-	//	is_player_less_bottom = true;
-	//}
-
-	////プレイヤーとステージの上辺の関係チェック
-	//bool is_player_less_top = false;
-	//if (position.y > stage_leftTop.y)
-	//{
-	//	is_player_less_top = true;
-	//}
-
-	//if (is_player_less_right && is_player_less_left && is_player_less_bottom && is_player_less_top)
-	//{
-	//	return false;
-	//}
-	//else
-	//{
-	//	return true;
-	//}
 	//ステージスプライトの中心座標
 	Vec2 stageCenter = {
 		stage->GetInstance()->GetPos(num).x,

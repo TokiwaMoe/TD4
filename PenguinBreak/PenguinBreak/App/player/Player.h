@@ -10,6 +10,7 @@
 #include"Stage.h"
 #include<memory>
 #include"ParticleManager.h"
+#include"Easing.h"
 
 
 class Player {
@@ -110,4 +111,9 @@ private:
 
 	bool hit = false;
 	bool move = false;
+
+	//タイマー
+	float time = 0;
+	Easing* easing = nullptr;
+
 };

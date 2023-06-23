@@ -76,11 +76,9 @@ void EditerScene::Update()
 			sceneManager_->SetNextScene(scene);
 		}
 
-		const Vec2 center = { 0.5f, 0.5f };
 		Vec2 mousePos = Input::Get()->GetMousePos();
 		Vec2 leftTop;
 		Vec2 rightBottom;
-		Vec2 distance;
 
 		if (roadIndex == -1)
 		{
@@ -88,7 +86,6 @@ void EditerScene::Update()
 		}
 		else
 		{
-			stage->MoveAnchorpoint(roadIndex, center);
 			leftTop = stage->GetAnchorpointPos(roadIndex, Vec2(0.0f, 0.0f));
 			rightBottom = stage->GetAnchorpointPos(roadIndex, Vec2(1.0f, 1.0f));
 
@@ -117,7 +114,7 @@ void EditerScene::Update()
 
 		if (cursorState == CursorState::NONE)
 		{
-			roadIndex = GetStageIndex2MousePos(&distance);
+			roadIndex = GetStageIndex2MousePos();
 
 			if (roadIndex != -1)
 			{
@@ -132,25 +129,7 @@ void EditerScene::Update()
 			}
 			else if (cursorState == CursorState::SCALE)
 			{
-				const Vec2 centerPos = stage->GetAnchorpointPos(roadIndex, center);
-
-				Vec2 anchorpoint = { distance.x / stage->GetSize(roadIndex).x, distance.y / stage->GetSize(roadIndex).y };
-				anchorpoint += center;
-				anchorpoint = Vec2(Extremism(anchorpoint.x, 3), Extremism(anchorpoint.y, 3));
-				stage->MoveAnchorpoint(roadIndex, anchorpoint);
-
-				Vec2 size = stage->GetSize(roadIndex);
-				Vec2 oldSize = size;
-				if (anchorpoint.x != 0.5f)
-				{
-					size.x = fabsf((mousePos - centerPos).x * 2.0f);
-				}
-				if (anchorpoint.y != 0.5f)
-				{
-					size.y = fabsf((mousePos - centerPos).y * 2.0f);
-				}
-				stage->SetSize(roadIndex, size);
-				stage->SetPos(roadIndex, stage->GetPos(roadIndex) + ((oldSize - size) / 2.0f));
+				ChangeSize(roadIndex);
 			}
 		}
 
@@ -304,6 +283,43 @@ bool EditerScene::GetEffect()
 	return false;
 }
 
+void EditerScene::ChangeSize(size_t num)
+{
+	const int splitNum = 3;
+	const Vec2 center = { 0.5f, 0.5f };
+	const Vec2 centerPos = stage->GetAnchorpointPos(num, center);
+	Vec2 distance;
+	GetStageIndex2MousePos(&distance);
+	Vec2 anchorpoint = { distance.x / stage->GetSize(num).x, distance.y / stage->GetSize(num).y };
+	anchorpoint += center;
+	anchorpoint = Vec2(Extremism(anchorpoint.x, splitNum), Extremism(anchorpoint.y, splitNum));
+
+	Vec2 size = stage->GetSize(num);
+	Vec2 oldSize = size;
+
+	Vec2 dSign = Vec2(); //distanceの符号
+	if (distance.x != 0.0f) dSign.x = distance.x / fabsf(distance.x);
+	if (distance.y != 0.0f) dSign.y = distance.y / fabsf(distance.y);
+
+	Vec2 radius = distance - (dSign * (frameWidth / 2.0f));
+	if (anchorpoint.x != 0.5f)
+	{
+		size.x = fabsf(radius.x * 2.0f);
+	}
+	if (anchorpoint.y != 0.5f)
+	{
+		size.y = fabsf(radius.y * 2.0f);
+	}
+
+	Vec2 diff = size - oldSize;
+	Vec2 pos = dSign;
+	pos.x *= (diff / 2.0f).x;
+	pos.y *= (diff / 2.0f).y;
+
+	stage->SetSize(num, size);
+	stage->SetPos(num, centerPos + pos);
+}
+
 int EditerScene::GetStageIndex2MousePos(Vec2* distance)
 {
 	int result = -1;
@@ -336,6 +352,15 @@ float EditerScene::Extremism(float x, int split)
 {
 	if (split < 2) return -1.0f;
 	float result = 0.0f;
+
+	if (x < 0.0f)
+	{
+		return 0.0f;
+	}
+	else if (x > 1.0f)
+	{
+		return 1.0f;
+	}
 
 	for (int i = 0; i < split; i++)
 	{
