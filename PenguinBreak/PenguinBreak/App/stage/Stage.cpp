@@ -616,7 +616,7 @@ void Stage::Delete(size_t num)
 	boxes.erase(boxes.begin() + num);
 }
 
-void Stage::Reset()
+void Stage::EditerReset()
 {
 	boxes.clear();
 
@@ -633,6 +633,16 @@ void Stage::Reset()
 	boxes.back().pos = { window_width - ROAD_SIZE.x, window_height - ROAD_SIZE.y };
 	boxes.back().size = { ROAD_SIZE.x, ROAD_SIZE.y };
 	boxes.back().Init();
+}
+
+void Stage::BringForefront(size_t num)
+{
+	for (size_t i = num; i < boxes.size() - 1; i++)
+	{
+		auto keep = boxes[i];
+		boxes[i] = boxes[i + 1];
+		boxes[i + 1] = keep;
+	}
 }
 
 void Stage::SetScale(unsigned short scale)

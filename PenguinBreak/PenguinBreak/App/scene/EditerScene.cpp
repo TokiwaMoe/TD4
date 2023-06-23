@@ -40,128 +40,159 @@ void EditerScene::Init()
 
 void EditerScene::Update()
 {
-	//シーンの変更の仕方
-	if (Input::Get()->KeybordTrigger(DIK_ESCAPE))
+	if (isSave)
 	{
-		BaseScene* scene = new TitleScene();
-		sceneManager_->SetNextScene(scene);
-	}
-	else if (Input::Get()->KeybordTrigger(DIK_P))
-	{
-		GameScene::SetEditer();
-		stage->SetIndex();
-		BaseScene* scene = new GameScene();
-		sceneManager_->SetNextScene(scene);
-	}
-
-	const Vec2 center = { 0.5f, 0.5f };
-	Vec2 mousePos = Input::Get()->GetMousePos();
-	Vec2 leftTop;
-	Vec2 rightBottom;
-	Vec2 distance;
-	roadIndex = GetStageIndex2MousePos(&distance);
-
-	if (roadIndex == -1)
-	{
-		cursorState = CursorState::NONE;
+		if (Input::Get()->KeybordTrigger(DIK_RIGHT) && saveFileNumber + 1 <= 32)
+		{
+			saveFileNumber++;
+		}
+		if (Input::Get()->KeybordTrigger(DIK_LEFT) && saveFileNumber - 1 >= 1)
+		{
+			saveFileNumber--;
+		}
+		if (Input::Get()->KeybordTrigger(DIK_RETURN))
+		{
+			stage->WriteStage("stage" + std::to_string(saveFileNumber));
+			isSave = false;
+		}
+		if (Input::Get()->KeybordTrigger(DIK_BACK))
+		{
+			isSave = false;
+		}
 	}
 	else
 	{
-		stage->MoveAnchorpoint(roadIndex, center);
-		leftTop = stage->GetAnchorpointPos(roadIndex, Vec2(0.0f, 0.0f));
-		rightBottom = stage->GetAnchorpointPos(roadIndex, Vec2(1.0f, 1.0f));
-
-		if (Input::Get()->MousePushLeft() == false)
+		//シーンの変更の仕方
+		if (Input::Get()->KeybordTrigger(DIK_ESCAPE))
 		{
-			if (mousePos.x > leftTop.x &&
-				mousePos.x < rightBottom.x &&
-				mousePos.y > leftTop.y &&
-				mousePos.y < rightBottom.y)
+			BaseScene* scene = new TitleScene();
+			sceneManager_->SetNextScene(scene);
+		}
+		else if (Input::Get()->KeybordTrigger(DIK_P))
+		{
+			GameScene::SetEditer();
+			stage->SetIndex();
+			BaseScene* scene = new GameScene();
+			sceneManager_->SetNextScene(scene);
+		}
+
+		const Vec2 center = { 0.5f, 0.5f };
+		Vec2 mousePos = Input::Get()->GetMousePos();
+		Vec2 leftTop;
+		Vec2 rightBottom;
+		Vec2 distance;
+
+		if (roadIndex == -1)
+		{
+			cursorState = CursorState::NONE;
+		}
+		else
+		{
+			stage->MoveAnchorpoint(roadIndex, center);
+			leftTop = stage->GetAnchorpointPos(roadIndex, Vec2(0.0f, 0.0f));
+			rightBottom = stage->GetAnchorpointPos(roadIndex, Vec2(1.0f, 1.0f));
+
+			if (Input::Get()->MousePushLeft() == false)
 			{
-				cursorState = CursorState::MOVE;
-			}
-			else if (mousePos.x > leftTop.x - frameWidth &&
-					 mousePos.x < rightBottom.x + frameWidth &&
-					 mousePos.y > leftTop.y - frameWidth &&
-					 mousePos.y < rightBottom.y + frameWidth)
-			{
-				cursorState = CursorState::SCALE;
-			}
-			else
-			{
-				cursorState = CursorState::NONE;
+				if (mousePos.x > leftTop.x &&
+					mousePos.x < rightBottom.x &&
+					mousePos.y > leftTop.y &&
+					mousePos.y < rightBottom.y)
+				{
+					cursorState = CursorState::MOVE;
+				}
+				else if (mousePos.x > leftTop.x - frameWidth &&
+						 mousePos.x < rightBottom.x + frameWidth &&
+						 mousePos.y > leftTop.y - frameWidth &&
+						 mousePos.y < rightBottom.y + frameWidth)
+				{
+					cursorState = CursorState::SCALE;
+				}
+				else
+				{
+					cursorState = CursorState::NONE;
+				}
 			}
 		}
-	}
 
-	if (Input::Get()->MousePushLeft())
-	{
-		if (cursorState == CursorState::MOVE)
+		if (cursorState == CursorState::NONE)
 		{
-			stage->SetPos(roadIndex, Input::Get()->GetMousePos());
-		}
-		else if (cursorState == CursorState::SCALE)
-		{
-			const Vec2 centerPos = stage->GetAnchorpointPos(roadIndex, center);
+			roadIndex = GetStageIndex2MousePos(&distance);
 
-			Vec2 anchorpoint = { distance.x / stage->GetSize(roadIndex).x, distance.y / stage->GetSize(roadIndex).y };
-			anchorpoint += center;
-			anchorpoint = Vec2(Extremism(anchorpoint.x, 3), Extremism(anchorpoint.y, 3));
-			stage->MoveAnchorpoint(roadIndex, anchorpoint);
-
-			Vec2 size = stage->GetSize(roadIndex);
-			Vec2 oldSize = size;
-			if (anchorpoint.x != 0.5f)
+			if (roadIndex != -1)
 			{
-				size.x = fabsf((mousePos - centerPos).x * 2.0f);
+				stage->BringForefront(roadIndex);
 			}
-			if (anchorpoint.y != 0.5f)
+		}
+		else if (Input::Get()->MousePushLeft())
+		{
+			if (cursorState == CursorState::MOVE)
 			{
-				size.y = fabsf((mousePos - centerPos).y * 2.0f);
+				stage->SetPos(roadIndex, Input::Get()->GetMousePos());
 			}
-			stage->SetSize(roadIndex, size);
-			stage->SetPos(roadIndex, stage->GetPos(roadIndex) + ((oldSize - size) / 2.0f));
-		}
-	}
+			else if (cursorState == CursorState::SCALE)
+			{
+				const Vec2 centerPos = stage->GetAnchorpointPos(roadIndex, center);
 
-	// 道の生成
-	if (Input::Get()->KeybordTrigger(DIK_C))
-	{
-		stage->Create();
-	}
-	// 道の削除
-	if (Input::Get()->KeybordTrigger(DIK_D))
-	{
-		stage->Delete(roadIndex);
-		roadIndex = -1;
-	}
-	// ステージサイズ
-	if (Input::Get()->KeybordTrigger(DIK_UP))
-	{
-		if (scale - 1 >= 1)
-		{
-			scale--;
-			stage->SetScale(scale);
-		}
-	}
-	else if (Input::Get()->KeybordTrigger(DIK_DOWN))
-	{
-		if (scale + 1 <= 4)
-		{
-			scale++;
-			stage->SetScale(scale);
-		}
-	}
-	// リセット
-	if (Input::Get()->KeybordTrigger(DIK_R))
-	{
-		stage->Reset();
-	}
+				Vec2 anchorpoint = { distance.x / stage->GetSize(roadIndex).x, distance.y / stage->GetSize(roadIndex).y };
+				anchorpoint += center;
+				anchorpoint = Vec2(Extremism(anchorpoint.x, 3), Extremism(anchorpoint.y, 3));
+				stage->MoveAnchorpoint(roadIndex, anchorpoint);
 
-	// ステージ出力
-	if (Input::Get()->KeybordTrigger(DIK_S))
-	{
-		stage->WriteStage("write_stage");
+				Vec2 size = stage->GetSize(roadIndex);
+				Vec2 oldSize = size;
+				if (anchorpoint.x != 0.5f)
+				{
+					size.x = fabsf((mousePos - centerPos).x * 2.0f);
+				}
+				if (anchorpoint.y != 0.5f)
+				{
+					size.y = fabsf((mousePos - centerPos).y * 2.0f);
+				}
+				stage->SetSize(roadIndex, size);
+				stage->SetPos(roadIndex, stage->GetPos(roadIndex) + ((oldSize - size) / 2.0f));
+			}
+		}
+
+		// 道の生成
+		if (Input::Get()->KeybordTrigger(DIK_C))
+		{
+			stage->Create();
+		}
+		// 道の削除
+		if (Input::Get()->KeybordTrigger(DIK_D))
+		{
+			stage->Delete(roadIndex);
+			roadIndex = -1;
+		}
+		// ステージサイズ
+		if (Input::Get()->KeybordTrigger(DIK_UP))
+		{
+			if (scale - 1 >= 1)
+			{
+				scale--;
+				stage->SetScale(scale);
+			}
+		}
+		else if (Input::Get()->KeybordTrigger(DIK_DOWN))
+		{
+			if (scale + 1 <= 4)
+			{
+				scale++;
+				stage->SetScale(scale);
+			}
+		}
+		// リセット
+		if (Input::Get()->KeybordTrigger(DIK_R))
+		{
+			stage->EditerReset();
+		}
+
+		// ステージ出力
+		if (Input::Get()->KeybordTrigger(DIK_S))
+		{
+			isSave = true;
+		}
 	}
 }
 
@@ -169,51 +200,87 @@ void EditerScene::Draw()
 {
 	DebugText::Get()->Print(100.0f, 100.0f, 5, "Editer");
 
-	if (cursorState == CursorState::MOVE)
+	if (isSave == false)
 	{
-		Sprite::Get()->Draw(frame,
-							stage->GetPos(roadIndex),
-							stage->GetSize(roadIndex).x + frameWidth,
-							stage->GetSize(roadIndex).y + frameWidth,
-							stage->GetAnchorpoint(roadIndex),
-							{ 0.5f, 0.5f, 0.5f, 1.0f });
-	}
-	if (cursorState == CursorState::SCALE)
-	{
-		for (size_t i = 0; i < whiteBox.size(); i++)
+		if (cursorState == CursorState::MOVE)
 		{
-			Vec2 pos = stage->GetPos(roadIndex);
-			size_t x = (i + (i >= (whiteBox.size() / 2))) % 3;
-			size_t y = (i + (i >= (whiteBox.size() / 2))) / 3;
-			if (x == 0)
-			{
-				pos.x -= (stage->GetSize(roadIndex) / 2.0f).x + frameWidth;
-			}
-			else if (x == 2)
-			{
-				pos.x += (stage->GetSize(roadIndex) / 2.0f).x + frameWidth;
-			}
-			if (y == 0)
-			{
-				pos.y -= (stage->GetSize(roadIndex) / 2.0f).y + frameWidth;
-			}
-			else if (y == 2)
-			{
-				pos.y += (stage->GetSize(roadIndex) / 2.0f).y + frameWidth;
-			}
-
-			Sprite::Get()->Draw(whiteBox[i],
-								pos,
-								frameWidth,
-								frameWidth,
+			Sprite::Get()->Draw(frame,
+								stage->GetPos(roadIndex),
+								stage->GetSize(roadIndex).x + frameWidth,
+								stage->GetSize(roadIndex).y + frameWidth,
 								stage->GetAnchorpoint(roadIndex),
-								{ 1.0f, 1.0f, 1.0f, 1.0f });
+								{ 0.5f, 0.5f, 0.5f, 1.0f });
 		}
-	}
-	stage->Draw();
+		if (cursorState == CursorState::SCALE)
+		{
+			for (size_t i = 0; i < whiteBox.size(); i++)
+			{
+				Vec2 pos = stage->GetPos(roadIndex);
+				size_t x = (i + (i >= (whiteBox.size() / 2))) % 3;
+				size_t y = (i + (i >= (whiteBox.size() / 2))) / 3;
+				if (x == 0)
+				{
+					pos.x -= (stage->GetSize(roadIndex) / 2.0f).x + frameWidth;
+				}
+				else if (x == 2)
+				{
+					pos.x += (stage->GetSize(roadIndex) / 2.0f).x + frameWidth;
+				}
+				if (y == 0)
+				{
+					pos.y -= (stage->GetSize(roadIndex) / 2.0f).y + frameWidth;
+				}
+				else if (y == 2)
+				{
+					pos.y += (stage->GetSize(roadIndex) / 2.0f).y + frameWidth;
+				}
 
+				Sprite::Get()->Draw(whiteBox[i],
+									pos,
+									frameWidth,
+									frameWidth,
+									stage->GetAnchorpoint(roadIndex),
+									{ 1.0f, 1.0f, 1.0f, 1.0f });
+			}
+		}
+
+		OperationDraw();
+	}
+
+	stage->Draw();
 	DebugText::Get()->Print(16.0f, 16.0f, 2, "Scale:%d", scale);
-	OperationDraw();
+
+	if (isSave)
+	{
+		std::string numText;
+		if (saveFileNumber <= 1)
+		{
+			numText += ' ';
+		}
+		else
+		{
+			numText += '<';
+		}
+		numText += "%d";
+		if (saveFileNumber < 32)
+		{
+			numText += '>';
+		}
+
+		// スプライトデータは適当な物
+		Sprite::Get()->Draw(frame,
+							Vec2(window_width / 2.0f, window_height / 2.0f - 22.0f),
+							184.0f,
+							146.0f,
+							Vec2(0.5f, 0.5f),
+							{ 0.0f, 0.0f, 0.0f, 1.0f });
+
+		DebugText::Get()->Print(window_width / 2.0f - 82.0f, window_height / 2.0f - 80.0f, 2, "save stage");
+		DebugText::Get()->Print(window_width / 2.0f - 64.0f, window_height / 2.0f, 7, numText, saveFileNumber);
+
+		DebugText::Get()->Print(16.0f, window_height - 16.0f, 2, "Enter:Save");
+		DebugText::Get()->Print(16.0f, window_height - 48.0f, 2, "Back Space:Cancel");
+	}
 }
 
 void EditerScene::ShadowDraw()
