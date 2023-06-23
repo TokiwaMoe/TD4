@@ -108,9 +108,6 @@ private:
 	int deathCount = 0;
 	Vec2 deathPos[DEATH_MAX];
 
-
-
-
-
 	bool hit = false;
+	bool move = false;
 };

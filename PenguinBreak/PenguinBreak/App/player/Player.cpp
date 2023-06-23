@@ -43,6 +43,7 @@ void Player::Init(Stage* stage)
 	size = Vec2(width, height) / static_cast<float>(stage->GetScale());
 	radius = size / 2;
 	SetSize(size);
+	move = false;
 }
 
 void Player::stageInit(int stageNo)
@@ -68,13 +69,13 @@ void Player::Move()
 	if (Input::Get()->MousePushLeft() && !effect) {
 		const Vec2 mouseSize = { 32,32 };
 		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, radius) && !goalFlag) {
-			if (static_cast<float>(Input::Get()->GetMouseMove().lX) < 15 && static_cast<float>(Input::Get()->GetMouseMove().lY) < 15)
-			{
-				position.x += static_cast<float>(Input::Get()->GetMouseMove().lX);
-				position.y += static_cast<float>(Input::Get()->GetMouseMove().lY);
-			}
-			
-			
+
+			move = true;
+			//if (static_cast<float>(Input::Get()->GetMouseMove().lX) < 15 && static_cast<float>(Input::Get()->GetMouseMove().lY) < 15)
+			//{
+			//position.x += static_cast<float>(Input::Get()->GetMouseMove().lX);
+			//position.y += static_cast<float>(Input::Get()->GetMouseMove().lY);
+			//}
 			//プレイヤーの画像によってはいらない処理
 			if (static_cast<float>(Input::Get()->GetMouseMove().lX) > 0) {
 				flipFlag = true;
@@ -82,22 +83,23 @@ void Player::Move()
 			else {
 				flipFlag = false;
 			}
-
 		}
 		//パーティクルだす
 		//手のspを表示するか
 		isDraw = true;
 		moveParticle->ParticleAdd2(particlePos, { 1,1,0.5,1 }, { 1,1,0.5,1 });
-
 	}
-	else
-	{
+	else {
 		isDraw = false;
+		move = false;
+	}
+	if (move == true) {
+		position = Input::Get()->GetMousePos();
 	}
 	DebugText::Get()->Print(100.0f, 100.0f, 3, "%f,%f", Input::Get()->GetMousePos().x, Input::Get()->GetMousePos().y);
 	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);
 #if _DEBUG 
-	
+
 #endif
 }
 
