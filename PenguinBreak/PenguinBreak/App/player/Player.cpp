@@ -72,7 +72,7 @@ void Player::Move()
 			if (static_cast<float>(Input::Get()->GetMouseMove().lX) > 0 && static_cast<float>(Input::Get()->GetMouseMove().lX) < 15 && static_cast<float>(Input::Get()->GetMouseMove().lY) < 15)
 			{
 				move = true;
-				position = Input::Get()->GetMousePos();
+				//position = Input::Get()->GetMousePos();
 				/*position.x += static_cast<float>(Input::Get()->GetMouseMove().lX);
 				position.y += static_cast<float>(Input::Get()->GetMouseMove().lY);*/
 			}
