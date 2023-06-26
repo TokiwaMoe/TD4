@@ -41,7 +41,8 @@ public:
 
 	int CollisionCount(Stage* stage);
 
-	bool OutStage(Vec2 position, Stage* stage, int num);
+	bool OutStageX(float posX, Stage* stage, int num);
+	bool OutStageY(float posY, Stage* stage, int num);
 	void Draw();
 
 	//getter

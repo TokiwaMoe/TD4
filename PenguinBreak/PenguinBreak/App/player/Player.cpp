@@ -67,11 +67,10 @@ void Player::Move()
 	if (Input::Get()->MousePushLeft() && !effect) {
 		const Vec2 mouseSize = { 32,32 };
 		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, radius) && !goalFlag) {
-			if (static_cast<float>(Input::Get()->GetMouseMove().lX) > 0 && static_cast<float>(Input::Get()->GetMouseMove().lX) < 15 && static_cast<float>(Input::Get()->GetMouseMove().lY) < 15)
+			if (static_cast<float>(Input::Get()->GetMouseMove().lX) > 1 && static_cast<float>(Input::Get()->GetMouseMove().lX) < 15 ||
+				static_cast<float>(Input::Get()->GetMouseMove().lY) > 1 && static_cast<float>(Input::Get()->GetMouseMove().lY) < 15)
 			{
 				position = Input::Get()->GetMousePos();
-				/*position.x += static_cast<float>(Input::Get()->GetMouseMove().lX);
-				position.y += static_cast<float>(Input::Get()->GetMouseMove().lY);*/
 			}
 			
 			//プレイヤーの画像によってはいらない処理
@@ -191,6 +190,7 @@ void Player::collide2Stage(Stage* stage)
 int Player::CollisionCount(Stage* stage)
 {
 	int count = 0;
+	Vec2 oldPos = position;
 	for (int i = 0; i < stage->GetBoxSize(); i++)
 	{
 		if (stage->GetType(i) == Road::RoadType::WALL || effect)
@@ -217,38 +217,60 @@ int Player::CollisionCount(Stage* stage)
 	return count;
 }
 
-bool Player::OutStage(Vec2 position, Stage* stage, int num)
+bool Player::OutStageX(float posX, Stage* stage, int num)
 {
-	//ステージスプライトの中心座標
-	Vec2 stageCenter = {
-		stage->GetInstance()->GetPos(num).x,
-		stage->GetInstance()->GetPos(num).y
-	};
-	//X軸、Y軸の距離を算出
-	Vec2 distance =
+	//プレイヤーの左上
+	Vec2 playerLeftTop = { position.x - radius.x, position.y - radius.y };
+	//プレイヤーの右下
+	Vec2 playerRightTop = { position.x + width, position.y + height };
+	//ステージの半径
+	Vec2 stageR = { stage->GetSize(num).x, stage->GetSize(num).y };
+	//ステージの左上
+	Vec2 leftTop = { stage->GetPos(num).x - stageR.x, stage->GetPos(num).y - stageR.y };
+	//ステージの右下
+	Vec2 rightBottom = { stage->GetPos(num).x + stageR.x, stage->GetPos(num).y + stageR.y };
+
+	//
+	bool left = false;
+	bool right = false;
+	bool top = false;
+	bool bottom = false;
+
+	//positionが左辺より大きいか  当たってたらtrue
+	if (playerLeftTop.x > leftTop.x)
 	{
-		stageCenter.x - position.x,
-		stageCenter.y - position.y
-	};
-	//絶対値にするため結果が負なら正にする
-	if (distance.x < 0.0f) { distance.x *= -1.0f; }
-	if (distance.y < 0.0f) { distance.y *= -1.0f; }
-	//2つの矩形の和を算出
-	const float outSize = 10.0f;
-	Vec2 size_num =
+		left = true;
+	}
+	//positionが右辺より小さいか  当たってたらtrue
+	if (playerRightTop.x < rightBottom.x)
 	{
-		((stage->GetInstance()->GetSize(num).x) / 2.0f),
-		((stage->GetInstance()->GetSize(num).y) / 2.0f)
-	};
-	//距離がサイズの和より小さいor以下
-	if (distance.x <= size_num.x && distance.y <= size_num.y)
+		right = true;
+	}
+
+	//positionが上辺より大きいか  当たってたらtrue
+	if (playerLeftTop.y > leftTop.y)
+	{
+		top = true;
+	}
+	//positionが下辺より小さいか  当たってたらtrue
+	if (playerRightTop.y < rightBottom.y)
+	{
+		bottom = true;
+	}
+
+	//全部の辺が当たってたらfalse
+	if (left && right && top && bottom)
 	{
 		return false;
 	}
-	else
-	{
+	else {
 		return true;
 	}
+}
+
+bool Player::OutStageY(float posY, Stage* stage, int num)
+{
+	return false;
 }
 
 void Player::Draw()

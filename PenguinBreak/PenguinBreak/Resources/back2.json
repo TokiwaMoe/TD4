@@ -52,6 +52,32 @@
         1027.5,
         501.5
       ]
+    },
+    {
+      "back": 1,
+      "flipX": false,
+      "flipY": false,
+      "gimmick": 2,
+      "parameter": {
+        "flag": true,
+        "limit": [
+          0.0,
+          60.0
+        ],
+        "speed": 6.0
+      },
+      "pos": [
+        0.0,
+        357.0
+      ],
+      "size": [
+        110.0,
+        176.0
+      ],
+      "offset": [
+        640.0,
+        250.0
+      ]
     }
   ]
 }
