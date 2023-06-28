@@ -20,6 +20,7 @@ void Player::Initialize()
 	{
 		death[i] = Sprite::Get()->SpriteCreate(L"Resources/death.png");
 	}
+	deathSound = Audio::SoundLoadWave("Resources/Sound/death.wav");
 }
 
 void Player::Init(Stage* stage)
@@ -42,6 +43,7 @@ void Player::Init(Stage* stage)
 	size = Vec2(width, height) / static_cast<float>(stage->GetScale());
 	radius = size / 2;
 	SetSize(size);
+	move = false;
 }
 
 void Player::stageInit(int stageNo)
@@ -76,24 +78,24 @@ void Player::Move()
 			else {
 				flipFlag = false;
 			}
-
 		}
 		//パーティクルだす
 		//手のspを表示するか
 		isDraw = true;
 		moveParticle->ParticleAdd2(particlePos, { 1,1,0.5,1 }, { 1,1,0.5,1 });
-
 	}
-	else
-	{
+	else {
 		isDraw = false;
+		move = false;
+	}
+	if (move == true) {
+		position = Input::Get()->GetMousePos();
 	}
 	/*DebugText::Get()->Print(100.0f, 100.0f, 3, "%f,%f", static_cast<float>(Input::Get()->GetMouseMove().lX), static_cast<float>(Input::Get()->GetMouseMove().lY));
 	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);*/
-#if _DEBUG 
-	
-#endif
+
 }
+
 
 void Player::ConvertParticlePos()
 {
@@ -151,6 +153,9 @@ void Player::collide2Stage(Stage* stage)
 		if (deathTime <= 0) {
 			deathTime = 20;
 			respawn = true;
+		}
+		else if (deathTime >= 19) {
+			audio->SoundSEPlayWave(deathSound);
 		}
 		if (respawn == true) {
 			effect = false;

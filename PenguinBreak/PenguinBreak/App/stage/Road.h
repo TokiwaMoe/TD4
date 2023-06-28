@@ -7,9 +7,9 @@ public: //サブクラス
 	// 道のタイプ
 	enum RoadType
 	{
-		ROAD,  //道
 		START, //スタート
 		GOAL,  //ゴール
+		ROAD,  //道
 		WALL,  //穴
 		BACK,  //背景オブジェクト
 	};

@@ -64,6 +64,8 @@ private:
 	static const int DEATH_MAX = 30;
 
 private:
+	Audio* audio = Audio::Get();
+	SoundData deathSound{};//死んだときの
 	void Move();
 	/// <summary>
 	/// playerの座標を3dに変換
@@ -108,7 +110,11 @@ private:
 	int deathCount = 0;
 	Vec2 deathPos[DEATH_MAX];
 
+	bool hit = false;
+	bool move = false;
+
 	//タイマー
 	float time = 0;
 	Easing* easing = nullptr;
+
 };
