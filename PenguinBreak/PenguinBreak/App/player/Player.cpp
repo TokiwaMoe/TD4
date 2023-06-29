@@ -69,14 +69,8 @@ void Player::Move()
 	if (Input::Get()->MousePushLeft() && !effect) {
 		const Vec2 mouseSize = { 32,32 };
 		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, radius) && !goalFlag) {
-			if (static_cast<float>(Input::Get()->GetMouseMove().lX) > 0 && static_cast<float>(Input::Get()->GetMouseMove().lX) < 15 && static_cast<float>(Input::Get()->GetMouseMove().lY) < 15)
-			{
-				move = true;
-				//position = Input::Get()->GetMousePos();
-				/*position.x += static_cast<float>(Input::Get()->GetMouseMove().lX);
-				position.y += static_cast<float>(Input::Get()->GetMouseMove().lY);*/
-			}
-
+			position = Input::Get()->GetMousePos();
+			
 			//プレイヤーの画像によってはいらない処理
 			if (static_cast<float>(Input::Get()->GetMouseMove().lX) > 0) {
 				flipFlag = true;
@@ -187,7 +181,7 @@ void Player::collide2Stage(Stage* stage)
 		}
 	}
 	//ゴールの判定
-	if (!OutStage(position, stage, static_cast<int>(stage->GetGoal()))) {
+	if (!OutStageX(position, stage, static_cast<int>(stage->GetGoal()))) {
 		goalFlag = true;
 		//DebugText::Get()->Print(100.0f, 300.0f, 4, "GOAL");
 	}
@@ -197,11 +191,12 @@ void Player::collide2Stage(Stage* stage)
 int Player::CollisionCount(Stage* stage)
 {
 	int count = 0;
+	Vec2 oldPos = position;
 	for (int i = 0; i < stage->GetBoxSize(); i++)
 	{
 		if (stage->GetType(i) == Road::RoadType::WALL || effect)
 		{
-			if (!OutStage(position, stage, i))
+			if (!OutStageX(position, stage, i))
 			{
 				count = static_cast<int>(stage->GetRoadCount());
 				break;
@@ -213,7 +208,7 @@ int Player::CollisionCount(Stage* stage)
 		}
 		else
 		{
-			if (OutStage(position, stage, i))
+			if (OutStageX(position, stage, i))
 			{
 				count++;
 			}
@@ -223,7 +218,7 @@ int Player::CollisionCount(Stage* stage)
 	return count;
 }
 
-bool Player::OutStage(Vec2 position, Stage* stage, int num)
+bool Player::OutStageX(Vec2 position, Stage* stage, int num)
 {
 	//ステージスプライトの中心座標
 	Vec2 stageCenter = {
@@ -243,8 +238,8 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 	const float outSize = 10.0f;
 	Vec2 size_num =
 	{
-		((stage->GetInstance()->GetSize(num).x) / 2.0f),
-		((stage->GetInstance()->GetSize(num).y) / 2.0f)
+		((stage->GetInstance()->GetSize(num).x) / 2.0f) - radius.x,
+		((stage->GetInstance()->GetSize(num).y) / 2.0f) - radius.y
 	};
 	//距離がサイズの和より小さいor以下
 	if (distance.x <= size_num.x && distance.y <= size_num.y)
@@ -255,6 +250,11 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 	{
 		return true;
 	}
+}
+
+bool Player::OutStageY(float posY, Stage* stage, int num)
+{
+	return false;
 }
 
 void Player::Draw()
