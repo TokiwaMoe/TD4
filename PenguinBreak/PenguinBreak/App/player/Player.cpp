@@ -186,6 +186,7 @@ void Player::collide2Stage(Stage* stage)
 		//DebugText::Get()->Print(100.0f, 300.0f, 4, "GOAL");
 	}
 	//DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%d", deathTime);
+	
 }
 
 int Player::CollisionCount(Stage* stage)
@@ -214,7 +215,7 @@ int Player::CollisionCount(Stage* stage)
 			}
 		}
 	}
-	//DebugText::Get()->Print(100.0f, 500.0f, 3, "%d", count);
+	//
 	return count;
 }
 
@@ -226,7 +227,7 @@ bool Player::OutStageX(Vec2 position, Stage* stage, int num)
 		stage->GetInstance()->GetPos(num).y
 	};
 	//X軸、Y軸の距離を算出
-	Vec2 distance =
+	distance =
 	{
 		stageCenter.x - position.x,
 		stageCenter.y - position.y
@@ -236,10 +237,10 @@ bool Player::OutStageX(Vec2 position, Stage* stage, int num)
 	if (distance.y < 0.0f) { distance.y *= -1.0f; }
 	//2つの矩形の和を算出
 	const float outSize = 10.0f;
-	Vec2 size_num =
+	size_num =
 	{
-		((stage->GetInstance()->GetSize(num).x) / 2.0f) - radius.x,
-		((stage->GetInstance()->GetSize(num).y) / 2.0f) - radius.y
+		((stage->GetInstance()->GetSize(num).x) / 2.0f) - radius.x + outSize,
+		((stage->GetInstance()->GetSize(num).y) / 2.0f) - radius.y + outSize
 	};
 	//距離がサイズの和より小さいor以下
 	if (distance.x <= size_num.x && distance.y <= size_num.y)
@@ -250,6 +251,8 @@ bool Player::OutStageX(Vec2 position, Stage* stage, int num)
 	{
 		return true;
 	}
+
+	
 }
 
 bool Player::OutStageY(float posY, Stage* stage, int num)
