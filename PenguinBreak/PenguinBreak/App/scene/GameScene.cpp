@@ -30,9 +30,9 @@ void GameScene::Init()
 	stageNumber = nextStage;
 	if (isEditer == false)
 	{
-		stage->ChengeStage(stageNumber);
+		stage->ChangeStage(stageNumber);
 	}
-	stage->ChengeBack(stageNumber);
+	stage->ChangeBack(stageNumber);
 	//プレイヤー
 	player->Initialize();
 	player->Init(stage);
