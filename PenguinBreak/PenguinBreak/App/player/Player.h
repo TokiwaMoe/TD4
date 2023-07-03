@@ -93,7 +93,7 @@ private:
 	float width = 64.0f, height = 128.0f;
 	bool flipFlag = false;
 	//半径 
-	Vec2 radius = { 28, 60 };
+	Vec2 radius = {};
 	//マウスの判定用
 	Sphere circle;
 	Ray ray;
@@ -116,5 +116,9 @@ private:
 	//タイマー
 	float time = 0;
 	Easing* easing = nullptr;
+
+
+	Vec2 distance = {};
+	Vec2 size_num = {};
 
 };
