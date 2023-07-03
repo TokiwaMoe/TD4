@@ -70,7 +70,7 @@ void Player::Move()
 		const Vec2 mouseSize = { 32,32 };
 		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, radius) && !goalFlag) {
 			position = Input::Get()->GetMousePos();
-			
+
 			//プレイヤーの画像によってはいらない処理
 			if (static_cast<float>(Input::Get()->GetMouseMove().lX) > 0) {
 				flipFlag = true;
@@ -167,8 +167,8 @@ void Player::collide2Stage(Stage* stage)
 			isDeathDraw[deathCount - 1] = true;
 			//ロード外に出たらスタート位置に戻す
 			position = {
-				stage->GetInstance()->GetStartPos().x,
-				stage->GetInstance()->GetStartPos().y
+				stage->GetPos(stage->GetRestart()).x,
+				stage->GetPos(stage->GetRestart()).y
 			};
 
 			if (deathCount >= DEATH_MAX)
@@ -212,6 +212,13 @@ int Player::CollisionCount(Stage* stage)
 			if (OutStageX(position, stage, i))
 			{
 				count++;
+			}
+			else
+			{
+				if (stage->GetType(i) == Road::RoadType::START || stage->GetType(i) == Road::RoadType::SAVE)
+				{
+					stage->ChangeRestart(i);
+				}
 			}
 		}
 	}

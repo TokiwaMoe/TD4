@@ -53,6 +53,7 @@ Stage::Stage() :
 	boxes{},
 	backObjects{},
 	startIndex(0),
+	restartIndex(startIndex),
 	goalIndex(0),
 	roadCount(2),
 	scale(1)
@@ -98,6 +99,9 @@ void Stage::Draw(float offsetX, float offsetY)
 			break;
 		case Road::RoadType::WALL:
 			color = Vec4(1.0f, 1.0f, 0.0f, 1.0f);
+			break;
+		case Road::RoadType::SAVE:
+			color = Vec4(0.0f, 1.0f, 0.0f, 1.0f);
 			break;
 		default:
 			color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -186,7 +190,7 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 	return levelData;
 }
 
-void Stage::ChengeStage(int stageNumber)
+void Stage::ChangeStage(int stageNumber)
 {
 	if (stageNumber <= 0 || stageNumber > STAGE_COUNT) return;
 
@@ -263,7 +267,7 @@ Stage::JsonData* Stage::LoadBack(const std::string& jsonFile)
 	return backData;
 }
 
-void Stage::ChengeBack(int backNumber)
+void Stage::ChangeBack(int backNumber)
 {
 	if (BACK_COUNT - 1 <= 0) return;
 	if (backNumber <= 0 || backNumber > BACK_COUNT) backNumber = BACK_COUNT - 1;
@@ -272,6 +276,16 @@ void Stage::ChengeBack(int backNumber)
 	backObjects.clear();
 	backObjects = file->objects;
 	delete file;
+}
+
+void Stage::ChangeRestart(size_t num)
+{
+	if (num == restartIndex) return;
+
+	if (boxes[num].type == Road::RoadType::START ||
+		boxes[num].type == Road::RoadType::SAVE) {
+		restartIndex = num;
+	}
 }
 
 void Stage::WriteStage(const std::string& stageName)
@@ -333,32 +347,23 @@ void Stage::WriteStage(const std::string& stageName)
 
 void Stage::SetIndex()
 {
-	bool isStart = false; //startIndexを設定したかどうか
-	bool isGoal = false;   //goalIndexを設定したかどうか
+	roadCount = 0;
 
-	roadCount = 2;
 	for (size_t i = 0; i < boxes.size(); i++)
 	{
-		switch (boxes[i].type)
+		if (boxes[i].type != Road::RoadType::WALL)
 		{
-		case Road::RoadType::ROAD:
 			roadCount++;
-			break;
-		case Road::RoadType::START:
-			startIndex = i;
-			isStart = true;
-			break;
-		case Road::RoadType::GOAL:
-			goalIndex = i;
-			isGoal = true;
-			break;
-		default:
-			break;
-		}
 
-		if (isStart && isGoal)
-		{
-			break;
+			if (boxes[i].type == Road::RoadType::START)
+			{
+				startIndex = i;
+				restartIndex = startIndex;
+			}
+			else if (boxes[i].type == Road::RoadType::GOAL)
+			{
+				goalIndex = i;
+			}
 		}
 	}
 }

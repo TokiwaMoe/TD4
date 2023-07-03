@@ -63,6 +63,7 @@ private: //メンバ変数
 	std::vector<Road> boxes; //道のオブジェクト
 	std::vector<Back> backObjects; //背景オブジェクト
 	size_t startIndex;
+	size_t restartIndex;
 	size_t goalIndex;
 	size_t roadCount;
 	unsigned short scale; //プレイヤーのサイズ ※数字が小さいほどプレイヤーのサイズは大きくなる
@@ -80,11 +81,13 @@ public: //メンバ関数
 	// ステージの読み込み
 	JsonData* LoadStage(const std::string& jsonFile);
 	// ステージの切り替え
-	void ChengeStage(int stageNumber);
+	void ChangeStage(int stageNumber);
 	// 背景オブジェクトの読み込み
 	JsonData* LoadBack(const std::string& jsonFile);
 	// 背景オブジェクトの切り替え
-	void ChengeBack(int backNumber);
+	void ChangeBack(int backNumber);
+	// セーブポイントの切り替え
+	void ChangeRestart(size_t num);
 
 	size_t GetBoxSize() const { return boxes.size(); }
 	// 道の数の取得
@@ -103,6 +106,7 @@ public: //メンバ関数
 	Road::RoadType GetType(size_t num) const { return boxes[num].type; }
 	Vec2 GetStartPos() const { return GetPos(startIndex); }
 	size_t GetStart() const { return startIndex; }
+	size_t GetRestart() const { return restartIndex; }
 	Vec2 GetGoalPos() const { return GetPos(goalIndex); }
 	size_t GetGoal() const { return goalIndex; }
 
