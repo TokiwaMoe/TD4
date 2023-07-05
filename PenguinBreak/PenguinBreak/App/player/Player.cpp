@@ -42,7 +42,6 @@ void Player::Init(Stage* stage)
 		isDeathDraw[i] = false;
 	}
 	size = Vec2(width, height) / static_cast<float>(stage->GetScale());
-	radius = size / 2;
 	SetSize(size);
 	move = false;
 }
@@ -69,9 +68,10 @@ void Player::Move()
 {
 	if (Input::Get()->MousePushLeft() && !effect) {
 		const Vec2 mouseSize = { 32,32 };
+		oldPos = position;
 		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, radius) && !goalFlag) {
 			position = Input::Get()->GetMousePos();
-			//move = true;
+
 			//プレイヤーの画像によってはいらない処理
 			if (static_cast<float>(Input::Get()->GetMouseMove().lX) > 0) {
 				flipFlag = true;
@@ -89,8 +89,8 @@ void Player::Move()
 		isDraw = false;
 	}
 	//DebugText::Get()->Print(100.0f, 100.0f, 3, "%f,%f", static_cast<float>(Input::Get()->GetMouseMove().lX), static_cast<float>(Input::Get()->GetMouseMove().lY));
-	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", oldPos.x, oldPos.y);
-	DebugText::Get()->Print(100.0f, 400.0f, 3, "%f,%f", position.x, position.y);
+	/*DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", oldPos.x, oldPos.y);
+	DebugText::Get()->Print(100.0f, 400.0f, 3, "%f,%f", position.x, position.y);*/
 }
 
 
@@ -131,7 +131,7 @@ void Player::ConvertParticlePos()
 
 void Player::collide2Stage(Stage* stage)
 {
-	if (/*stage->GetRoadCount() == CollisionCount(stage) || */LineCollisionCount(stage) == stage->GetRoadCount())
+	if (/*stage->GetRoadCount() == CollisionCount(stage) ||*/ PointCollisionCount(stage) == stage->GetRoadCount())
 	{
 		//エフェクトだす
 		effect = true;
@@ -255,203 +255,110 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 	}
 }
 
-bool Player::Line2Line(Vec2 stagePoint1, Vec2 stagePoint2, Vec2 oldPos, Vec2 position)
+bool Player::Point2Box(Stage* stage, Vec2 point, int num)
 {
-	//プレイヤーの線分
-	Vec2 base2player = { oldPos.x - position.x, oldPos.y - position.y };
-	//ステージの点1と前座標の線分
-	Vec2 p12oldPos = { stagePoint1.x - oldPos.x, stagePoint1.y - oldPos.y };
-	//ステージの点2と前座標の線分
-	Vec2 p22oldPos = { stagePoint2.x - oldPos.x, stagePoint2.y - oldPos.y };
-
-	float a = base2player.x * p12oldPos.y - base2player.y * p12oldPos.x;
-	float b = base2player.x * p22oldPos.y - base2player.y * p22oldPos.x;
-	float len1 = a * b;
-	if (len1 > 0)
+	Vec2 leftTop = {
+		stage->GetPos(num).x - (stage->GetSize(num).x / 2),
+		stage->GetPos(num).y - (stage->GetSize(num).y / 2)
+	};
+	Vec2 rightBottom = {
+		stage->GetPos(num).x + (stage->GetSize(num).x / 2),
+		stage->GetPos(num).y + (stage->GetSize(num).y / 2)
+	};
+	//左辺
+	bool left = false;
+	if (point.x >= leftTop.x)
+	{
+		left = true;
+	}
+	//右辺
+	bool right = false;
+	if (point.x <= rightBottom.x)
+	{
+		right = true;
+	}
+	//上辺
+	bool top = false;
+	if (point.y >= leftTop.y)
+	{
+		top = true;
+	}
+	//下辺
+	bool bottom = false;
+	if (point.y <= rightBottom.y)
+	{
+		bottom = true;
+	}
+	
+	if (left && right && top && bottom)
 	{
 		return false;
-	}
-
-	//ステージ線分
-	Vec2 base2stage = { stagePoint2.x - stagePoint1.x, stagePoint2.y - stagePoint1.y };
-	//ステージの点1と前座標の線分
-	Vec2 oldPos2p1 = { oldPos.x - stagePoint1.x, oldPos.y - stagePoint1.y };
-	//ステージの点2と現在座標の線分
-	Vec2 pos2p2 = { position.x - stagePoint1.x, position.y - stagePoint1.y };
-
-	float c = base2stage.x * oldPos2p1.y - base2stage.y * oldPos2p1.x;
-	float d = base2stage.x * pos2p2.y - base2stage.y * pos2p2.x;
-	float len2 = c * d;
-	if (len2 > 0)
-	{
-		return false;
-	}
-	return true;
-}
-
-bool Player::Rect2Line(Vec2 leftTop, Vec2 rightBottom, Vec2 oldPos, Vec2 position)
-{
-	//上
-	if (Line2Line(leftTop, { rightBottom.x, leftTop.y }, oldPos, position)) { return true; }
-	//下
-	if (Line2Line({ leftTop.x, rightBottom.y }, rightBottom, oldPos, position)) { return true; }
-	//左
-	if (Line2Line(leftTop, { leftTop.x, rightBottom.y }, oldPos, position)) { return true; }
-	//右
-	if (Line2Line({ rightBottom.x, leftTop.y }, rightBottom, oldPos, position)) { return true; }
-	return false;
-}
-
-bool Player::Old2Now(Vec2 leftTop, Vec2 rightBottom, Vec2 oldPos, Vec2 position)
-{
-	float x = oldPos.x - position.x;
-	float y = oldPos.y - position.y;
-	//正に直す
-	if (x < 0) { x *= -1; }
-	if (y < 0) { y *= -1; }
-	//カウント
-	int count = 0;
-	//差が大きい方でfor分を回す
-	if (x > y)
-	{
-		//現在の座標より前座標の方が大きかったら現在座標からfor分を回す
-		if (oldPos.x > position.x)
-		{
-			for (float i = position.x; i <= oldPos.x; i++)
-			{
-				//現在の座標より前座標の方が大きかったら現在座標からfor分を回す
-				if (oldPos.y > position.y)
-				{
-					for (float j = position.y; j <= oldPos.y; j++)
-					{
-						if (Rect2Line(leftTop, rightBottom, oldPos, {i, j}))
-						{
-							count++;
-						}
-					}
-				}
-				else
-				{
-					for (float j = oldPos.y; j <= position.y; j++)
-					{
-						if (Rect2Line(leftTop, rightBottom, oldPos, { i, j }))
-						{
-							count++;
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			for (float i = oldPos.x; i <= position.x; i++)
-			{
-				//現在の座標より前座標の方が大きかったら現在座標からfor分を回す
-				if (oldPos.y > position.y)
-				{
-					for (float j = position.y; j <= oldPos.y; j++)
-					{
-						if (Rect2Line(leftTop, rightBottom, oldPos, { i, j }))
-						{
-							count++;
-						}
-					}
-				}
-				else
-				{
-					for (float j = oldPos.y; j <= position.y; j++)
-					{
-						if (Rect2Line(leftTop, rightBottom, oldPos, { i, j }))
-						{
-							count++;
-						}
-					}
-				}
-			}
-		}
 	}
 	else
 	{
-		//現在の座標より前座標の方が大きかったら現在座標からfor分を回す
-		if (oldPos.y > position.y)
-		{
-			for (float i = position.y; i <= oldPos.y; i++)
-			{//現在の座標より前座標の方が大きかったら現在座標からfor分を回す
-				if (oldPos.x > position.x)
-				{
-					for (float j = position.x; j <= oldPos.x; j++)
-					{
-						if (Rect2Line(leftTop, rightBottom, oldPos, { j, i }))
-						{
-							count++;
-						}
-					}
-				}
-				else
-				{
-					for (float j = oldPos.x; j <= position.x; j++)
-					{
-						if (Rect2Line(leftTop, rightBottom, oldPos, { j, i }))
-						{
-							count++;
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			for (float i = position.y; i <= oldPos.y; i++)
-			{
-				//現在の座標より前座標の方が大きかったら現在座標からfor分を回す
-				if (oldPos.x > position.x)
-				{
-					for (float j = position.x; j <= oldPos.x; j++)
-					{
-						if (Rect2Line(leftTop, rightBottom, oldPos, { j, i }))
-						{
-							count++;
-						}
-					}
-				}
-				else
-				{
-					for (float j = oldPos.x; j <= position.x; j++)
-					{
-						if (Rect2Line(leftTop, rightBottom, oldPos, { j, i }))
-						{
-							count++;
-						}
-					}
-				}
-			}
-		}
+		return true;
+	}
+}
+
+bool Player::Old2Now(Vec2 oldPos, Vec2 position, Stage* stage, int num)
+{
+	int count = 0;
+	if (position.x >= oldPos.x)
+	{
+		count = Point2BoxCount(oldPos, position, stage, num);
+	}
+	else
+	{
+		count = Point2BoxCount(position, oldPos, stage, num);
 	}
 
 	if (count != 0)
 	{
 		return true;
 	}
-	else
-	{
+	else {
 		return false;
 	}
 }
 
-int Player::LineCollisionCount(Stage* stage)
+int Player::Point2BoxCount(Vec2 point1, Vec2 point2, Stage* stage, int num)
 {
 	int count = 0;
-	
+	for (float i = point1.x; i <= point2.x; i++)
+	{
+		if (point2.y >= point1.y)
+		{
+			for (float j = point1.y; j < point2.y; j++)
+			{
+				if (Point2Box(stage, { i,j }, num))
+				{
+					count++;
+				}
+			}
+		}
+		else
+		{
+			for (float j = point2.y; j < point1.y; j++)
+			{
+				if (Point2Box(stage, { i,j }, num))
+				{
+					count++;
+				}
+			}
+		}
+	}
+
+	return count;
+}
+
+int Player::PointCollisionCount(Stage* stage)
+{
+	int count = 0;
 	for (int i = 0; i < stage->GetBoxSize(); i++)
 	{
-		//ステージ左上
-		Vec2 leftTop = { stage->GetPos(i).x - stage->GetSize(i).x, stage->GetPos(i).y - stage->GetSize(i).y };
-		//ステージ右下
-		Vec2 rightBottom = { stage->GetPos(i).x + stage->GetSize(i).x, stage->GetPos(i).y + stage->GetSize(i).y };
-
 		if (stage->GetType(i) == Road::RoadType::WALL)
 		{
-			if (!Old2Now(leftTop, rightBottom, oldPos, position))
+			if (!Old2Now(oldPos, position, stage, i))
 			{
 				count = static_cast<int>(stage->GetRoadCount());
 				break;
@@ -463,11 +370,17 @@ int Player::LineCollisionCount(Stage* stage)
 		}
 		else
 		{
-			if (Old2Now(leftTop, rightBottom, oldPos, position))
+			if (Old2Now(oldPos, position, stage, i))
 			{
 				count++;
 			}
-			
+			else
+			{
+				if (stage->GetType(i) == Road::RoadType::START || stage->GetType(i) == Road::RoadType::SAVE)
+				{
+					stage->ChangeRestart(i);
+				}
+			}
 		}
 	}
 	//

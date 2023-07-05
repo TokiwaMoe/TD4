@@ -43,15 +43,13 @@ public:
 	//矩形と矩形
 	bool OutStage(Vec2 position, Stage* stage, int num);
 	//線分と線分
-	bool Line2Line(Vec2 stagePoint1, Vec2 stagePoint2, Vec2 oldPos, Vec2 position);
-	//プレイヤーがステージの内にはいっているか
-	bool Rect2Line(Vec2 leftTop, Vec2 rightBottom, Vec2 oldPos, Vec2 position);
-	//前座標から現在の座標までをfor分で回す関数
-	bool Old2Now(Vec2 leftTop, Vec2 rightBottom, Vec2 oldPos, Vec2 position);
-	//for分の中身
-	int FloatFor(Vec2 leftTop, Vec2 rightBottom, Vec2 oldPos, Vec2 position, float old, float pos, float num);
-	//当たってないステージがあったらカウントする
-	int LineCollisionCount(Stage* stage);
+	bool Point2Box(Stage *stage, Vec2 point, int num);
+	//前フレームから現在までをfor分で回す
+	bool Old2Now(Vec2 oldPos, Vec2 position, Stage* stage, int num);
+	//
+	int Point2BoxCount(Vec2 point1, Vec2 point2, Stage* stage, int num);
+	//ステージとプレイヤーが当たってないものをカウント
+	int PointCollisionCount(Stage* stage);
 	void Draw();
 
 	//getter
