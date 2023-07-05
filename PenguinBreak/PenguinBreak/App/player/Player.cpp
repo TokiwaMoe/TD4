@@ -71,7 +71,7 @@ void Player::Move()
 		const Vec2 mouseSize = { 32,32 };
 		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, radius) && !goalFlag) {
 			position = Input::Get()->GetMousePos();
-
+			//move = true;
 			//プレイヤーの画像によってはいらない処理
 			if (static_cast<float>(Input::Get()->GetMouseMove().lX) > 0) {
 				flipFlag = true;
