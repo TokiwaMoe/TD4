@@ -5,12 +5,10 @@
 #include"TitleScene.h"
 #include"PostEffect.h"
 SelectScene::SelectScene()
-{
-}
+{}
 
 SelectScene::~SelectScene()
-{
-}
+{}
 
 void SelectScene::Init()
 {
@@ -24,8 +22,17 @@ void SelectScene::Init()
 	stageData[3] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum4.png");
 	stageData[4] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum5.png");
 	stageData[5] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum6.png");
+	stageData[6] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum7.png");
+	stageData[7] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum8.png");
+	stageData[8] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum9.png");
+	stageData[9] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum10.png");
+	stageData[10] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum11.png");
+	stageData[11] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum12.png");
+	stageData[12] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum13.png");
 
-	backButton = Sprite::Get()->SpriteCreate(L"Resources/Select/backButton.png");
+	selectGraph[0] = Sprite::Get()->SpriteCreate(L"Resources/Select/backButton.png");
+	selectGraph[1] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectRight.png");
+	selectGraph[2] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectLeft.png");
 
 	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
 	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
@@ -33,11 +40,13 @@ void SelectScene::Init()
 	rule = Sprite::Get()->SpriteCreate(L"Resources/rule.png");
 
 	Vec2 size = {};
+	selectMax = 0;
 	for (int i = 0; i < Stage::STAGE_COUNT; i++)
 	{
-		stagePos[i] = { 430.0f + size.x * 200.0f,300.0f + size.y * 140.0f };
+		stagePos[i] = { 430.0f + size.x * 200.0f + selectMax * window_width,300.0f + size.y * 140.0f };
 		size.x += 1.0f;
-		if (i == 2) { size.x = 0.0f, size.y++; }
+		if (i % 3 == 2) { size.x = 0.0f, size.y++; }
+		if (i % 6 == 5) { size = {}, selectMax++; }
 	}
 
 	PostEffect::Get()->SetPipeline(static_cast<int>(PostEffectType::NORMAL));
@@ -58,30 +67,63 @@ void SelectScene::Draw()
 	Sprite::Get()->Draw(backGround[0], {}, width, height);
 	Sprite::Get()->Draw(rule, rulePos, 500, 600, { 0.5,0.5 });
 	Sprite::Get()->Draw(backGround[1], {}, width, height);
-	
+
 	const float length = 94.0f;
-	
+
 	//ステージ数字
 	for (int i = 0; i < Stage::STAGE_COUNT; i++)
 	{
 		if (scaleNumber == i)
 		{
-			Sprite::Get()->Draw(stageData[i], stagePos[i], length * scale, length * scale, { 0.5f,0.5f });
+			Sprite::Get()->Draw(stageData[i], Vec2(stagePos[i].x - selectNum * window_width, stagePos[i].y),
+				length * scale, length * scale, { 0.5f,0.5f });
 		}
 		else
 		{
-			Sprite::Get()->Draw(stageData[i], stagePos[i], length, length, { 0.5f,0.5f });
+			Sprite::Get()->Draw(stageData[i], Vec2(stagePos[i].x - selectNum * window_width, stagePos[i].y),
+				length, length, { 0.5f,0.5f });
 		}
 	}
-	//戻るボタン
-	if (scaleNumber == -2)
+
+	//右左矢印
+
+	if (scaleNumber == BACKSELECT)
 	{
-		Sprite::Get()->Draw(backButton, backButtonPos, length * scale, length * scale, { 0.5f,0.5f });
+		Sprite::Get()->Draw(selectGraph[0], selectPos[0],
+			length * scale, length * scale, { 0.5f,0.5f });
 	}
 	else
 	{
-		Sprite::Get()->Draw(backButton, backButtonPos, length, length, { 0.5f,0.5f });
+		Sprite::Get()->Draw(selectGraph[0], selectPos[0],
+			length, length, { 0.5f,0.5f });
 	}
+	if (selectNum != selectMax)
+	{
+		if (scaleNumber == RIGHTSELECT)
+		{
+			Sprite::Get()->Draw(selectGraph[1], selectPos[1],
+				length * scale, length * scale, { 0.5f,0.5f });
+		}
+		else
+		{
+			Sprite::Get()->Draw(selectGraph[1], selectPos[1],
+				length, length, { 0.5f,0.5f });
+		}
+	}
+	if (selectNum != SELECTONE)
+	{
+		if (scaleNumber == LEFTSELECT)
+		{
+			Sprite::Get()->Draw(selectGraph[2], selectPos[2],
+				length * scale, length * scale, { 0.5f,0.5f });
+		}
+		else
+		{
+			Sprite::Get()->Draw(selectGraph[2], selectPos[2],
+				length, length, { 0.5f,0.5f });
+		}
+	}
+
 	//手
 	Vec2 hPos = Input::Get()->GetMousePos();
 	if (isDraw)
@@ -110,47 +152,27 @@ bool SelectScene::GetEffect()
 
 void SelectScene::StageDecision()
 {
-	//ステージの数字
-	const Vec2 sSize = { 40.0f ,40.0f };
-	const Vec2 mSize = { 6.0f,6.0f };
 	//演出処理
 	if (Input::Get()->MousePushLeft())
 	{
 		//手のspを表示するか
 		isDraw = true;
-		scaleNumber = -1;//リセット数字
-		for (int i = 0; i < Stage::STAGE_COUNT; i++)
-		{
-			if (Collision::BoxCollision(stagePos[i], Input::Get()->GetMousePos(), sSize, mSize)) {
-				scaleNumber = i;
-			}
-		}
-		//タイトル戻るボタン
-		if (Collision::BoxCollision(backButtonPos, Input::Get()->GetMousePos(), sSize, mSize)) {
-			scaleNumber = -2;
-		}
+		HandProcess();
+
 	}
 	else
 	{
-		scaleNumber = -1;//リセット数字
-		for (int i = 0; i < Stage::STAGE_COUNT; i++)
-		{
-			if (Collision::BoxCollision(stagePos[i], Input::Get()->GetMousePos(), sSize, mSize)) {
-				scaleNumber = i;
-			}
-		}
-		//タイトル戻るボタン
-		if (Collision::BoxCollision(backButtonPos, Input::Get()->GetMousePos(), sSize, mSize)) {
-			scaleNumber = -2;
-		}
 		isDraw = false;
+		HandProcess();
 	}
-
+	//ステージの数字
+	const Vec2 sSize = { 40.0f ,40.0f };
+	const Vec2 mSize = { 6.0f,6.0f };
 	//マウスでステージ決定
 	if (Input::Get()->MouseReleaseLeft()) {
 		for (int i = 0; i < Stage::STAGE_COUNT; i++)
 		{
-			if (Collision::BoxCollision(stagePos[i], Input::Get()->GetMousePos(), sSize, mSize)) {
+			if (Collision::BoxCollision(Vec2(stagePos[i].x - selectNum * window_width, stagePos[i].y), Input::Get()->GetMousePos(), sSize, mSize)) {
 				BaseScene* scene = new GameScene();
 				scene->nextStage = i + 1;
 				sceneManager_->SetNextScene(scene);
@@ -158,9 +180,19 @@ void SelectScene::StageDecision()
 			}
 		}
 		//タイトル戻るボタン
-		if (Collision::BoxCollision(backButtonPos, Input::Get()->GetMousePos(), sSize, mSize)) {
+		if (Collision::BoxCollision(selectPos[0], Input::Get()->GetMousePos(), sSize, mSize)) {
 			BaseScene* scene = new TitleScene();
 			sceneManager_->SetNextScene(scene);
+		}
+		if (Collision::BoxCollision(selectPos[1], Input::Get()->GetMousePos(), sSize, mSize)
+			&& selectNum != selectMax) {
+
+			selectNum++;
+		}
+		if (Collision::BoxCollision(selectPos[2], Input::Get()->GetMousePos(), sSize, mSize)
+			&& selectNum != SELECTONE) {
+
+			selectNum--;
 		}
 	}
 }
@@ -221,3 +253,24 @@ void SelectScene::Move()
 	}
 }
 
+void SelectScene::HandProcess()
+{
+	//ステージの数字
+	const Vec2 sSize = { 40.0f ,40.0f };
+	const Vec2 mSize = { 6.0f,6.0f };
+	scaleNumber = RESETSELECT;//リセット数字
+	for (int i = 0; i < Stage::STAGE_COUNT; i++)
+	{
+		if (Collision::BoxCollision(Vec2(stagePos[i].x - selectNum * window_width, stagePos[i].y),
+			Input::Get()->GetMousePos(), sSize, mSize)) {
+			scaleNumber = i;
+		}
+	}
+	for (int i = 0; i < 3; i++)
+	{
+		//タイトル戻るボタン
+		if (Collision::BoxCollision(selectPos[i], Input::Get()->GetMousePos(), sSize, mSize)) {
+			scaleNumber = BACKSELECT - i;
+		}
+	}
+}
