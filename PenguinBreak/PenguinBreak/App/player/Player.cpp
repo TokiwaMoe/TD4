@@ -91,8 +91,8 @@ void Player::Move()
 	if (move == true) {
 		position = Input::Get()->GetMousePos();
 	}
-	/*DebugText::Get()->Print(100.0f, 100.0f, 3, "%f,%f", static_cast<float>(Input::Get()->GetMouseMove().lX), static_cast<float>(Input::Get()->GetMouseMove().lY));
-	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);*/
+	//DebugText::Get()->Print(100.0f, 100.0f, 3, "%f,%f", static_cast<float>(Input::Get()->GetMouseMove().lX), static_cast<float>(Input::Get()->GetMouseMove().lY));
+	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", radius.x, radius.y);
 
 }
 
@@ -243,7 +243,7 @@ bool Player::OutStageX(Vec2 position, Stage* stage, int num)
 	if (distance.x < 0.0f) { distance.x *= -1.0f; }
 	if (distance.y < 0.0f) { distance.y *= -1.0f; }
 	//2つの矩形の和を算出
-	const float outSize = 10.0f;
+	const float outSize = 12.0f;
 	size_num =
 	{
 		((stage->GetInstance()->GetSize(num).x) / 2.0f) - radius.x + outSize,
