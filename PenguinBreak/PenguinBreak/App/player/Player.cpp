@@ -15,7 +15,7 @@ void Player::Initialize()
 	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
 	moveParticle = std::make_unique <ParticleManager>();
 	moveParticle->Initialize();
-	p_Texture = Texture::Get()->LoadTexture(L"Resources/paricle/particle3.png");
+	p_Texture = Texture::Get()->LoadTexture(L"Resources/Particle/particle3.png");
 	for (int i = 0; i < DEATH_MAX; i++)
 	{
 		death[i] = Sprite::Get()->SpriteCreate(L"Resources/death.png");
@@ -179,10 +179,7 @@ void Player::collide2Stage(Stage* stage)
 	//ゴールの判定
 	if (!OutStage(position, stage, static_cast<int>(stage->GetGoal()))) {
 		goalFlag = true;
-		//DebugText::Get()->Print(100.0f, 300.0f, 4, "GOAL");
 	}
-	//DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%d", deathTime);
-	
 }
 
 int Player::CollisionCount(Stage* stage)
@@ -257,33 +254,35 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 
 bool Player::Point2Box(Stage* stage, Vec2 point, int num)
 {
+	//ステージの左上座標
 	Vec2 leftTop = {
 		stage->GetPos(num).x - (stage->GetSize(num).x / 2),
 		stage->GetPos(num).y - (stage->GetSize(num).y / 2)
 	};
+	//ステージの右下座標
 	Vec2 rightBottom = {
 		stage->GetPos(num).x + (stage->GetSize(num).x / 2),
 		stage->GetPos(num).y + (stage->GetSize(num).y / 2)
 	};
-	//左辺
+	//点の座標が左辺よりも大きかったらtrue
 	bool left = false;
 	if (point.x >= leftTop.x)
 	{
 		left = true;
 	}
-	//右辺
+	//点の座標が右辺よりも小さかったらtrue
 	bool right = false;
 	if (point.x <= rightBottom.x)
 	{
 		right = true;
 	}
-	//上辺
+	//点の座標が上辺よりも大きかったらtrue
 	bool top = false;
 	if (point.y >= leftTop.y)
 	{
 		top = true;
 	}
-	//下辺
+	//点の座標が下辺よりも小さかったらtrue
 	bool bottom = false;
 	if (point.y <= rightBottom.y)
 	{
@@ -303,7 +302,7 @@ bool Player::Point2Box(Stage* stage, Vec2 point, int num)
 bool Player::Old2Now(Vec2 oldPos, Vec2 position, Stage* stage, int num)
 {
 	int count = 0;
-	//現在は前フレームより大きかったらfor分を前フレームから進める
+	//現在は前フレームより大きかったらfor文を前フレームから進める
 	if (position.x >= oldPos.x)
 	{
 		count = Point2BoxCount(oldPos, position, stage, num);
@@ -325,12 +324,15 @@ bool Player::Old2Now(Vec2 oldPos, Vec2 position, Stage* stage, int num)
 int Player::Point2BoxCount(Vec2 point1, Vec2 point2, Stage* stage, int num)
 {
 	int count = 0;
+	//前フレームの座標から現在までの座標が全てステージに乗っているか調べる
 	for (float i = point1.x; i <= point2.x; i++)
 	{
+		//点2の方が大きかったらfor文を点1から始める
 		if (point2.y >= point1.y)
 		{
 			for (float j = point1.y; j <= point2.y; j++)
 			{
+				//点の座標がステージに入ってなかったらカウント
 				if (Point2Box(stage, { i,j }, num))
 				{
 					count++;
@@ -341,6 +343,7 @@ int Player::Point2BoxCount(Vec2 point1, Vec2 point2, Stage* stage, int num)
 		{
 			for (float j = point2.y; j <= point1.y; j++)
 			{
+				//点の座標がステージに入ってなかったらカウント
 				if (Point2Box(stage, { i,j }, num))
 				{
 					count++;
@@ -357,20 +360,24 @@ int Player::PointCollisionCount(Stage* stage)
 	int count = 0;
 	for (int i = 0; i < stage->GetBoxSize(); i++)
 	{
+		//i番目のステージが壁だったら
 		if (stage->GetType(i) == Road::RoadType::WALL)
 		{
+			//点がステージに当たってても初期位置に戻す
 			if (!Old2Now(oldPos, position, stage, i))
 			{
 				count = static_cast<int>(stage->GetRoadCount());
 				break;
 			}
 		}
+		//i番目のステージが背景だったら数えない
 		else if (stage->GetType(i) == Road::RoadType::BACK)
 		{
 			continue;
 		}
 		else
 		{
+			//i番目のステージに点が入っていなかったらカウント
 			if (Old2Now(oldPos, position, stage, i))
 			{
 				count++;
