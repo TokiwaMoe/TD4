@@ -15,7 +15,7 @@ void Player::Initialize()
 	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
 	moveParticle = std::make_unique <ParticleManager>();
 	moveParticle->Initialize();
-	p_Texture = Texture::Get()->LoadTexture(L"Resources/paricle/particle3.png");
+	p_Texture = Texture::Get()->LoadTexture(L"Resources/Particle/particle3.png");
 	for (int i = 0; i < DEATH_MAX; i++)
 	{
 		death[i] = Sprite::Get()->SpriteCreate(L"Resources/death.png");
@@ -26,9 +26,10 @@ void Player::Initialize()
 void Player::Init(Stage* stage)
 {
 	position = {
-	stage->GetInstance()->GetStartPos().x/* + (stage->GetInstance()->GetSize(stage->GOAL).x / 2.0f)*/,
-	stage->GetInstance()->GetStartPos().y/* + (stage->GetInstance()->GetSize(stage->GOAL).y / 2.0f)*/
+	stage->GetInstance()->GetStartPos().x,
+	stage->GetInstance()->GetStartPos().y
 	};
+	oldPos = position;
 	flipFlag = false;
 	goalFlag = false;
 	deathTime = 20;
@@ -41,7 +42,6 @@ void Player::Init(Stage* stage)
 		isDeathDraw[i] = false;
 	}
 	size = Vec2(width, height) / static_cast<float>(stage->GetScale());
-	radius = size / 2;
 	SetSize(size);
 	move = false;
 }
@@ -68,9 +68,10 @@ void Player::Move()
 {
 	if (Input::Get()->MousePushLeft() && !effect) {
 		const Vec2 mouseSize = { 32,32 };
+		oldPos = position;
 		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, radius) && !goalFlag) {
 			position = Input::Get()->GetMousePos();
-			//move = true;
+
 			//プレイヤーの画像によってはいらない処理
 			if (static_cast<float>(Input::Get()->GetMouseMove().lX) > 0) {
 				flipFlag = true;
@@ -86,14 +87,10 @@ void Player::Move()
 	}
 	else {
 		isDraw = false;
-		move = false;
-	}
-	if (move == true) {
-		position = Input::Get()->GetMousePos();
 	}
 	//DebugText::Get()->Print(100.0f, 100.0f, 3, "%f,%f", static_cast<float>(Input::Get()->GetMouseMove().lX), static_cast<float>(Input::Get()->GetMouseMove().lY));
-	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", radius.x, radius.y);
-
+	/*DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", oldPos.x, oldPos.y);
+	DebugText::Get()->Print(100.0f, 400.0f, 3, "%f,%f", position.x, position.y);*/
 }
 
 
@@ -132,11 +129,9 @@ void Player::ConvertParticlePos()
 	moveParticle->Update();
 }
 
-
-
 void Player::collide2Stage(Stage* stage)
 {
-	if (stage->GetRoadCount() == CollisionCount(stage))
+	if (stage->GetRoadCount() == CollisionCount(stage) || PointCollisionCount(stage) == stage->GetRoadCount())
 	{
 		//エフェクトだす
 		effect = true;
@@ -170,6 +165,7 @@ void Player::collide2Stage(Stage* stage)
 				stage->GetPos(stage->GetRestart()).x,
 				stage->GetPos(stage->GetRestart()).y
 			};
+			oldPos = position;
 
 			if (deathCount >= DEATH_MAX)
 			{
@@ -181,23 +177,19 @@ void Player::collide2Stage(Stage* stage)
 		}
 	}
 	//ゴールの判定
-	if (!OutStageX(position, stage, static_cast<int>(stage->GetGoal()))) {
+	if (!OutStage(position, stage, static_cast<int>(stage->GetGoal()))) {
 		goalFlag = true;
-		//DebugText::Get()->Print(100.0f, 300.0f, 4, "GOAL");
 	}
-	//DebugText::Get()->Print(100.0f, 200.0f, 3, "Pos:%d", deathTime);
-	
 }
 
 int Player::CollisionCount(Stage* stage)
 {
 	int count = 0;
-	Vec2 oldPos = position;
 	for (int i = 0; i < stage->GetBoxSize(); i++)
 	{
-		if (stage->GetType(i) == Road::RoadType::WALL || effect)
+		if (stage->GetType(i) == Road::RoadType::WALL)
 		{
-			if (!OutStageX(position, stage, i))
+			if (!OutStage(position, stage, i))
 			{
 				count = static_cast<int>(stage->GetRoadCount());
 				break;
@@ -209,7 +201,7 @@ int Player::CollisionCount(Stage* stage)
 		}
 		else
 		{
-			if (OutStageX(position, stage, i))
+			if (OutStage(position, stage, i))
 			{
 				count++;
 			}
@@ -226,7 +218,7 @@ int Player::CollisionCount(Stage* stage)
 	return count;
 }
 
-bool Player::OutStageX(Vec2 position, Stage* stage, int num)
+bool Player::OutStage(Vec2 position, Stage* stage, int num)
 {
 	//ステージスプライトの中心座標
 	Vec2 stageCenter = {
@@ -258,13 +250,149 @@ bool Player::OutStageX(Vec2 position, Stage* stage, int num)
 	{
 		return true;
 	}
-
-	
 }
 
-bool Player::OutStageY(float posY, Stage* stage, int num)
+bool Player::Point2Box(Stage* stage, Vec2 point, int num)
 {
-	return false;
+	//ステージの左上座標
+	Vec2 leftTop = {
+		stage->GetPos(num).x - (stage->GetSize(num).x / 2),
+		stage->GetPos(num).y - (stage->GetSize(num).y / 2)
+	};
+	//ステージの右下座標
+	Vec2 rightBottom = {
+		stage->GetPos(num).x + (stage->GetSize(num).x / 2),
+		stage->GetPos(num).y + (stage->GetSize(num).y / 2)
+	};
+	//点の座標が左辺よりも大きかったらtrue
+	bool left = false;
+	if (point.x >= leftTop.x)
+	{
+		left = true;
+	}
+	//点の座標が右辺よりも小さかったらtrue
+	bool right = false;
+	if (point.x <= rightBottom.x)
+	{
+		right = true;
+	}
+	//点の座標が上辺よりも大きかったらtrue
+	bool top = false;
+	if (point.y >= leftTop.y)
+	{
+		top = true;
+	}
+	//点の座標が下辺よりも小さかったらtrue
+	bool bottom = false;
+	if (point.y <= rightBottom.y)
+	{
+		bottom = true;
+	}
+	//矩形の中に入ってなかったらtrue
+	if (left && right && top && bottom)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+bool Player::Old2Now(Vec2 oldPos, Vec2 position, Stage* stage, int num)
+{
+	int count = 0;
+	//現在は前フレームより大きかったらfor文を前フレームから進める
+	if (position.x >= oldPos.x)
+	{
+		count = Point2BoxCount(oldPos, position, stage, num);
+	}
+	else
+	{
+		count = Point2BoxCount(position, oldPos, stage, num);
+	}
+	//カウントが0以外だったらtrue
+	if (count > 0)
+	{
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+int Player::Point2BoxCount(Vec2 point1, Vec2 point2, Stage* stage, int num)
+{
+	int count = 0;
+	//前フレームの座標から現在までの座標が全てステージに乗っているか調べる
+	for (float i = point1.x; i <= point2.x; i++)
+	{
+		//点2の方が大きかったらfor文を点1から始める
+		if (point2.y >= point1.y)
+		{
+			for (float j = point1.y; j <= point2.y; j++)
+			{
+				//点の座標がステージに入ってなかったらカウント
+				if (Point2Box(stage, { i,j }, num))
+				{
+					count++;
+				}
+			}
+		}
+		else
+		{
+			for (float j = point2.y; j <= point1.y; j++)
+			{
+				//点の座標がステージに入ってなかったらカウント
+				if (Point2Box(stage, { i,j }, num))
+				{
+					count++;
+				}
+			}
+		}
+	}
+
+	return count;
+}
+
+int Player::PointCollisionCount(Stage* stage)
+{
+	int count = 0;
+	for (int i = 0; i < stage->GetBoxSize(); i++)
+	{
+		//i番目のステージが壁だったら
+		if (stage->GetType(i) == Road::RoadType::WALL)
+		{
+			//点がステージに当たってても初期位置に戻す
+			if (!Old2Now(oldPos, position, stage, i))
+			{
+				count = static_cast<int>(stage->GetRoadCount());
+				break;
+			}
+		}
+		//i番目のステージが背景だったら数えない
+		else if (stage->GetType(i) == Road::RoadType::BACK)
+		{
+			continue;
+		}
+		else
+		{
+			//i番目のステージに点が入っていなかったらカウント
+			if (Old2Now(oldPos, position, stage, i))
+			{
+				count++;
+			}
+			else
+			{
+				if (stage->GetType(i) == Road::RoadType::START || stage->GetType(i) == Road::RoadType::SAVE)
+				{
+					stage->ChangeRestart(i);
+				}
+			}
+		}
+	}
+	//
+	return count;
 }
 
 void Player::Draw()

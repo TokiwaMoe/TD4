@@ -38,11 +38,18 @@ public:
 	/// </summary>
 
 	void collide2Stage(Stage* stage);
-
+	//ステージとプレイヤーが当たってないものをカウント
 	int CollisionCount(Stage* stage);
-
-	bool OutStageX(Vec2 position, Stage* stage, int num);
-	bool OutStageY(float posY, Stage* stage, int num);
+	//矩形と矩形
+	bool OutStage(Vec2 position, Stage* stage, int num);
+	//線分と線分
+	bool Point2Box(Stage *stage, Vec2 point, int num);
+	//前フレームから現在までをfor分で回す
+	bool Old2Now(Vec2 oldPos, Vec2 position, Stage* stage, int num);
+	//
+	int Point2BoxCount(Vec2 point1, Vec2 point2, Stage* stage, int num);
+	//ステージとプレイヤーが当たってないものをカウント
+	int PointCollisionCount(Stage* stage);
 	void Draw();
 
 	//getter
@@ -85,7 +92,9 @@ private:
 	Vec2 rotation = { 0,0 };
 	// プレイヤー座標
 	Vec2 position = { 50,50 };
+	Vec2 oldPos = { 50,50 };
 	int  direction = 0;
+	//パーティクル座標
 	Vec3 particlePos = { 0,0,0 };
 
 	//スプライトサイズ
@@ -116,6 +125,9 @@ private:
 	//タイマー
 	float time = 0;
 	Easing* easing = nullptr;
+
+	//ライン用カウント
+	int lineCount = 0;
 
 
 	Vec2 distance = {};
