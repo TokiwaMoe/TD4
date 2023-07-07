@@ -15,6 +15,7 @@ GameScene::GameScene()
 {}
 GameScene::~GameScene()
 {
+	//audio->SoundUnload(&sound);
 }
 
 void GameScene::Init()
@@ -36,6 +37,8 @@ void GameScene::Init()
 	//プレイヤー
 	player->Initialize();
 	player->Init(stage);
+	sound = Audio::SoundLoadWave("Resources/Sound/Electro_Attack.wav");
+	audio->SoundBGMPlayLoopWave(sound, audio->BGM);
 }
 
 void GameScene::Update()
@@ -59,6 +62,7 @@ void GameScene::Update()
 			BaseScene* scene = new ResultScene();
 			scene->nextStage = stageNumber + 1;
 			sceneManager_->SetNextScene(scene);
+			audio->SoundStop(sound, audio->BGM);
 		}
 	}
 	else
@@ -66,7 +70,6 @@ void GameScene::Update()
 		player->Update(stage);
 	}
 	stage->Update();
-
 }
 void GameScene::Draw()
 {
