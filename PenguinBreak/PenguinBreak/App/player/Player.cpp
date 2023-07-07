@@ -131,7 +131,7 @@ void Player::ConvertParticlePos()
 
 void Player::collide2Stage(Stage* stage)
 {
-	if (/*stage->GetRoadCount() == CollisionCount(stage) ||*/ PointCollisionCount(stage) == stage->GetRoadCount())
+	if (stage->GetRoadCount() == CollisionCount(stage) || PointCollisionCount(stage) == stage->GetRoadCount())
 	{
 		//エフェクトだす
 		effect = true;
@@ -289,7 +289,7 @@ bool Player::Point2Box(Stage* stage, Vec2 point, int num)
 	{
 		bottom = true;
 	}
-	
+	//矩形の中に入ってなかったらtrue
 	if (left && right && top && bottom)
 	{
 		return false;
@@ -303,6 +303,7 @@ bool Player::Point2Box(Stage* stage, Vec2 point, int num)
 bool Player::Old2Now(Vec2 oldPos, Vec2 position, Stage* stage, int num)
 {
 	int count = 0;
+	//現在は前フレームより大きかったらfor分を前フレームから進める
 	if (position.x >= oldPos.x)
 	{
 		count = Point2BoxCount(oldPos, position, stage, num);
@@ -311,8 +312,8 @@ bool Player::Old2Now(Vec2 oldPos, Vec2 position, Stage* stage, int num)
 	{
 		count = Point2BoxCount(position, oldPos, stage, num);
 	}
-
-	if (count != 0)
+	//カウントが0以外だったらtrue
+	if (count > 0)
 	{
 		return true;
 	}
@@ -328,7 +329,7 @@ int Player::Point2BoxCount(Vec2 point1, Vec2 point2, Stage* stage, int num)
 	{
 		if (point2.y >= point1.y)
 		{
-			for (float j = point1.y; j < point2.y; j++)
+			for (float j = point1.y; j <= point2.y; j++)
 			{
 				if (Point2Box(stage, { i,j }, num))
 				{
@@ -338,7 +339,7 @@ int Player::Point2BoxCount(Vec2 point1, Vec2 point2, Stage* stage, int num)
 		}
 		else
 		{
-			for (float j = point2.y; j < point1.y; j++)
+			for (float j = point2.y; j <= point1.y; j++)
 			{
 				if (Point2Box(stage, { i,j }, num))
 				{
