@@ -56,7 +56,8 @@ Stage::Stage() :
 	restartIndex(startIndex),
 	goalIndex(0),
 	roadCount(2),
-	scale(1)
+	scale(1),
+	switchCount(0)
 {
 }
 
@@ -67,6 +68,7 @@ Stage::~Stage()
 void Stage::Init(const Vec2& playerSize)
 {
 	PLAYER_SIZE = playerSize;
+	switchCount = 0;
 	starSprite = Sprite::Get()->SpriteCreate(L"Resources/Particle/particle3.png");
 }
 
@@ -186,7 +188,7 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		{
 			bool flag = object["parameter"]["flag"];
 			float speed = object["parameter"]["speed"];
-			Vec2 limit = { object["parameter"]["limit"][0], object["parameter"]["limit"][1]};
+			Vec2 limit = { object["parameter"]["limit"][0], object["parameter"]["limit"][1] };
 
 			objectData.parameter = Road::GimmickParameter(flag, speed, limit);
 		}
@@ -613,7 +615,7 @@ bool Stage::IsDownOver(float* pos, float* size, float limit, float speed, float 
 
 void Stage::EditerInit(const Vec2& playerSize)
 {
-	PLAYER_SIZE = playerSize;
+	Init(playerSize);
 	scale = 1;
 	ROAD_SIZE = (PLAYER_SIZE / scale) + (ROAD_OFFSET / scale);
 
