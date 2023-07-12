@@ -198,7 +198,7 @@ void ResultStating::ClearMove()
 
 void ResultStating::DoubleHMove()
 {
-	const float widthMax = 1440.0f, widthMin = -250.0f, speed = 3.0f;
+	const float widthMax = 1440.0f, widthMin = 150.0f, speed = 3.0f;
 
 	if (houseHumanPos.x > widthMax)
 	{
