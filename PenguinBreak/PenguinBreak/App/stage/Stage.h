@@ -67,6 +67,8 @@ private: //メンバ変数
 	size_t goalIndex;
 	size_t roadCount;
 	unsigned short scale; //プレイヤーのサイズ ※数字が小さいほどプレイヤーのサイズは大きくなる
+	size_t switchCount;
+
 	SpriteData starSprite; //リスタート地点に描画する星のスプライトデータ
 
 public: //メンバ関数
