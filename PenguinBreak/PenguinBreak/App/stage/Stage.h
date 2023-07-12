@@ -67,10 +67,11 @@ private: //メンバ変数
 	size_t goalIndex;
 	size_t roadCount;
 	unsigned short scale; //プレイヤーのサイズ ※数字が小さいほどプレイヤーのサイズは大きくなる
+	SpriteData starSprite; //リスタート地点に描画する星のスプライトデータ
 
 public: //メンバ関数
 	// 初期化
-	void Init();
+	void Init(const Vec2& playerSize);
 	// ギミックの更新
 	void Update();
 	// 描画
@@ -145,6 +146,8 @@ private:
 	void MoveGimmick(Road& road);
 	// 道が移動するギミック（ループ）
 	void LoopMoveGimmick(Road& road);
+	// 道が移動するギミック（一回きり）
+	void OnlyMoveGimmick(Road& road);
 
 	// 上限を超えたかどうか
 	bool IsUpOver(float* pos, float* size, float limit, float speed, float scale);
@@ -170,6 +173,9 @@ inline void Stage::GimmickUpdate(std::vector<T>& object)
 			break;
 		case Road::Gimmick::LOOP_MOVE:
 			LoopMoveGimmick(i);
+			break;
+		case Road::Gimmick::ONLY_MOVE:
+			OnlyMoveGimmick(i);
 			break;
 		default:
 			continue;

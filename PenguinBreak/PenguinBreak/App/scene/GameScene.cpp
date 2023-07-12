@@ -27,7 +27,7 @@ void GameScene::Init()
 	player = std::make_unique<Player>();
 	// ステージ
 	stage = Stage::GetInstance();
-	stage->Init();
+	stage->Init(player->GetSize());
 	stageNumber = nextStage;
 	if (isEditer == false)
 	{
