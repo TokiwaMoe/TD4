@@ -145,6 +145,8 @@ private:
 	void MoveGimmick(Road& road);
 	// 道が移動するギミック（ループ）
 	void LoopMoveGimmick(Road& road);
+	// 道が移動するギミック（一回きり）
+	void OnlyMoveGimmick(Road& road);
 
 	// 上限を超えたかどうか
 	bool IsUpOver(float* pos, float* size, float limit, float speed, float scale);
@@ -170,6 +172,9 @@ inline void Stage::GimmickUpdate(std::vector<T>& object)
 			break;
 		case Road::Gimmick::LOOP_MOVE:
 			LoopMoveGimmick(i);
+			break;
+		case Road::Gimmick::ONLY_MOVE:
+			OnlyMoveGimmick(i);
 			break;
 		default:
 			continue;

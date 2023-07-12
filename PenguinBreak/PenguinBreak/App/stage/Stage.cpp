@@ -92,6 +92,7 @@ void Stage::Draw(float offsetX, float offsetY)
 		switch (i.type)
 		{
 		case Road::RoadType::START:
+		case Road::RoadType::SAVE:
 			color = Vec4(0.0f, 0.0f, 1.0f, 1.0f);
 			break;
 		case Road::RoadType::GOAL:
@@ -100,7 +101,7 @@ void Stage::Draw(float offsetX, float offsetY)
 		case Road::RoadType::WALL:
 			color = Vec4(1.0f, 1.0f, 0.0f, 1.0f);
 			break;
-		case Road::RoadType::SAVE:
+		case Road::RoadType::SWITCH:
 			color = Vec4(0.0f, 1.0f, 0.0f, 1.0f);
 			break;
 		default:
@@ -167,7 +168,7 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		objectData.Init();
 
 		// ギミックタイプの読み込み
-		if (objectData.type == Road::RoadType::ROAD || objectData.type == Road::RoadType::WALL)
+		if (objectData.type == Road::RoadType::GOAL || objectData.type == Road::RoadType::ROAD || objectData.type == Road::RoadType::WALL)
 		{
 			objectData.gimmick = object["gimmick"];
 		}
@@ -563,6 +564,29 @@ void Stage::LoopMoveGimmick(Road& road)
 		(moveDir.y < 0 && (road.pos.y <= limit.y)))
 	{
 		road.pos = road.GetInitPos() - road.parameter.GetLimit();
+	}
+}
+
+void Stage::OnlyMoveGimmick(Road& road)
+{
+	if (road.parameter.GetFlag()) return;
+
+	Vec2 limit = road.GetInitPos() + road.parameter.GetLimit();
+	// 軸単位で動かすかどうか
+	Vec2 moveDir = {};
+	if (road.parameter.GetLimit().x > 0) { moveDir.x = +1.0f; }
+	else if (road.parameter.GetLimit().x < 0) { moveDir.x = -1.0f; }
+	if (road.parameter.GetLimit().y > 0) { moveDir.y = +1.0f; }
+	else if (road.parameter.GetLimit().y < 0) { moveDir.y = -1.0f; }
+
+	road.pos += moveDir * road.parameter.GetSpeed();
+
+	if ((moveDir.x > 0 && (road.pos.x >= limit.x)) ||
+		(moveDir.x < 0 && (road.pos.x <= limit.x)) ||
+		(moveDir.y > 0 && (road.pos.y >= limit.y)) ||
+		(moveDir.y < 0 && (road.pos.y <= limit.y)))
+	{
+		road.parameter.ChangeFlag();
 	}
 }
 

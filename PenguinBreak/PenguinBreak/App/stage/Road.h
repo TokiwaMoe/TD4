@@ -7,12 +7,13 @@ public: //サブクラス
 	// 道のタイプ
 	enum RoadType
 	{
-		START, //スタート
-		GOAL,  //ゴール
-		ROAD,  //道
-		WALL,  //穴
-		SAVE,  //セーブポイント
-		BACK,  //背景オブジェクト
+		START,  //スタート
+		GOAL,   //ゴール
+		ROAD,   //道
+		WALL,   //穴
+		SAVE,   //セーブポイント
+		SWITCH, //スイッチ
+		BACK,   //背景オブジェクト
 	};
 
 	// ギミックのタイプ
@@ -23,6 +24,7 @@ public: //サブクラス
 		MOVE,            //道が移動するギミック（折り返し）
 		DIRECTION_SCALE, //道が狭まるギミック(単一の方向)
 		LOOP_MOVE,       //道が移動するギミック（ループ）
+		ONLY_MOVE,       //道が移動するギミック（1回きり）
 	};
 
 	// ギミックを動かす為に使う値
