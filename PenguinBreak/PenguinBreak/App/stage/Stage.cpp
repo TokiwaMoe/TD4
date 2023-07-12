@@ -64,8 +64,10 @@ Stage::~Stage()
 {
 }
 
-void Stage::Init()
+void Stage::Init(const Vec2& playerSize)
 {
+	PLAYER_SIZE = playerSize;
+	starSprite = Sprite::Get()->SpriteCreate(L"Resources/Particle/particle3.png");
 }
 
 void Stage::Update()
@@ -111,6 +113,8 @@ void Stage::Draw(float offsetX, float offsetY)
 
 		Sprite::Get()->Draw(i.GetSprite(), i.GetPos() + Vec2(offsetX, offsetY), i.size.x, i.size.y, Vec2(0.5f, 0.5f), color);
 	}
+
+	Sprite::Get()->Draw(starSprite, boxes[restartIndex].GetPos() + Vec2(offsetX, offsetY), ROAD_SIZE.x, ROAD_SIZE.x, Vec2(0.5f, 0.5f), Vec4(1.0f, 1.0f, 0.5f, 1.0f));
 }
 
 Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
@@ -187,6 +191,7 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 			objectData.parameter = Road::GimmickParameter(flag, speed, limit);
 		}
 	}
+	ROAD_SIZE = (PLAYER_SIZE / scale) + (ROAD_OFFSET / scale);
 
 	return levelData;
 }

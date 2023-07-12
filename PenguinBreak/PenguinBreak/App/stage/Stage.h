@@ -67,10 +67,11 @@ private: //メンバ変数
 	size_t goalIndex;
 	size_t roadCount;
 	unsigned short scale; //プレイヤーのサイズ ※数字が小さいほどプレイヤーのサイズは大きくなる
+	SpriteData starSprite; //リスタート地点に描画する星のスプライトデータ
 
 public: //メンバ関数
 	// 初期化
-	void Init();
+	void Init(const Vec2& playerSize);
 	// ギミックの更新
 	void Update();
 	// 描画
