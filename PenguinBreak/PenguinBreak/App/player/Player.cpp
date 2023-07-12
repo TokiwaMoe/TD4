@@ -88,6 +88,10 @@ void Player::Move()
 	}
 	else {
 		isDraw = false;
+		move = false;
+	}
+	if (move == true) {
+		position = Input::Get()->GetMousePos();
 	}
 	//DebugText::Get()->Print(100.0f, 100.0f, 3, "%f,%f", static_cast<float>(Input::Get()->GetMouseMove().lX), static_cast<float>(Input::Get()->GetMouseMove().lY));
 	/*DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", oldPos.x, oldPos.y);
