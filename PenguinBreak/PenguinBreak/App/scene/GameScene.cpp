@@ -15,7 +15,7 @@ GameScene::GameScene()
 {}
 GameScene::~GameScene()
 {
-	//audio->SoundUnload(&sound);
+	audio->SoundUnload(&sound);
 }
 
 void GameScene::Init()

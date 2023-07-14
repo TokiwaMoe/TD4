@@ -7,6 +7,14 @@
 
 using namespace DirectX;
 
+Player::Player()
+{}
+
+Player::~Player()
+{
+	audio->SoundUnload(&deathSound);
+}
+
 void Player::Initialize()
 {
 	//スプライト作成の仕方

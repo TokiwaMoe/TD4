@@ -9,7 +9,9 @@
 TitleScene::TitleScene()
 {}
 TitleScene::~TitleScene()
-{}
+{
+	audio->SoundUnload(&sound);
+}
 
 void TitleScene::Init()
 {
