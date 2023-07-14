@@ -91,6 +91,8 @@ public: //メンバ関数
 	void ChangeBack(int backNumber);
 	// セーブポイントの切り替え
 	void ChangeRestart(size_t num);
+	// スイッチ
+	void SwitchCount(size_t num);
 
 	size_t GetBoxSize() const { return boxes.size(); }
 	// 道の数の取得

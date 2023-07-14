@@ -143,6 +143,7 @@ void EditerScene::Update()
 		{
 			stage->Delete(roadIndex);
 			roadIndex = -1;
+			cursorState = CursorState::NONE;
 		}
 		// ステージサイズ
 		if (Input::Get()->KeybordTrigger(DIK_UP))
