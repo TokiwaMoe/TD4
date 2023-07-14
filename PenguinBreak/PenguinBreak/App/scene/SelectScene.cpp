@@ -59,6 +59,9 @@ void SelectScene::Update()
 	DecisionScale();
 
 	Move();
+
+	//カーソル表示
+	Input::Get()->SetCursor(false);
 }
 
 void SelectScene::Draw()
@@ -86,7 +89,6 @@ void SelectScene::Draw()
 	}
 
 	//右左矢印
-
 	if (scaleNumber == BACKSELECT)
 	{
 		Sprite::Get()->Draw(selectGraph[0], selectPos[0],
