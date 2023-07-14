@@ -15,34 +15,52 @@ void Stage::Back::Init()
 	switch (back)
 	{
 	case Stage::Back::PALM:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/palm.png");
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/palm.png");
 		break;
 	case Stage::Back::DEER:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/shika.png");
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/shika.png");
 		break;
 	case Stage::Back::HAND:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/hand.png");
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/hand.png");
 		break;
 	case Stage::Back::FUGU:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/fugu.png");
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/fugu.png");
 		break;
 	case Stage::Back::CAT:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/cat.png");
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/cat.png");
 		break;
 	case Stage::Back::LAZY:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/namake.png");
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/namake.png");
 		break;
 	case Stage::Back::EYE:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/eye.png");
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/eye.png");
 		break;
 	case Stage::Back::FISH:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/fish.png");
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/fish.png");
 		break;
 	case Stage::Back::SEA:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/sea.png");
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/sea.png");
 		break;
 	case Stage::Back::SUN:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/sun.png");
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/sun.png");
+		break;
+	case Stage::Back::FISH_BIG:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/fish_big.png");
+		break;
+	case Stage::Back::DINOSAUR:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/dinosaur.png");
+		break;
+	case Stage::Back::CYPYBARA:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/cypybara.png");
+		break;
+	case Stage::Back::JELLYFISH:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/jellyfish.png");
+		break;
+	case Stage::Back::LIZARD:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/lizard.png");
+		break;
+	case Stage::Back::SNAKE:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/snake.png");
 		break;
 	default:
 		break;

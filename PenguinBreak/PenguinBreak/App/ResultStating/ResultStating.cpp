@@ -13,7 +13,7 @@ ResultStating::~ResultStating()
 
 void ResultStating::Init()
 {
-	backGround = Sprite::Get()->SpriteCreate(L"Resources/background.png");
+	backGround = Sprite::Get()->SpriteCreate(L"Resources/stage/background.png");
 	selectGraph = Sprite::Get()->SpriteCreate(L"Resources/Result/back.png");
 	nextStageGraph = Sprite::Get()->SpriteCreate(L"Resources/Result/next.png");
 	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");

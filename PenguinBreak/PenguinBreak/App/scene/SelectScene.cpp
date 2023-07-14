@@ -89,7 +89,6 @@ void SelectScene::Draw()
 	}
 
 	//‰E¶–îˆó
-
 	if (scaleNumber == BACKSELECT)
 	{
 		Sprite::Get()->Draw(selectGraph[0], selectPos[0],
