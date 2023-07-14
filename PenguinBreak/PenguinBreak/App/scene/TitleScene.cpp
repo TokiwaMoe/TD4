@@ -46,6 +46,9 @@ void TitleScene::Update()
 	StageDecision();
 
 	DecisionScale();
+
+	//カーソル表示
+	Input::Get()->SetCursor(false);
 }
 
 void TitleScene::Draw()

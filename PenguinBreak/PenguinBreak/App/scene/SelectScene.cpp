@@ -59,6 +59,9 @@ void SelectScene::Update()
 	DecisionScale();
 
 	Move();
+
+	//カーソル表示
+	Input::Get()->SetCursor(false);
 }
 
 void SelectScene::Draw()
