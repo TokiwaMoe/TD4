@@ -124,7 +124,7 @@ void Audio::SoundBGMPlayLoopWave(const SoundData &soundData, IXAudio2SourceVoice
 {
 	HRESULT result;
 
-	result = xAudio2->CreateSourceVoice(&pSourceVoice, &soundData.wfex);
+	result = xAudio2->CreateSourceVoice(&BGM, &soundData.wfex);
 	assert(SUCCEEDED(result));
 
 	XAUDIO2_BUFFER buf{};
@@ -134,10 +134,10 @@ void Audio::SoundBGMPlayLoopWave(const SoundData &soundData, IXAudio2SourceVoice
 	buf.LoopCount = XAUDIO2_LOOP_INFINITE;
 
 	// 波形データの再生
-	result = pSourceVoice->SubmitSourceBuffer(&buf);
+	result = BGM->SubmitSourceBuffer(&buf);
 
 
-	result = pSourceVoice->Start();
+	result = BGM->Start();
 }
 
 void Audio::SoundStop( const SoundData &soundData,IXAudio2SourceVoice *pSourceVoice)
@@ -151,7 +151,7 @@ void Audio::SoundStop( const SoundData &soundData,IXAudio2SourceVoice *pSourceVo
 	pSourceVoice->GetState(&xa2state);
 
 
-	result = pSourceVoice->Stop(0);
+	result = BGM->Stop(0);
 }
 
 void Audio::SetVolume(float volume)

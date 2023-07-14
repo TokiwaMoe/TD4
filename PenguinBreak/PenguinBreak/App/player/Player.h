@@ -23,6 +23,8 @@ private:
 	using XMMATRIX = DirectX::XMMATRIX;
 	using XMVECTOR = DirectX::XMVECTOR;
 public:
+	Player();
+	~Player();
 	void Initialize();
 
 	void Init(Stage* stage);

@@ -7,6 +7,14 @@
 
 using namespace DirectX;
 
+Player::Player()
+{}
+
+Player::~Player()
+{
+	audio->SoundUnload(&deathSound);
+}
+
 void Player::Initialize()
 {
 	//スプライト作成の仕方
@@ -70,7 +78,8 @@ void Player::Move()
 		const Vec2 mouseSize = { 32,32 };
 		oldPos = position;
 		if (Collision::BoxCollision(Input::Get()->GetMousePos(), position, mouseSize, radius) && !goalFlag) {
-			position = Input::Get()->GetMousePos();
+			//position = Input::Get()->GetMousePos();
+			move = true;
 
 			//プレイヤーの画像によってはいらない処理
 			if (static_cast<float>(Input::Get()->GetMouseMove().lX) > 0) {
@@ -87,6 +96,10 @@ void Player::Move()
 	}
 	else {
 		isDraw = false;
+		move = false;
+	}
+	if (move == true) {
+		position = Input::Get()->GetMousePos();
 	}
 	//DebugText::Get()->Print(100.0f, 100.0f, 3, "%f,%f", static_cast<float>(Input::Get()->GetMouseMove().lX), static_cast<float>(Input::Get()->GetMouseMove().lY));
 	/*DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", oldPos.x, oldPos.y);
