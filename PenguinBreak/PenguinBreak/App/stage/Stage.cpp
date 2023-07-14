@@ -56,7 +56,8 @@ Stage::Stage() :
 	restartIndex(startIndex),
 	goalIndex(0),
 	roadCount(2),
-	scale(1)
+	scale(1),
+	switchCount(0)
 {
 }
 
@@ -64,8 +65,11 @@ Stage::~Stage()
 {
 }
 
-void Stage::Init()
+void Stage::Init(const Vec2& playerSize)
 {
+	PLAYER_SIZE = playerSize;
+	switchCount = 0;
+	starSprite = Sprite::Get()->SpriteCreate(L"Resources/Particle/particle3.png");
 }
 
 void Stage::Update()
@@ -92,6 +96,7 @@ void Stage::Draw(float offsetX, float offsetY)
 		switch (i.type)
 		{
 		case Road::RoadType::START:
+		case Road::RoadType::SAVE:
 			color = Vec4(0.0f, 0.0f, 1.0f, 1.0f);
 			break;
 		case Road::RoadType::GOAL:
@@ -100,7 +105,7 @@ void Stage::Draw(float offsetX, float offsetY)
 		case Road::RoadType::WALL:
 			color = Vec4(1.0f, 1.0f, 0.0f, 1.0f);
 			break;
-		case Road::RoadType::SAVE:
+		case Road::RoadType::SWITCH:
 			color = Vec4(0.0f, 1.0f, 0.0f, 1.0f);
 			break;
 		default:
@@ -110,6 +115,8 @@ void Stage::Draw(float offsetX, float offsetY)
 
 		Sprite::Get()->Draw(i.GetSprite(), i.GetPos() + Vec2(offsetX, offsetY), i.size.x, i.size.y, Vec2(0.5f, 0.5f), color);
 	}
+
+	Sprite::Get()->Draw(starSprite, boxes[restartIndex].GetPos() + Vec2(offsetX, offsetY), ROAD_SIZE.x, ROAD_SIZE.x, Vec2(0.5f, 0.5f), Vec4(1.0f, 1.0f, 0.5f, 1.0f));
 }
 
 Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
@@ -167,7 +174,7 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		objectData.Init();
 
 		// ギミックタイプの読み込み
-		if (objectData.type == Road::RoadType::ROAD || objectData.type == Road::RoadType::WALL)
+		if (objectData.type == Road::RoadType::GOAL || objectData.type == Road::RoadType::ROAD || objectData.type == Road::RoadType::WALL)
 		{
 			objectData.gimmick = object["gimmick"];
 		}
@@ -181,11 +188,12 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		{
 			bool flag = object["parameter"]["flag"];
 			float speed = object["parameter"]["speed"];
-			Vec2 limit = { object["parameter"]["limit"][0], object["parameter"]["limit"][1]};
+			Vec2 limit = { object["parameter"]["limit"][0], object["parameter"]["limit"][1] };
 
 			objectData.parameter = Road::GimmickParameter(flag, speed, limit);
 		}
 	}
+	ROAD_SIZE = (PLAYER_SIZE / scale) + (ROAD_OFFSET / scale);
 
 	return levelData;
 }
@@ -566,6 +574,29 @@ void Stage::LoopMoveGimmick(Road& road)
 	}
 }
 
+void Stage::OnlyMoveGimmick(Road& road)
+{
+	if (road.parameter.GetFlag()) return;
+
+	Vec2 limit = road.GetInitPos() + road.parameter.GetLimit();
+	// 軸単位で動かすかどうか
+	Vec2 moveDir = {};
+	if (road.parameter.GetLimit().x > 0) { moveDir.x = +1.0f; }
+	else if (road.parameter.GetLimit().x < 0) { moveDir.x = -1.0f; }
+	if (road.parameter.GetLimit().y > 0) { moveDir.y = +1.0f; }
+	else if (road.parameter.GetLimit().y < 0) { moveDir.y = -1.0f; }
+
+	road.pos += moveDir * road.parameter.GetSpeed();
+
+	if ((moveDir.x > 0 && (road.pos.x >= limit.x)) ||
+		(moveDir.x < 0 && (road.pos.x <= limit.x)) ||
+		(moveDir.y > 0 && (road.pos.y >= limit.y)) ||
+		(moveDir.y < 0 && (road.pos.y <= limit.y)))
+	{
+		road.parameter.ChangeFlag();
+	}
+}
+
 bool Stage::IsUpOver(float* pos, float* size, float limit, float speed, float scale)
 {
 	*pos += speed;
@@ -584,7 +615,7 @@ bool Stage::IsDownOver(float* pos, float* size, float limit, float speed, float 
 
 void Stage::EditerInit(const Vec2& playerSize)
 {
-	PLAYER_SIZE = playerSize;
+	Init(playerSize);
 	scale = 1;
 	ROAD_SIZE = (PLAYER_SIZE / scale) + (ROAD_OFFSET / scale);
 
