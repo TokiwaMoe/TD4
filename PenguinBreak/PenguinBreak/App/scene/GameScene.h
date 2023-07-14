@@ -53,6 +53,8 @@ private://定義
 
 	std::unique_ptr<Player>player;
 	Stage* stage = nullptr;
+	Audio* audio = Audio::Get();
+	SoundData sound = {};
 	int stageNumber = 1;
 	int backNumber = 1;
 	static bool isEditer;

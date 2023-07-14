@@ -9,7 +9,9 @@
 TitleScene::TitleScene()
 {}
 TitleScene::~TitleScene()
-{}
+{
+	audio->SoundUnload(&sound);
+}
 
 void TitleScene::Init()
 {
@@ -21,6 +23,7 @@ void TitleScene::Init()
 	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
 	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
 	PostEffect::Get()->SetPipeline(static_cast<int>(PostEffectType::NORMAL));
+	sound = Audio::SoundLoadWave("Resources/Sound/uma.wav");
 }
 
 void TitleScene::Update()
@@ -85,6 +88,7 @@ void TitleScene::Finalize()
 {
 	Texture::Get()->Delete();
 	Sprite::Get()->Delete();
+	audio->SoundUnload(&sound);
 }
 
 bool TitleScene::GetEffect()
@@ -99,7 +103,7 @@ void TitleScene::StageDecision()
 	if (Input::Get()->MousePushLeft())
 	{
 		isDraw = true;
-		if (Collision::BoxCollision(bPos, Input::Get()->GetMousePos(), bSize - Vec2(180.0f, 80.0f), mSize)){
+		if (Collision::BoxCollision(bPos, Input::Get()->GetMousePos(), bSize - Vec2(180.0f, 80.0f), mSize)) {
 			isScale = true;
 		}
 		else
@@ -107,7 +111,7 @@ void TitleScene::StageDecision()
 			isScale = false;
 		}
 	}
-	else 
+	else
 	{
 		if (Collision::BoxCollision(bPos, Input::Get()->GetMousePos(), bSize - Vec2(180.0f, 80.0f), mSize))
 		{
@@ -122,6 +126,7 @@ void TitleScene::StageDecision()
 	//ŽŸ‚ÌƒV[ƒ“‚Ö
 	if (Input::Get()->MouseReleaseLeft()) {
 		if (Collision::BoxCollision(bPos, Input::Get()->GetMousePos(), bSize - Vec2(180.0f, 80.0f), mSize)) {
+			audio->SoundSEPlayWave(sound);
 			BaseScene* scene = new SelectScene();
 			sceneManager_->SetNextScene(scene);
 		}
