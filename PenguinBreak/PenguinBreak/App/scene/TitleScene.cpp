@@ -16,7 +16,7 @@ TitleScene::~TitleScene()
 void TitleScene::Init()
 {
 	//スプライト作成の仕方
-	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
+	background = Sprite::Get()->SpriteCreate(L"Resources/stage/background.png");
 
 	titleGraph = Sprite::Get()->SpriteCreate(L"Resources/Title/title_test.png");
 	button = Sprite::Get()->SpriteCreate(L"Resources/Title/start.png");
@@ -49,6 +49,9 @@ void TitleScene::Update()
 	StageDecision();
 
 	DecisionScale();
+
+	//カーソル表示
+	Input::Get()->SetCursor(false);
 }
 
 void TitleScene::Draw()

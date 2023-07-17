@@ -101,11 +101,7 @@ void Player::Move()
 	if (move == true) {
 		position = Input::Get()->GetMousePos();
 	}
-	//DebugText::Get()->Print(100.0f, 100.0f, 3, "%f,%f", static_cast<float>(Input::Get()->GetMouseMove().lX), static_cast<float>(Input::Get()->GetMouseMove().lY));
-	/*DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", oldPos.x, oldPos.y);
-	DebugText::Get()->Print(100.0f, 400.0f, 3, "%f,%f", position.x, position.y);*/
 }
-
 
 void Player::ConvertParticlePos()
 {
@@ -137,13 +133,14 @@ void Player::ConvertParticlePos()
 	particlePos.y = posNearV.m128_f32[1] - direction.m128_f32[1] * distance;
 	particlePos.z = posNearV.m128_f32[2] - direction.m128_f32[2] * distance;
 
-	/*DebugText::Get()->Print(100.0f, 200.0f, 3, "%f,%f", particlePos.x, particlePos.z);
-	DebugText::Get()->Print(100.0f, 300.0f, 3, "%f,%f", position.x, position.y);*/
 	moveParticle->Update();
 }
 
 void Player::collide2Stage(Stage* stage)
 {
+	//矩形同士の当たり判定か点と矩形の当たり判定のカウントが道の数と同じになったら死亡演出
+	//矩形同士はステージとの当たり判定用
+	//点と矩形はワープした時用
 	if (stage->GetRoadCount() == CollisionCount(stage) || PointCollisionCount(stage) == stage->GetRoadCount())
 	{
 		//エフェクトだす
@@ -200,20 +197,24 @@ int Player::CollisionCount(Stage* stage)
 	int count = 0;
 	for (int i = 0; i < stage->GetBoxSize(); i++)
 	{
+		//i番目のステージが壁の場合
 		if (stage->GetType(i) == Road::RoadType::WALL)
 		{
+			//全てのステージと当たってなくても初期位置に戻す
 			if (!OutStage(position, stage, i))
 			{
 				count = static_cast<int>(stage->GetRoadCount());
 				break;
 			}
 		}
+		//i番目のステージが背景だった場合数えない
 		else if (stage->GetType(i) == Road::RoadType::BACK)
 		{
 			continue;
 		}
 		else
 		{
+			//道に入っていなかったらカウント
 			if (OutStage(position, stage, i))
 			{
 				count++;
