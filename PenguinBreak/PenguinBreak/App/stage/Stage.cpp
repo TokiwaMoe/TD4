@@ -71,6 +71,9 @@ void Stage::Back::Init()
 	case Stage::Back::NOSE:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/nose.png");
 		break;
+	case Stage::Back::MUSEUM:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/museum_back.png");
+		break;
 	default:
 		break;
 	}

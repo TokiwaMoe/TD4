@@ -42,6 +42,7 @@ public: //サブクラス
 			GRASS,		//草
 			NIGHT,		//夜
 			NOSE,		//鼻
+			MUSEUM,		//美術館
 		};
 
 	public: //メンバ変数
