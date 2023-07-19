@@ -40,6 +40,8 @@ public: //サブクラス
 			LIZARD,		//トカゲ
 			SNAKE,		//蛇
 			GRASS,		//草
+			NIGHT,		//夜
+			NOSE,		//鼻
 		};
 
 	public: //メンバ変数
