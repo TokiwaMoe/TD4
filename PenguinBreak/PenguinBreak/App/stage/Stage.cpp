@@ -50,8 +50,8 @@ void Stage::Back::Init()
 	case Stage::Back::DINOSAUR:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/dinosaur.png");
 		break;
-	case Stage::Back::CYPYBARA:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/cypybara.png");
+	case Stage::Back::CAPYBARA:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/capybara.png");
 		break;
 	case Stage::Back::JELLYFISH:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/jellyfish.png");

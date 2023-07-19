@@ -35,7 +35,7 @@ public: //サブクラス
 			SUN,		//太陽
 			FISH_BIG,	//大きい魚
 			DINOSAUR,	//恐竜
-			CYPYBARA,	//カピバラ
+			CAPYBARA,	//カピバラ
 			JELLYFISH,	//クラゲ
 			LIZARD,		//トカゲ
 			SNAKE		//蛇
