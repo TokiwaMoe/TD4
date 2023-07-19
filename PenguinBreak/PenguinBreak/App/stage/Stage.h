@@ -38,7 +38,8 @@ public: //サブクラス
 			CAPYBARA,	//カピバラ
 			JELLYFISH,	//クラゲ
 			LIZARD,		//トカゲ
-			SNAKE		//蛇
+			SNAKE,		//蛇
+			GRASS,		//草
 		};
 
 	public: //メンバ変数

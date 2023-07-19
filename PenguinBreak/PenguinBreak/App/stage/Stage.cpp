@@ -62,6 +62,8 @@ void Stage::Back::Init()
 	case Stage::Back::SNAKE:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/snake.png");
 		break;
+	case Stage::Back::GRASS:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/grass_back.png");
 	default:
 		break;
 	}
