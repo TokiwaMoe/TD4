@@ -35,10 +35,14 @@ public: //サブクラス
 			SUN,		//太陽
 			FISH_BIG,	//大きい魚
 			DINOSAUR,	//恐竜
-			CYPYBARA,	//カピバラ
+			CAPYBARA,	//カピバラ
 			JELLYFISH,	//クラゲ
 			LIZARD,		//トカゲ
-			SNAKE		//蛇
+			SNAKE,		//蛇
+			GRASS,		//草
+			NIGHT,		//夜
+			NOSE,		//鼻
+			MUSEUM,		//美術館
 		};
 
 	public: //メンバ変数
