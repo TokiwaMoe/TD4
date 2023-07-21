@@ -35,7 +35,7 @@
       "parameter": {
         "flag": false,
         "limit": [
-          200.0,
+          160.0,
           0.0
         ],
         "speed": 10.0
@@ -61,7 +61,7 @@
       "parameter": {
         "flag": false,
         "limit": [
-          200.0,
+          160.0,
           0.0
         ],
         "speed": 10.0
@@ -87,7 +87,7 @@
       "parameter": {
         "flag": false,
         "limit": [
-          200.0,
+          160.0,
           0.0
         ],
         "speed": 10.0
@@ -106,7 +106,7 @@
       ]
     },
     {
-      "back": 10,
+      "back": 21,
       "flipX": true,
       "flipY": false,
       "gimmick": 2,
@@ -217,7 +217,7 @@
       "parameter": {
         "flag": true,
         "limit": [
-          200.0,
+          160.0,
           0.0
         ],
         "speed": 10.0
@@ -243,7 +243,7 @@
       "parameter": {
         "flag": true,
         "limit": [
-          200.0,
+          160.0,
           0.0
         ],
         "speed": 10.0
@@ -269,7 +269,7 @@
       "parameter": {
         "flag": true,
         "limit": [
-          200.0,
+          160.0,
           0.0
         ],
         "speed": 10.0
