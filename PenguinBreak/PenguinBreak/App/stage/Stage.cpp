@@ -50,8 +50,8 @@ void Stage::Back::Init()
 	case Stage::Back::DINOSAUR:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/dinosaur.png");
 		break;
-	case Stage::Back::CYPYBARA:
-		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/cypybara.png");
+	case Stage::Back::CAPYBARA:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/capybara.png");
 		break;
 	case Stage::Back::JELLYFISH:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/jellyfish.png");
@@ -61,6 +61,18 @@ void Stage::Back::Init()
 		break;
 	case Stage::Back::SNAKE:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/snake.png");
+		break;
+	case Stage::Back::GRASS:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/grass_back.png");
+		break;
+	case Stage::Back::NIGHT:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/night_back.png");
+		break;
+	case Stage::Back::NOSE:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/nose.png");
+		break;
+	case Stage::Back::MUSEUM:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/museum_back.png");
 		break;
 	default:
 		break;
