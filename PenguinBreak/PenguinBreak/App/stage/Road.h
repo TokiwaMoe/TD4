@@ -54,6 +54,7 @@ public:
 	RoadType type;
 	Gimmick gimmick;
 	GimmickParameter parameter;
+	bool isPlayer;
 
 	Vec2 pos;
 	Vec2 size;

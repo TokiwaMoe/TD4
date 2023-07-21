@@ -22,6 +22,7 @@ Road::Road() :
 	type(RoadType::ROAD),
 	gimmick(Gimmick::NO_GIMMICK),
 	parameter{},
+	isPlayer(false),
 	initPos(pos),
 	initSize(size)
 {

@@ -398,9 +398,15 @@ int Player::PointCollisionCount(Stage* stage)
 			}
 			else
 			{
+				//i番目のステージがスタート位置かセーブポイントだったらリスタート地点を変える
 				if (stage->GetType(i) == Road::RoadType::START || stage->GetType(i) == Road::RoadType::SAVE)
 				{
 					stage->ChangeRestart(i);
+				}
+				//i番目のステージがスイッチだったらギミックを切り替える
+				if (stage->GetType(i) == Road::RoadType::SWITCH)
+				{
+					stage->SwitchCount(i);
 				}
 			}
 		}

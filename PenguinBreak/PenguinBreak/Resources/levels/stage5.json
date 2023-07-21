@@ -262,6 +262,21 @@
             "type": 4
         },
         {
+            "offset": [
+                0.0,
+                0.0
+            ],
+            "pos": [
+                47.0,
+                450.0
+            ],
+            "size": [
+                47.0,
+                20.0
+            ],
+            "type": 5
+        },
+        {
             "gimmick": 5,
             "parameter": {
                 "flag": false,
