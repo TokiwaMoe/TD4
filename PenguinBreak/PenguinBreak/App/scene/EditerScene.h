@@ -89,4 +89,9 @@ private://定義
 	int fileNumber = 1;
 
 	std::vector<std::string> operationText;
+
+	SpriteData hand_p = {};
+	SpriteData hand_g = {};
+	//描画
+	bool isDraw = true;
 };

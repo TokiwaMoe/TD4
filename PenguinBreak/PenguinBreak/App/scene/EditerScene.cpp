@@ -25,7 +25,9 @@ void EditerScene::Init()
 	// ステージ
 	stage = Stage::GetInstance();
 	stage->EditerInit(player->GetSize());
-
+	//手
+	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
+	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
 	// デバッグテキスト
 	operationText.push_back("Drag:Move");
 	operationText.push_back("C:Create");
@@ -192,6 +194,15 @@ void EditerScene::Update()
 			isLoad = true;
 		}
 	}
+	//手の表示
+	if (Input::Get()->MousePushLeft()) {
+		//パーティクルだす
+		//手のspを表示するか
+		isDraw = true;
+	}
+	else {
+		isDraw = false;
+	}
 }
 
 void EditerScene::Draw()
@@ -279,6 +290,17 @@ void EditerScene::Draw()
 
 		DebugText::Get()->Print(16.0f, window_height - 16.0f, 2, "Enter:" + text);
 		DebugText::Get()->Print(16.0f, window_height - 48.0f, 2, "Back Space:Cancel");
+	}
+	//ポインタ
+	if (isDraw)
+	{
+		Vec2 hPos = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y };
+		Sprite::Get()->Draw(hand_g, hPos, 32, 32, { 0.5f,0.5f });
+	}
+	else
+	{
+		Vec2 hPos = { Input::Get()->GetMousePos().x,Input::Get()->GetMousePos().y };
+		Sprite::Get()->Draw(hand_p, hPos, 32, 32, { 0.5f,0.5f });
 	}
 }
 
