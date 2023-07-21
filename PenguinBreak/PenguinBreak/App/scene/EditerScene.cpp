@@ -34,30 +34,43 @@ void EditerScene::Init()
 	operationText.push_back("D:Delete");
 	operationText.push_back("R:Reset");
 	operationText.push_back("S:Save");
+	operationText.push_back("L:Load");
 	operationText.push_back("P:Clear Check");
 	operationText.push_back("Esc:Title");
 }
 
 void EditerScene::Update()
 {
-	if (isSave)
+	if (isSave || isLoad)
 	{
-		if (Input::Get()->KeybordTrigger(DIK_RIGHT) && saveFileNumber + 1 <= 32)
+		if (Input::Get()->KeybordTrigger(DIK_RIGHT) && fileNumber + 1 <= 32)
 		{
-			saveFileNumber++;
+			fileNumber++;
 		}
-		if (Input::Get()->KeybordTrigger(DIK_LEFT) && saveFileNumber - 1 >= 1)
+		if (Input::Get()->KeybordTrigger(DIK_LEFT) && fileNumber - 1 >= 1)
 		{
-			saveFileNumber--;
+			fileNumber--;
 		}
 		if (Input::Get()->KeybordTrigger(DIK_RETURN))
 		{
-			stage->WriteStage("stage" + std::to_string(saveFileNumber));
+			if (isSave)
+			{
+				stage->WriteStage("stage" + std::to_string(fileNumber));
+			}
+			else if (isLoad)
+			{
+				auto file = stage->LoadStage("stage" + std::to_string(fileNumber));
+				stage->ChangeStage(file);
+				stage->SetIndex();
+				delete file;
+			}
 			isSave = false;
+			isLoad = false;
 		}
 		if (Input::Get()->KeybordTrigger(DIK_BACK))
 		{
 			isSave = false;
+			isLoad = false;
 		}
 	}
 	else
@@ -173,6 +186,11 @@ void EditerScene::Update()
 		{
 			isSave = true;
 		}
+		// ステージ読み込み
+		if (Input::Get()->KeybordTrigger(DIK_L))
+		{
+			isLoad = true;
+		}
 	}
 }
 
@@ -180,7 +198,7 @@ void EditerScene::Draw()
 {
 	DebugText::Get()->Print(100.0f, 100.0f, 5, "Editer");
 
-	if (isSave == false)
+	if (isSave == false && isLoad == false)
 	{
 		if (cursorState == CursorState::MOVE)
 		{
@@ -230,10 +248,11 @@ void EditerScene::Draw()
 	stage->Draw();
 	DebugText::Get()->Print(16.0f, 16.0f, 2, "Scale:%d", scale);
 
-	if (isSave)
+	if (isSave || isLoad)
 	{
+		std::string text = isSave ? "Save" : "Load";
 		std::string numText;
-		if (saveFileNumber <= 1)
+		if (fileNumber <= 1)
 		{
 			numText += ' ';
 		}
@@ -242,7 +261,7 @@ void EditerScene::Draw()
 			numText += '<';
 		}
 		numText += "%d";
-		if (saveFileNumber < 32)
+		if (fileNumber < 32)
 		{
 			numText += '>';
 		}
@@ -255,10 +274,10 @@ void EditerScene::Draw()
 							Vec2(0.5f, 0.5f),
 							{ 0.0f, 0.0f, 0.0f, 1.0f });
 
-		DebugText::Get()->Print(window_width / 2.0f - 82.0f, window_height / 2.0f - 80.0f, 2, "save stage");
-		DebugText::Get()->Print(window_width / 2.0f - 64.0f, window_height / 2.0f, 7, numText, saveFileNumber);
+		DebugText::Get()->Print(window_width / 2.0f - 82.0f, window_height / 2.0f - 80.0f, 2, text + " stage");
+		DebugText::Get()->Print(window_width / 2.0f - 64.0f, window_height / 2.0f, 7, numText, fileNumber);
 
-		DebugText::Get()->Print(16.0f, window_height - 16.0f, 2, "Enter:Save");
+		DebugText::Get()->Print(16.0f, window_height - 16.0f, 2, "Enter:" + text);
 		DebugText::Get()->Print(16.0f, window_height - 48.0f, 2, "Back Space:Cancel");
 	}
 }

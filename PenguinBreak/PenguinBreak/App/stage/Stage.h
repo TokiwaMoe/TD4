@@ -91,6 +91,7 @@ public: //メンバ関数
 	JsonData* LoadStage(const std::string& jsonFile);
 	// ステージの切り替え
 	void ChangeStage(int stageNumber);
+	void ChangeStage(JsonData* file);
 	// 背景オブジェクトの読み込み
 	JsonData* LoadBack(const std::string& jsonFile);
 	// 背景オブジェクトの切り替え

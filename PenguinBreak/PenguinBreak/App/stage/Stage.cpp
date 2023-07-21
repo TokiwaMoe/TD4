@@ -227,6 +227,12 @@ void Stage::ChangeStage(int stageNumber)
 	delete file;
 }
 
+void Stage::ChangeStage(JsonData* file)
+{
+	boxes.clear();
+	for (auto& i : file->objects) boxes.push_back(i.ConvertRoad());
+}
+
 Stage::JsonData* Stage::LoadBack(const std::string& jsonFile)
 {
 	// 連結してフルパスを得る
