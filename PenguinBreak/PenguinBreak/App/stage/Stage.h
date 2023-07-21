@@ -97,6 +97,8 @@ public: //メンバ関数
 	void ChangeBack(int backNumber);
 	// セーブポイントの切り替え
 	void ChangeRestart(size_t num);
+	// セーブポイントの切り替え
+	void SwitchCount(size_t num);
 
 	size_t GetBoxSize() const { return boxes.size(); }
 	// 道の数の取得
@@ -111,6 +113,8 @@ public: //メンバ関数
 	Vec2 GetAnchorpointPos(size_t num, const Vec2& anchorpoint) const { return boxes[num].GetAnchorpointPos(anchorpoint); }
 	// プレイヤーのサイズ
 	unsigned short GetScale() const { return scale; }
+	// プレイヤーが当たっているかどうか
+	bool GetPlayerFlag(size_t num) const { return boxes[num].isPlayer; }
 	// 種類の取得
 	Road::RoadType GetType(size_t num) const { return boxes[num].type; }
 	Vec2 GetStartPos() const { return GetPos(startIndex); }
@@ -125,6 +129,8 @@ public: //メンバ関数
 	void SetSize(size_t num, const Vec2& size) { boxes[num].size = size; }
 	// 各インデックスの設定
 	void SetIndex();
+	// プレイヤーが当たっているかどうかの設定
+	void SetPlayerFlag(size_t num, bool flag);
 
 	// アンカーポイントを指定した場所に持ってくる
 	void MoveAnchorpoint(size_t num, const Vec2& anchorpoint) { boxes[num].anchorpoint = anchorpoint; }

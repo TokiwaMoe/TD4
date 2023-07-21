@@ -314,6 +314,21 @@ void Stage::ChangeRestart(size_t num)
 	}
 }
 
+void Stage::SwitchCount(size_t num)
+{
+	if (boxes[num].type != Road::RoadType::SWITCH) return;
+
+	boxes[num].parameter.ChangeFlag();
+	if (boxes[num].parameter.GetFlag())
+	{
+		switchCount++;
+	}
+	else
+	{
+		switchCount--;
+	}
+}
+
 void Stage::WriteStage(const std::string& stageName)
 {
 	using namespace std;
@@ -392,6 +407,11 @@ void Stage::SetIndex()
 			}
 		}
 	}
+}
+
+void Stage::SetPlayerFlag(size_t num, bool flag)
+{
+
 }
 
 void Stage::ScaleGimmick(Road& road)

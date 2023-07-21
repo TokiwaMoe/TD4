@@ -402,6 +402,10 @@ int Player::PointCollisionCount(Stage* stage)
 				{
 					stage->ChangeRestart(i);
 				}
+				else if (stage->GetType(i) == Road::RoadType::SWITCH)
+				{
+					stage->SwitchCount(i);
+				}
 			}
 		}
 	}
