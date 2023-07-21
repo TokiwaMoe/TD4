@@ -37,6 +37,7 @@ void GameScene::Init()
 	//プレイヤー
 	player->Initialize();
 	player->Init(stage);
+	player->SetStageNum(stageNumber);
 	sound = Audio::SoundLoadWave("Resources/Sound/stage.wav");
 	audio->SoundBGMPlayLoopWave(sound, audio->BGM);
 }

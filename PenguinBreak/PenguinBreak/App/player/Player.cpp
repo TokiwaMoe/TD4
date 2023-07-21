@@ -92,7 +92,7 @@ void Player::Move()
 		//パーティクルだす
 		//手のspを表示するか
 		isDraw = true;
-		moveParticle->ParticleAdd2(particlePos, { 1,1,0.5,1 }, { 1,1,0.5,1 });
+		moveParticle->ParticleAdd2(particlePos, color, color2);
 	}
 	else {
 		isDraw = false;
@@ -100,6 +100,18 @@ void Player::Move()
 	}
 	if (move == true) {
 		position = Input::Get()->GetMousePos();
+	}
+	if (stageNum == 1) {
+		color = { 1, 1, 0.5, 1 };
+		color2 = { 1, 1, 0.5, 1 };
+	}
+	else if (stageNum == 2) {
+		color = { 1, 0, 0, 1 };
+		color2 = { 1, 0, 1, 1 };
+	}
+	else if (stageNum == 3) {
+		color = { 0, 0.4f, 0.7f, 1 };
+		color2 = { 0, 0.4f, 0.7f, 1 };
 	}
 }
 
