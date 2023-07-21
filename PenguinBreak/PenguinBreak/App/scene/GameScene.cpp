@@ -22,7 +22,7 @@ void GameScene::Init()
 {
 	PostEffect::Get()->SetPipeline(static_cast<int>(PostEffectType::WATERRIPPLES));
 	//スプライト作成の仕方
-	background = Sprite::Get()->SpriteCreate(L"Resources/background.png");
+	background = Sprite::Get()->SpriteCreate(L"Resources/stage/background.png");
 
 	player = std::make_unique<Player>();
 	// ステージ

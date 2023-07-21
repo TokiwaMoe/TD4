@@ -31,6 +31,9 @@ void ResultScene::Update()
 		scene->nextStage = nextStage;
 		sceneManager_->SetNextScene(scene);
 	}
+
+	//カーソル表示
+	Input::Get()->SetCursor(false);
 }
 
 void ResultScene::Draw()

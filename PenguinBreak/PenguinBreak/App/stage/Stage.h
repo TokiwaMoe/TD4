@@ -23,16 +23,22 @@ public: //サブクラス
 		// 背景オブジェクトのタイプ
 		enum BackType
 		{
-			PALM, //ヤシの木
-			DEER, //鹿
-			HAND, //手
-			FUGU, //ふぐ
-			CAT,  //猫
-			LAZY, //なまけもの
-			EYE,  //目
-			FISH, //サカナ
-			SEA,  //海
-			SUN,  //太陽
+			PALM,		//ヤシの木
+			DEER,		//鹿
+			HAND,		//手
+			FUGU,		//ふぐ
+			CAT,		//猫
+			LAZY,		//なまけもの
+			EYE,		//目
+			FISH,		//サカナ
+			SEA,		//海
+			SUN,		//太陽
+			FISH_BIG,	//大きい魚
+			DINOSAUR,	//恐竜
+			CYPYBARA,	//カピバラ
+			JELLYFISH,	//クラゲ
+			LIZARD,		//トカゲ
+			SNAKE		//蛇
 		};
 
 	public: //メンバ変数
@@ -51,8 +57,8 @@ public: //サブクラス
 	};
 
 public: //定数
-	static const int STAGE_COUNT = 4; //ステージの数
-	static const int BACK_COUNT = 3;  //背景の数
+	static const int STAGE_COUNT = 5; //ステージの数
+	static const int BACK_COUNT = 5;  //背景の数
 	static const Vec2 ROAD_OFFSET; //道の余白分
 
 private: //静的メンバ変数
