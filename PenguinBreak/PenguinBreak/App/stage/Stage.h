@@ -35,10 +35,14 @@ public: //サブクラス
 			SUN,		//太陽
 			FISH_BIG,	//大きい魚
 			DINOSAUR,	//恐竜
-			CYPYBARA,	//カピバラ
+			CAPYBARA,	//カピバラ
 			JELLYFISH,	//クラゲ
 			LIZARD,		//トカゲ
-			SNAKE		//蛇
+			SNAKE,		//蛇
+			GRASS,		//草
+			NIGHT,		//夜
+			NOSE,		//鼻
+			MUSEUM,		//美術館
 		};
 
 	public: //メンバ変数
@@ -57,8 +61,8 @@ public: //サブクラス
 	};
 
 public: //定数
-	static const int STAGE_COUNT = 4; //ステージの数
-	static const int BACK_COUNT = 3;  //背景の数
+	static const int STAGE_COUNT = 5; //ステージの数
+	static const int BACK_COUNT = 5;  //背景の数
 	static const Vec2 ROAD_OFFSET; //道の余白分
 
 private: //静的メンバ変数
@@ -91,12 +95,15 @@ public: //メンバ関数
 	JsonData* LoadStage(const std::string& jsonFile);
 	// ステージの切り替え
 	void ChangeStage(int stageNumber);
+	void ChangeStage(JsonData* file);
 	// 背景オブジェクトの読み込み
 	JsonData* LoadBack(const std::string& jsonFile);
 	// 背景オブジェクトの切り替え
 	void ChangeBack(int backNumber);
 	// セーブポイントの切り替え
 	void ChangeRestart(size_t num);
+	// スイッチ
+	void SwitchCount(size_t num);
 
 	size_t GetBoxSize() const { return boxes.size(); }
 	// 道の数の取得
@@ -111,6 +118,8 @@ public: //メンバ関数
 	Vec2 GetAnchorpointPos(size_t num, const Vec2& anchorpoint) const { return boxes[num].GetAnchorpointPos(anchorpoint); }
 	// プレイヤーのサイズ
 	unsigned short GetScale() const { return scale; }
+	// プレイヤーが当たっているかどうか
+	bool GetPlayerFlag(size_t num) const { return boxes[num].isPlayer; }
 	// 種類の取得
 	Road::RoadType GetType(size_t num) const { return boxes[num].type; }
 	Vec2 GetStartPos() const { return GetPos(startIndex); }
@@ -125,6 +134,8 @@ public: //メンバ関数
 	void SetSize(size_t num, const Vec2& size) { boxes[num].size = size; }
 	// 各インデックスの設定
 	void SetIndex();
+	// プレイヤーが当たっているかどうかの設定
+	void SetPlayerFlag(size_t num, bool flag);
 
 	// アンカーポイントを指定した場所に持ってくる
 	void MoveAnchorpoint(size_t num, const Vec2& anchorpoint) { boxes[num].anchorpoint = anchorpoint; }
