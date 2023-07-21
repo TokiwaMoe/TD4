@@ -23,26 +23,30 @@ public: //サブクラス
 		// 背景オブジェクトのタイプ
 		enum BackType
 		{
-			PALM,		//ヤシの木
-			DEER,		//鹿
-			HAND,		//手
-			FUGU,		//ふぐ
-			CAT,		//猫
-			LAZY,		//なまけもの
-			EYE,		//目
-			FISH,		//サカナ
-			SEA,		//海
-			SUN,		//太陽
-			FISH_BIG,	//大きい魚
-			DINOSAUR,	//恐竜
-			CAPYBARA,	//カピバラ
-			JELLYFISH,	//クラゲ
-			LIZARD,		//トカゲ
-			SNAKE,		//蛇
-			GRASS,		//草
-			NIGHT,		//夜
-			NOSE,		//鼻
-			MUSEUM,		//美術館
+			PALM,			//ヤシの木
+			DEER,			//鹿
+			HAND,			//手
+			FUGU,			//ふぐ
+			CAT,			//猫
+			LAZY,			//なまけもの
+			EYE,			//目
+			FISH,			//サカナ
+			SEA,			//海
+			SUN,			//太陽
+			FISH_BIG_RIGHT,	//大きい魚右
+			DINOSAUR,		//恐竜
+			CAPYBARA,		//カピバラ
+			JELLYFISH,		//クラゲ
+			LIZARD,			//トカゲ
+			SNAKE,			//蛇
+			GRASS,			//草
+			NIGHT,			//夜
+			NOSE,			//鼻
+			MUSEUM,			//美術館
+			FISH_BIG_LEFT,	//大きい魚左
+			FISH_BIG_UP,	//大きい魚上
+			FISH_BIG_DOWN,	//大きい魚下
+			DEEPSEA			//深海
 		};
 
 	public: //メンバ変数

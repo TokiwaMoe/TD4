@@ -44,7 +44,7 @@ void Stage::Back::Init()
 	case Stage::Back::SUN:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/sun.png");
 		break;
-	case Stage::Back::FISH_BIG:
+	case Stage::Back::FISH_BIG_RIGHT:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/fish_big.png");
 		break;
 	case Stage::Back::DINOSAUR:
@@ -73,6 +73,18 @@ void Stage::Back::Init()
 		break;
 	case Stage::Back::MUSEUM:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/museum_back.png");
+		break;
+	case Stage::Back::FISH_BIG_LEFT:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/fish_big_left.png");
+		break;
+	case Stage::Back::FISH_BIG_UP:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/fish_big_up.png");
+		break;
+	case Stage::Back::FISH_BIG_DOWN:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/fish_big_down.png");
+		break;
+	case Stage::Back::DEEPSEA:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/deepSea.png");
 		break;
 	default:
 		break;
@@ -242,7 +254,7 @@ void Stage::ChangeStage(int stageNumber)
 Stage::JsonData* Stage::LoadBack(const std::string& jsonFile)
 {
 	// 連結してフルパスを得る
-	const std::string fullpath = std::string("Resources/") + jsonFile + ".json";
+	const std::string fullpath = std::string("Resources/backs/") + jsonFile + ".json";
 
 	// ファイルストリーム
 	std::ifstream file;
