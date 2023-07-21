@@ -43,10 +43,11 @@ void SelectScene::Init()
 	selectMax = 0;
 	for (int i = 0; i < Stage::STAGE_COUNT; i++)
 	{
+		if (i == 6) { selectMax++; }
 		stagePos[i] = { 430.0f + size.x * 200.0f + selectMax * window_width,300.0f + size.y * 140.0f };
 		size.x += 1.0f;
 		if (i % 3 == 2) { size.x = 0.0f, size.y++; }
-		if (i % 6 == 5) { size = {}, selectMax++; }
+		if (i % 6 == 5) { size = {}; }
 	}
 
 	PostEffect::Get()->SetPipeline(static_cast<int>(PostEffectType::NORMAL));
