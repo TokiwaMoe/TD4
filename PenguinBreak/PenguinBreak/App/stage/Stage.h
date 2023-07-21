@@ -91,13 +91,14 @@ public: //メンバ関数
 	JsonData* LoadStage(const std::string& jsonFile);
 	// ステージの切り替え
 	void ChangeStage(int stageNumber);
+	void ChangeStage(JsonData* file);
 	// 背景オブジェクトの読み込み
 	JsonData* LoadBack(const std::string& jsonFile);
 	// 背景オブジェクトの切り替え
 	void ChangeBack(int backNumber);
 	// セーブポイントの切り替え
 	void ChangeRestart(size_t num);
-	// セーブポイントの切り替え
+	// スイッチ
 	void SwitchCount(size_t num);
 
 	size_t GetBoxSize() const { return boxes.size(); }

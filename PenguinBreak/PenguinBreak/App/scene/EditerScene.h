@@ -85,7 +85,8 @@ private://定義
 	bool isClick = false;
 
 	bool isSave = false;
-	int saveFileNumber = 1;
+	bool isLoad = false;
+	int fileNumber = 1;
 
 	std::vector<std::string> operationText;
 };
