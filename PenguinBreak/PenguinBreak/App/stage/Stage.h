@@ -43,6 +43,7 @@ public: //サブクラス
 			NIGHT,		//夜
 			NOSE,		//鼻
 			MUSEUM,		//美術館
+			PICTURE,    //絵猫
 		};
 
 	public: //メンバ変数
@@ -61,8 +62,8 @@ public: //サブクラス
 	};
 
 public: //定数
-	static const int STAGE_COUNT = 5; //ステージの数
-	static const int BACK_COUNT = 5;  //背景の数
+	static const int STAGE_COUNT = 7; //ステージの数
+	static const int BACK_COUNT = 6;  //背景の数
 	static const Vec2 ROAD_OFFSET; //道の余白分
 
 private: //静的メンバ変数
