@@ -86,6 +86,9 @@ void Stage::Back::Init()
 	case Stage::Back::DEEPSEA:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/deepSea.png");
 		break;
+	case Stage::Back::PICTURE:
+		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/picture.png");
+		break;
 	default:
 		break;
 	}
