@@ -44,7 +44,7 @@ void Stage::Back::Init()
 	case Stage::Back::SUN:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/sun.png");
 		break;
-	case Stage::Back::FISH_BIG_RIGHT:
+	case Stage::Back::FISH_BIG:
 		sprite = Sprite::Get()->SpriteCreate(L"Resources/stage/fish_big.png");
 		break;
 	case Stage::Back::DINOSAUR:
