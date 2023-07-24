@@ -28,7 +28,7 @@
       ]
     },
     {
-      "back": 13,
+      "back": 12,
       "flipX": false,
       "flipY": false,
       "gimmick": 4,
@@ -46,7 +46,7 @@
       ],
       "size": [
         500.0,
-        511.0
+        308.0
       ],
       "offset": [
         0.5,
