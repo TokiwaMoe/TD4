@@ -39,6 +39,11 @@ void Road::Init()
 	sprite = Sprite::Get()->SpriteCreate(L"Resources/white1x1.png");
 }
 
+void Road::ResetInitPos()
+{
+	initPos = pos;
+}
+
 const Vec2 Road::GetAnchorpointPos(const Vec2& uv) const
 {
 	Vec2 uvPos = uv - anchorpoint;

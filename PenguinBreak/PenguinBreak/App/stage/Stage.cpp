@@ -358,6 +358,7 @@ void Stage::SwitchCount(size_t num)
 	if (boxes[num].isOldPlayer == true) return;
 
 	boxes[num].GetGimmickParameter(switchCount).ChangeFlag();
+	auto& oldGimmick = boxes[num].GetGimmickParameter(switchCount);
 	if (boxes[num].GetGimmickParameter(switchCount).GetFlag())
 	{
 		switchCount++;
@@ -666,6 +667,7 @@ void Stage::OnlyMoveGimmick(Road& road)
 		(moveDir.y < 0 && (road.pos.y <= limit.y)))
 	{
 		road.GetGimmickParameter(switchCount).ChangeFlag();
+		road.ResetInitPos();
 	}
 }
 

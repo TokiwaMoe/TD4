@@ -67,6 +67,7 @@ public:
 public: //関数
 	Road();
 	virtual void Init();
+	void ResetInitPos();
 
 	SpriteData& GetSprite() { return sprite; }
 	const Vec2 GetPos() const { return pos; }
