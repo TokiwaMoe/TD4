@@ -67,7 +67,7 @@ public: //サブクラス
 
 public: //定数
 	static const int STAGE_COUNT = 6; //ステージの数
-	static const int BACK_COUNT = 6;  //背景の数
+	static const int BACK_COUNT = 8;  //背景の数
 	static const Vec2 ROAD_OFFSET; //道の余白分
 
 private: //静的メンバ変数
@@ -109,6 +109,7 @@ public: //メンバ関数
 	void ChangeRestart(size_t num);
 	// スイッチ
 	void SwitchCount(size_t num);
+	void AllPlayerFlagTrue() { for (auto& i : boxes) i.SetPlayerFlag(true); }
 
 	size_t GetBoxSize() const { return boxes.size(); }
 	// 道の数の取得
@@ -140,7 +141,7 @@ public: //メンバ関数
 	// 各インデックスの設定
 	void SetIndex();
 	// プレイヤーが当たっているかどうかの設定
-	void SetPlayerFlag(size_t num, bool flag);
+	void SetPlayerFlag(size_t num, bool flag) { boxes[num].SetPlayerFlag(flag); }
 
 	// アンカーポイントを指定した場所に持ってくる
 	void MoveAnchorpoint(size_t num, const Vec2& anchorpoint) { boxes[num].anchorpoint = anchorpoint; }
@@ -184,7 +185,9 @@ inline void Stage::GimmickUpdate(std::vector<T>& object)
 {
 	for (auto& i : object)
 	{
-		switch (i.gimmick)
+		if (i.GetGimmickCount() == 0) continue;
+
+		switch (i.GetGimmickParameter(switchCount).GetGimmick())
 		{
 		case Road::Gimmick::SCALE:
 			ScaleGimmick(i);

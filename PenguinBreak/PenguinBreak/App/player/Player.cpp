@@ -176,6 +176,7 @@ void Player::collide2Stage(Stage* stage)
 				stage->GetPos(stage->GetRestart()).y
 			};
 			oldPos = position;
+			stage->AllPlayerFlagTrue();
 
 			if (deathCount >= DEATH_MAX)
 			{
@@ -374,29 +375,28 @@ int Player::PointCollisionCount(Stage* stage)
 	int count = 0;
 	for (int i = 0; i < stage->GetBoxSize(); i++)
 	{
+		//i番目のステージが背景だったら数えない
+		if (stage->GetType(i) == Road::RoadType::BACK)
+		{
+			continue;
+		}
+
+		stage->SetPlayerFlag(i, Old2Now(oldPos, position, stage, i) == false);
+
 		//i番目のステージが壁だったら
 		if (stage->GetType(i) == Road::RoadType::WALL)
 		{
 			//点がステージに当たってても初期位置に戻す
-			if (!Old2Now(oldPos, position, stage, i))
+			if (stage->GetPlayerFlag(i))
 			{
 				count = static_cast<int>(stage->GetRoadCount());
 				break;
 			}
 		}
-		//i番目のステージが背景だったら数えない
-		else if (stage->GetType(i) == Road::RoadType::BACK)
-		{
-			continue;
-		}
 		else
 		{
 			//i番目のステージに点が入っていなかったらカウント
-			if (Old2Now(oldPos, position, stage, i))
-			{
-				count++;
-			}
-			else
+			if (stage->GetPlayerFlag(i))
 			{
 				//i番目のステージがスタート位置かセーブポイントだったらリスタート地点を変える
 				if (stage->GetType(i) == Road::RoadType::START || stage->GetType(i) == Road::RoadType::SAVE)
@@ -409,9 +409,13 @@ int Player::PointCollisionCount(Stage* stage)
 					stage->SwitchCount(i);
 				}
 			}
+			else
+			{
+				count++;
+			}
 		}
 	}
-	//
+
 	return count;
 }
 

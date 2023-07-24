@@ -5,15 +5,6 @@
       "back": 23,
       "flipX": false,
       "flipY": false,
-      "gimmick": 0,
-      "parameter": {
-        "flag": true,
-        "limit": [
-          0.0,
-          0.0
-        ],
-        "speed": 0.0
-      },
       "pos": [
         640.0,
         360.0
@@ -31,15 +22,17 @@
       "back": 10,
       "flipX": true,
       "flipY": false,
-      "gimmick": 2,
-      "parameter": {
-        "flag": false,
-        "limit": [
-          160.0,
-          0.0
-        ],
-        "speed": 10.0
-      },
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": false,
+          "limit": [
+            160.0,
+            0.0
+          ],
+          "speed": 10.0
+        }
+      ],
       "pos": [
         0.0,
         0.0
@@ -57,15 +50,17 @@
       "back": 10,
       "flipX": true,
       "flipY": false,
-      "gimmick": 2,
-      "parameter": {
-        "flag": false,
-        "limit": [
-          160.0,
-          0.0
-        ],
-        "speed": 10.0
-      },
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": false,
+          "limit": [
+            160.0,
+            0.0
+          ],
+          "speed": 10.0
+        }
+      ],
       "pos": [
         0.0,
         317.0
@@ -83,15 +78,17 @@
       "back": 10,
       "flipX": true,
       "flipY": false,
-      "gimmick": 2,
-      "parameter": {
-        "flag": false,
-        "limit": [
-          160.0,
-          0.0
-        ],
-        "speed": 10.0
-      },
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": false,
+          "limit": [
+            160.0,
+            0.0
+          ],
+          "speed": 10.0
+        }
+      ],
       "pos": [
         0.0,
         634.0
@@ -109,15 +106,17 @@
       "back": 21,
       "flipX": true,
       "flipY": false,
-      "gimmick": 2,
-      "parameter": {
-        "flag": true,
-        "limit": [
-          0.0,
-          160.0
-        ],
-        "speed": 10.0
-      },
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": true,
+          "limit": [
+            0.0,
+            160.0
+          ],
+          "speed": 10.0
+        }
+      ],
       "pos": [
         0.0,
         700.0
@@ -135,15 +134,17 @@
       "back": 21,
       "flipX": true,
       "flipY": false,
-      "gimmick": 2,
-      "parameter": {
-        "flag": true,
-        "limit": [
-          0.0,
-          160.0
-        ],
-        "speed": 10.0
-      },
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": true,
+          "limit": [
+            0.0,
+            160.0
+          ],
+          "speed": 10.0
+        }
+      ],
       "pos": [
         400.0,
         700.0
@@ -161,15 +162,17 @@
       "back": 21,
       "flipX": true,
       "flipY": false,
-      "gimmick": 2,
-      "parameter": {
-        "flag": true,
-        "limit": [
-          0.0,
-          160.0
-        ],
-        "speed": 10.0
-      },
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": true,
+          "limit": [
+            0.0,
+            160.0
+          ],
+          "speed": 10.0
+        }
+      ],
       "pos": [
         800.0,
         700.0
@@ -187,15 +190,17 @@
       "back": 21,
       "flipX": true,
       "flipY": false,
-      "gimmick": 2,
-      "parameter": {
-        "flag": true,
-        "limit": [
-          0.0,
-          160.0
-        ],
-        "speed": 10.0
-      },
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": true,
+          "limit": [
+            0.0,
+            160.0
+          ],
+          "speed": 10.0
+        }
+      ],
       "pos": [
         1200.0,
         700.0
@@ -213,15 +218,17 @@
       "back": 20,
       "flipX": true,
       "flipY": false,
-      "gimmick": 2,
-      "parameter": {
-        "flag": true,
-        "limit": [
-          160.0,
-          0.0
-        ],
-        "speed": 10.0
-      },
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": true,
+          "limit": [
+            160.0,
+            0.0
+          ],
+          "speed": 10.0
+        }
+      ],
       "pos": [
         1260.0,
         0.0
@@ -239,15 +246,17 @@
       "back": 20,
       "flipX": true,
       "flipY": false,
-      "gimmick": 2,
-      "parameter": {
-        "flag": true,
-        "limit": [
-          160.0,
-          0.0
-        ],
-        "speed": 10.0
-      },
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": true,
+          "limit": [
+            160.0,
+            0.0
+          ],
+          "speed": 10.0
+        }
+      ],
       "pos": [
         1260.0,
         317.0
@@ -265,15 +274,17 @@
       "back": 20,
       "flipX": true,
       "flipY": false,
-      "gimmick": 2,
-      "parameter": {
-        "flag": true,
-        "limit": [
-          160.0,
-          0.0
-        ],
-        "speed": 10.0
-      },
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": true,
+          "limit": [
+            160.0,
+            0.0
+          ],
+          "speed": 10.0
+        }
+      ],
       "pos": [
         1260.0,
         634.0
@@ -291,15 +302,17 @@
       "back": 22,
       "flipX": true,
       "flipY": false,
-      "gimmick": 2,
-      "parameter": {
-        "flag": false,
-        "limit": [
-          0.0,
-          160.0
-        ],
-        "speed": 10.0
-      },
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": false,
+          "limit": [
+            0.0,
+            160.0
+          ],
+          "speed": 10.0
+        }
+      ],
       "pos": [
         0.0,
         20.0
@@ -317,15 +330,17 @@
       "back": 22,
       "flipX": true,
       "flipY": false,
-      "gimmick": 2,
-      "parameter": {
-        "flag": false,
-        "limit": [
-          0.0,
-          160.0
-        ],
-        "speed": 10.0
-      },
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": false,
+          "limit": [
+            0.0,
+            160.0
+          ],
+          "speed": 10.0
+        }
+      ],
       "pos": [
         400.0,
         20.0
@@ -343,15 +358,17 @@
       "back": 22,
       "flipX": true,
       "flipY": false,
-      "gimmick": 2,
-      "parameter": {
-        "flag": false,
-        "limit": [
-          0.0,
-          160.0
-        ],
-        "speed": 10.0
-      },
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": false,
+          "limit": [
+            0.0,
+            160.0
+          ],
+          "speed": 10.0
+        }
+      ],
       "pos": [
         800.0,
         20.0
@@ -369,15 +386,17 @@
       "back": 22,
       "flipX": true,
       "flipY": false,
-      "gimmick": 2,
-      "parameter": {
-        "flag": false,
-        "limit": [
-          0.0,
-          160.0
-        ],
-        "speed": 10.0
-      },
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": false,
+          "limit": [
+            0.0,
+            160.0
+          ],
+          "speed": 10.0
+        }
+      ],
       "pos": [
         1200.0,
         20.0
