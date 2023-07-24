@@ -2,7 +2,7 @@
   "name": "back",
   "objects": [
     {
-      "back": 20,
+      "back": 24,
       "flipX": false,
       "flipY": false,
       "pos": [

@@ -43,7 +43,11 @@ public: //サブクラス
 			NIGHT,		//夜
 			NOSE,		//鼻
 			MUSEUM,		//美術館
-			PICTURE,    //絵猫
+			FISH_BIG_LEFT,	//大きい魚左
+			FISH_BIG_UP,	//大きい魚上
+			FISH_BIG_DOWN,	//大きい魚下
+			DEEPSEA,		//深海
+			PICTURE    //絵猫
 		};
 
 	public: //メンバ変数

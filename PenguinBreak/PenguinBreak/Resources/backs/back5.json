@@ -2,7 +2,7 @@
   "name": "back",
   "objects": [
     {
-      "back": 9,
+      "back": 23,
       "flipX": false,
       "flipY": false,
       "pos": [
@@ -27,7 +27,7 @@
           "type": 2,
           "flag": false,
           "limit": [
-            200.0,
+            160.0,
             0.0
           ],
           "speed": 10.0
@@ -55,7 +55,7 @@
           "type": 2,
           "flag": false,
           "limit": [
-            200.0,
+            160.0,
             0.0
           ],
           "speed": 10.0
@@ -83,7 +83,7 @@
           "type": 2,
           "flag": false,
           "limit": [
-            200.0,
+            160.0,
             0.0
           ],
           "speed": 10.0
@@ -103,7 +103,7 @@
       ]
     },
     {
-      "back": 10,
+      "back": 21,
       "flipX": true,
       "flipY": false,
       "gimmick": [
@@ -112,7 +112,7 @@
           "flag": true,
           "limit": [
             0.0,
-            200.0
+            160.0
           ],
           "speed": 10.0
         }
@@ -131,7 +131,7 @@
       ]
     },
     {
-      "back": 10,
+      "back": 21,
       "flipX": true,
       "flipY": false,
       "gimmick": [
@@ -140,7 +140,7 @@
           "flag": true,
           "limit": [
             0.0,
-            200.0
+            160.0
           ],
           "speed": 10.0
         }
@@ -159,7 +159,7 @@
       ]
     },
     {
-      "back": 10,
+      "back": 21,
       "flipX": true,
       "flipY": false,
       "gimmick": [
@@ -168,7 +168,7 @@
           "flag": true,
           "limit": [
             0.0,
-            200.0
+            160.0
           ],
           "speed": 10.0
         }
@@ -187,7 +187,7 @@
       ]
     },
     {
-      "back": 10,
+      "back": 21,
       "flipX": true,
       "flipY": false,
       "gimmick": [
@@ -196,7 +196,7 @@
           "flag": true,
           "limit": [
             0.0,
-            200.0
+            160.0
           ],
           "speed": 10.0
         }
@@ -215,7 +215,7 @@
       ]
     },
     {
-      "back": 10,
+      "back": 20,
       "flipX": true,
       "flipY": false,
       "gimmick": [
@@ -223,7 +223,7 @@
           "type": 2,
           "flag": true,
           "limit": [
-            200.0,
+            160.0,
             0.0
           ],
           "speed": 10.0
@@ -243,7 +243,7 @@
       ]
     },
     {
-      "back": 10,
+      "back": 20,
       "flipX": true,
       "flipY": false,
       "gimmick": [
@@ -251,7 +251,7 @@
           "type": 2,
           "flag": true,
           "limit": [
-            200.0,
+            160.0,
             0.0
           ],
           "speed": 10.0
@@ -271,7 +271,7 @@
       ]
     },
     {
-      "back": 10,
+      "back": 20,
       "flipX": true,
       "flipY": false,
       "gimmick": [
@@ -279,7 +279,7 @@
           "type": 2,
           "flag": true,
           "limit": [
-            200.0,
+            160.0,
             0.0
           ],
           "speed": 10.0
@@ -299,7 +299,7 @@
       ]
     },
     {
-      "back": 10,
+      "back": 22,
       "flipX": true,
       "flipY": false,
       "gimmick": [
@@ -308,7 +308,7 @@
           "flag": false,
           "limit": [
             0.0,
-            200.0
+            160.0
           ],
           "speed": 10.0
         }
@@ -327,7 +327,7 @@
       ]
     },
     {
-      "back": 10,
+      "back": 22,
       "flipX": true,
       "flipY": false,
       "gimmick": [
@@ -336,7 +336,7 @@
           "flag": false,
           "limit": [
             0.0,
-            200.0
+            160.0
           ],
           "speed": 10.0
         }
@@ -355,7 +355,7 @@
       ]
     },
     {
-      "back": 10,
+      "back": 22,
       "flipX": true,
       "flipY": false,
       "gimmick": [
@@ -364,7 +364,7 @@
           "flag": false,
           "limit": [
             0.0,
-            200.0
+            160.0
           ],
           "speed": 10.0
         }
@@ -383,7 +383,7 @@
       ]
     },
     {
-      "back": 10,
+      "back": 22,
       "flipX": true,
       "flipY": false,
       "gimmick": [
@@ -392,7 +392,7 @@
           "flag": false,
           "limit": [
             0.0,
-            200.0
+            160.0
           ],
           "speed": 10.0
         }
