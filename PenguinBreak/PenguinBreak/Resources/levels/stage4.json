@@ -2,7 +2,6 @@
     "name": "stage",
     "objects": [
         {
-            "gimmick": 0,
             "offset": [
                 0.0,
                 0.0
@@ -18,7 +17,6 @@
             "type": 2
         },
         {
-            "gimmick": 0,
             "offset": [
                 0.0,
                 0.0
@@ -34,7 +32,6 @@
             "type": 2
         },
         {
-            "gimmick": 0,
             "offset": [
                 0.0,
                 0.0
@@ -50,7 +47,6 @@
             "type": 2
         },
         {
-            "gimmick": 0,
             "offset": [
                 0.0,
                 0.0
@@ -66,7 +62,6 @@
             "type": 2
         },
         {
-            "gimmick": 0,
             "offset": [
                 0.0,
                 0.0
@@ -82,7 +77,6 @@
             "type": 2
         },
         {
-            "gimmick": 0,
             "offset": [
                 0.0,
                 0.0
@@ -98,7 +92,6 @@
             "type": 2
         },
         {
-            "gimmick": 0,
             "offset": [
                 0.0,
                 0.0
@@ -114,7 +107,6 @@
             "type": 2
         },
         {
-            "gimmick": 0,
             "offset": [
                 0.0,
                 0.0
@@ -126,30 +118,6 @@
             "size": [
                 23.5,
                 602.5
-            ],
-            "type": 2
-        },
-        {
-            "gimmick": 5,
-            "parameter": {
-                "flag": false,
-                "limit": [
-                    360.0,
-                    360.0
-                ],
-                "speed": 2.0
-            },
-            "offset": [
-                0.0,
-                0.0
-            ],
-            "pos": [
-                640.0,
-                360.0
-            ],
-            "size": [
-                23.5,
-                39.5
             ],
             "type": 2
         },
@@ -169,7 +137,6 @@
             "type": 0
         },
         {
-            "gimmick": 0,
             "offset": [
                 0.0,
                 0.0
@@ -185,7 +152,6 @@
             "type": 1
         },
         {
-            "gimmick": 0,
             "offset": [
                 0.0,
                 0.0
@@ -201,7 +167,6 @@
             "type": 4
         },
         {
-            "gimmick": 0,
             "offset": [
                 0.0,
                 0.0

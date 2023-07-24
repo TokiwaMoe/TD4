@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Sprite.h"
+#include <vector>
 
 class Road
 {
@@ -31,15 +32,17 @@ public: //サブクラス
 	class GimmickParameter
 	{
 	private:
+		Gimmick type;
 		bool flag;
 		float speed;
 		Vec2 limit;
 
 	public:
 		GimmickParameter();
-		GimmickParameter(bool flag, float speed, const Vec2& limit);
+		GimmickParameter(Gimmick type, bool flag, float speed, const Vec2& limit);
 
 		void ChangeFlag() { flag = !flag; }
+		const Gimmick GetGimmick() const { return type; }
 		const bool GetFlag() const { return flag; }
 		const float GetSpeed() const { return speed; }
 		const Vec2 GetLimit() const { return limit; }
@@ -52,9 +55,9 @@ protected:
 	SpriteData sprite;
 public:
 	RoadType type;
-	Gimmick gimmick;
-	GimmickParameter parameter;
+	std::vector<GimmickParameter> parameter;
 	bool isPlayer;
+	bool isOldPlayer;
 
 	Vec2 pos;
 	Vec2 size;
@@ -70,4 +73,8 @@ public: //関数
 	const Vec2 GetInitPos() const { return initPos; }
 	const Vec2 GetInitSize() const { return initSize; }
 	const Vec2 GetAnchorpointPos(const Vec2& uv) const;
+	GimmickParameter& GetGimmickParameter(const size_t& num);
+	const size_t GetGimmickCount() const { return parameter.size(); }
+
+	void SetPlayerFlag(bool flag) { isOldPlayer = isPlayer; isPlayer = flag; }
 };
