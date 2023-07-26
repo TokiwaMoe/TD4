@@ -764,7 +764,7 @@ void Stage::EditerReset()
 	boxes.back().Init();
 }
 
-void Stage::BringForefront(size_t num)
+size_t Stage::BringForefront(size_t num)
 {
 	for (size_t i = num; i < boxes.size() - 1; i++)
 	{
@@ -772,6 +772,33 @@ void Stage::BringForefront(size_t num)
 		boxes[i] = boxes[i + 1];
 		boxes[i + 1] = keep;
 	}
+
+	return boxes.size() - 1;
+}
+
+Road::RoadType Stage::ChangeType(size_t num)
+{
+	if (boxes[num].type == Road::RoadType::START || boxes[num].type == Road::RoadType::GOAL) return boxes[num].type;
+
+	switch (boxes[num].type)
+	{
+	case Road::RoadType::ROAD:
+		boxes[num].type = Road::RoadType::WALL;
+		break;
+	case Road::RoadType::WALL:
+		boxes[num].type = Road::RoadType::SAVE;
+		break;
+	case Road::RoadType::SAVE:
+		boxes[num].type = Road::RoadType::SWITCH;
+		break;
+	case Road::RoadType::SWITCH:
+		boxes[num].type = Road::RoadType::ROAD;
+		break;
+	default:
+		break;
+	}
+
+	return boxes[num].type;
 }
 
 void Stage::SetScale(unsigned short scale)

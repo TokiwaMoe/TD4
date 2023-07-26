@@ -156,7 +156,8 @@ public: //メンバ関数
 	// リセット
 	void EditerReset();
 	// 最前面に持ってくる
-	void BringForefront(size_t num);
+	size_t BringForefront(size_t num);
+	Road::RoadType ChangeType(size_t num);
 	// プレイヤーのサイズ
 	void SetScale(unsigned short scale);
 private:
