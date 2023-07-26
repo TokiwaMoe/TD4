@@ -18,6 +18,14 @@ extern const int window_height;
 class EditerScene :public BaseScene
 {
 public:
+	enum EditerState
+	{
+		EDIT,
+		SAVE,
+		LOAD,
+		HELP,
+	};
+
 	enum CursorState
 	{
 		NONE,
@@ -79,13 +87,13 @@ private://定義
 	std::unique_ptr<Player> player;
 	Stage* stage = nullptr;
 	unsigned short scale = 1;
+	unsigned int type = Road::RoadType::ROAD;
 
 	int roadIndex = -1;
 	CursorState cursorState = CursorState::NONE;
 	bool isClick = false;
 
-	bool isSave = false;
-	bool isLoad = false;
+	EditerState editerState = EditerState::EDIT;
 	int fileNumber = 1;
 
 	std::vector<std::string> operationText;
