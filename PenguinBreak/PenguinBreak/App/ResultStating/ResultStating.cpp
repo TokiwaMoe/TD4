@@ -13,7 +13,7 @@ ResultStating::~ResultStating()
 
 void ResultStating::Init()
 {
-	backGround = Sprite::Get()->SpriteCreate(L"Resources/stage/night_back.png");
+	backGround = Sprite::Get()->SpriteCreate(L"Resources/Result/result_back.png");
 	selectGraph = Sprite::Get()->SpriteCreate(L"Resources/Result/back.png");
 	nextStageGraph = Sprite::Get()->SpriteCreate(L"Resources/Result/next.png");
 	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
@@ -80,11 +80,6 @@ void ResultStating::Draw(int nextStage)
 	Sprite::Get()->Draw(frame, {}, width, height, {0.0f,0.0f});
 
 
-	//馬人間
-	const float houseWidth = 64.0f, houseHeight = 128.0f;
-	Sprite::Get()->Draw(houseHumanGraph, houseHumanPos, houseWidth, houseHeight);
-
-
 	//クリア文字
 	const Vec2 clearSize = { 93.0f,155.0f };
 	const Vec2 clearBasicPos = { 350.0f,184.0f };
@@ -94,6 +89,10 @@ void ResultStating::Draw(int nextStage)
 		Sprite::Get()->Draw(clearGraph[i], Vec2(clearBasicPos.x + clearMove * i, clearBasicPos.y + clearMovePos[i]),
 			clearSize.x, clearSize.y);
 	}
+
+	//馬人間
+	const float houseWidth = 64.0f, houseHeight = 128.0f;
+	Sprite::Get()->Draw(houseHumanGraph, houseHumanPos, houseWidth, houseHeight);
 
 	//もどる
 	if (scaleNumber == BACK)
@@ -218,7 +217,6 @@ void ResultStating::ClearMove()
 			if (clearMovePos[i] < moveMin)
 			{
 				clearMoveFlag[i] = true;
-
 			}
 		}
 	}
@@ -233,11 +231,6 @@ void ResultStating::DoubleHMove()
 		houseHumanPos.x = -widthMin;
 	}
 	houseHumanPos.x += speed;
-
-
-
-
-
 }
 
 void ResultStating::HandRotation()
