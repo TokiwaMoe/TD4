@@ -101,15 +101,15 @@ void Player::Move()
 	if (move == true) {
 		position = Input::Get()->GetMousePos();
 	}
-	if (stageNum == 1 || stageNum == 5) {
+	if (stageNum == 1) {
 		color = { 1, 1, 0.5, 1 };
 		color2 = { 1, 1, 0.5, 1 };
 	}
-	else if (stageNum == 2 ) {
+	else if (stageNum == 2) {
 		color = { 1, 0, 0, 1 };
 		color2 = { 1, 0, 1, 1 };
 	}
-	else if (stageNum == 3 || stageNum == 4 || stageNum == 6) {
+	else {
 		color = { 0, 0.8f, 1, 1 };
 		color2 = { 1, 0.5f,0.8f, 1 };
 	}
