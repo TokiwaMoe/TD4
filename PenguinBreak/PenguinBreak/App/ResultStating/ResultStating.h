@@ -44,12 +44,14 @@ private:
 	void ClearMove();
 	//馬人間の動き
 	void DoubleHMove();
+	//ての回転
+	void HandRotation();
 private:
 	SpriteData backGround;                      //背景
 	SpriteData selectGraph;                     //もどる画像
-	const Vec2 selectPos = { 340.0f,540.0f };   //位置
+	const Vec2 selectPos = { 461.0f,440.0f };   //位置
 	SpriteData nextStageGraph;                  //つぎへ画像
-	const Vec2 nextStagePos = { 930.0f,540.0f };//位置
+	const Vec2 nextStagePos = { 800.0f,440.0f };//位置
 	const Vec2 selectSize = { 223.0f, 114.0f }; //大きさ
 	//セレクト
 	int selectStatus = NEXT;
@@ -67,8 +69,16 @@ private:
 	bool clearMoveFlag[4];          //上下どっちか
 
 	SpriteData houseHumanGraph;     //馬の画像
-	Vec2 houseHumanPos = { 0.0f,357.0f };//馬の画像の位置
+	Vec2 houseHumanPos = { 0.0f,317.0f };//馬の画像の位置
 
 	int nextSceneStatus = ZERO;
+
+	//手
+	static const int HAND_MAX_X = 4;
+	static const int HAND_MAX_Y = 2;
+	SpriteData hand[HAND_MAX_X][HAND_MAX_Y];
+
+	//額
+	SpriteData frame;
 };
 
