@@ -17,21 +17,21 @@
             "type": 2
         },
         {
-            "gimmick" : [
+            "gimmick": [
                 {
-                    "type" : 0
+                    "type": 0
                 },
                 {
-                    "type" : 0
+                    "type": 0
                 },
                 {
-                    "type" : 1,
                     "flag": false,
                     "limit": [
                         45.0,
                         0.0
                     ],
-                    "speed": 1.0
+                    "speed": 1.0,
+                    "type": 1
                 }
             ],
             "offset": [
@@ -64,24 +64,24 @@
             "type": 2
         },
         {
-            "gimmick" : [
+            "gimmick": [
                 {
-                    "type" : 0
+                    "type": 0
                 },
                 {
-                    "type" : 0
+                    "type": 0
                 },
                 {
-                    "type" : 0
+                    "type": 0
                 },
                 {
-                    "type" : 2,
                     "flag": false,
                     "limit": [
                         250.0,
                         0.0
                     ],
-                    "speed": 2.0
+                    "speed": 2.0,
+                    "type": 2
                 }
             ],
             "offset": [
@@ -99,24 +99,24 @@
             "type": 2
         },
         {
-            "gimmick" : [
+            "gimmick": [
                 {
-                    "type" : 0
+                    "type": 0
                 },
                 {
-                    "type" : 0
+                    "type": 0
                 },
                 {
-                    "type" : 0
+                    "type": 0
                 },
                 {
-                    "type" : 2,
                     "flag": true,
                     "limit": [
                         250.0,
                         0.0
                     ],
-                    "speed": 1.0
+                    "speed": 1.0,
+                    "type": 2
                 }
             ],
             "offset": [
@@ -149,15 +149,15 @@
             "type": 2
         },
         {
-            "gimmick" : [
+            "gimmick": [
                 {
-                    "type" : 1,
                     "flag": false,
                     "limit": [
                         0.0,
                         70.0
                     ],
-                    "speed": 1.0
+                    "speed": 1.0,
+                    "type": 1
                 }
             ],
             "offset": [
@@ -175,15 +175,15 @@
             "type": 2
         },
         {
-            "gimmick" : [
+            "gimmick": [
                 {
-                    "type" : 1,
                     "flag": true,
                     "limit": [
                         0.0,
                         70.0
                     ],
-                    "speed": 1.0
+                    "speed": 1.0,
+                    "type": 1
                 }
             ],
             "offset": [
@@ -231,15 +231,15 @@
             "type": 2
         },
         {
-            "gimmick" : [
+            "gimmick": [
                 {
-                    "type" : 1,
                     "flag": false,
                     "limit": [
                         0.0,
                         70.0
                     ],
-                    "speed": 3.0
+                    "speed": 3.0,
+                    "type": 1
                 }
             ],
             "offset": [
@@ -257,15 +257,15 @@
             "type": 2
         },
         {
-            "gimmick" : [
+            "gimmick": [
                 {
-                    "type" : 2,
                     "flag": false,
                     "limit": [
                         150.0,
                         0.0
                     ],
-                    "speed": 1.0
+                    "speed": 1.0,
+                    "type": 2
                 }
             ],
             "offset": [
@@ -283,15 +283,15 @@
             "type": 2
         },
         {
-            "gimmick" : [
+            "gimmick": [
                 {
-                    "type" : 2,
                     "flag": true,
                     "limit": [
                         150.0,
                         0.0
                     ],
-                    "speed": 1.0
+                    "speed": 1.0,
+                    "type": 2
                 }
             ],
             "offset": [
@@ -369,6 +369,11 @@
             "type": 4
         },
         {
+            "gimmick": [
+                {
+                    "type": 0
+                }
+            ],
             "offset": [
                 0.0,
                 0.0
@@ -384,6 +389,11 @@
             "type": 5
         },
         {
+            "gimmick": [
+                {
+                    "type": 0
+                }
+            ],
             "offset": [
                 0.0,
                 0.0
@@ -399,6 +409,11 @@
             "type": 5
         },
         {
+            "gimmick": [
+                {
+                    "type": 0
+                }
+            ],
             "offset": [
                 0.0,
                 0.0
@@ -414,42 +429,42 @@
             "type": 5
         },
         {
-            "gimmick" : [
+            "gimmick": [
                 {
-                    "type" : 5,
                     "flag": false,
                     "limit": [
                         0.0,
                         568.0
                     ],
-                    "speed": 4.0
+                    "speed": 4.0,
+                    "type": 5
                 },
                 {
-                    "type" : 5,
                     "flag": false,
                     "limit": [
                         1100.0,
                         0.0
                     ],
-                    "speed": 3.0
+                    "speed": 3.0,
+                    "type": 5
                 },
                 {
-                    "type" : 5,
                     "flag": false,
                     "limit": [
                         0.0,
                         -562.0
                     ],
-                    "speed": 2.0
+                    "speed": 2.0,
+                    "type": 5
                 },
                 {
-                    "type" : 5,
                     "flag": false,
                     "limit": [
                         -1150.0,
                         0.0
                     ],
-                    "speed": 1.0
+                    "speed": 1.0,
+                    "type": 5
                 }
             ],
             "offset": [

@@ -418,19 +418,26 @@ void Stage::WriteStage(const std::string& stageName)
 		};
 
 		// ギミックタイプの書き込み
-		if (boxes[i].type != Road::RoadType::START && boxes[i].type != Road::RoadType::GOAL)
+		if (boxes[i].GetGimmickCount() != 0) objectData["gimmick"] = json::array();
+		for (size_t j = 0; j < boxes[i].GetGimmickCount(); j++)
 		{
-			objectData["gimmick"] = boxes[i].parameter[0].GetGimmick();
-		}
+			auto& gimmick = boxes[i].GetGimmickParameter(j);
 
-		// ギミック用のパラメータの書き込み
-		if (boxes[i].parameter[0].GetGimmick() != Road::Gimmick::NO_GIMMICK)
-		{
-			objectData["parameter"] = {
-				{"flag", boxes[i].GetGimmickParameter(switchCount).GetFlag()},
-				{"speed", boxes[i].GetGimmickParameter(switchCount).GetSpeed()},
-				{"limit", {boxes[i].GetGimmickParameter(switchCount).GetLimit().x, boxes[i].GetGimmickParameter(switchCount).GetLimit().y}},
-			};
+			if (gimmick.GetGimmick() == Road::Gimmick::NO_GIMMICK)
+			{
+				objectData["gimmick"][j] = {
+					{"type", gimmick.GetGimmick()},
+				};
+			}
+			else
+			{
+				objectData["gimmick"][j] = {
+					{"type", gimmick.GetGimmick()},
+					{"flag", gimmick.GetFlag()},
+					{"speed", gimmick.GetSpeed()},
+					{"limit", {gimmick.GetLimit().x, gimmick.GetLimit().y}},
+				};
+			}
 		}
 	}
 
@@ -757,7 +764,7 @@ void Stage::EditerReset()
 	boxes.back().Init();
 }
 
-void Stage::BringForefront(size_t num)
+size_t Stage::BringForefront(size_t num)
 {
 	for (size_t i = num; i < boxes.size() - 1; i++)
 	{
@@ -765,6 +772,33 @@ void Stage::BringForefront(size_t num)
 		boxes[i] = boxes[i + 1];
 		boxes[i + 1] = keep;
 	}
+
+	return boxes.size() - 1;
+}
+
+Road::RoadType Stage::ChangeType(size_t num)
+{
+	if (boxes[num].type == Road::RoadType::START || boxes[num].type == Road::RoadType::GOAL) return boxes[num].type;
+
+	switch (boxes[num].type)
+	{
+	case Road::RoadType::ROAD:
+		boxes[num].type = Road::RoadType::WALL;
+		break;
+	case Road::RoadType::WALL:
+		boxes[num].type = Road::RoadType::SAVE;
+		break;
+	case Road::RoadType::SAVE:
+		boxes[num].type = Road::RoadType::SWITCH;
+		break;
+	case Road::RoadType::SWITCH:
+		boxes[num].type = Road::RoadType::ROAD;
+		break;
+	default:
+		break;
+	}
+
+	return boxes[num].type;
 }
 
 void Stage::SetScale(unsigned short scale)
