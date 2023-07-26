@@ -37,7 +37,8 @@ void GameScene::Init()
 	//プレイヤー
 	player->Initialize();
 	player->Init(stage);
-	sound = Audio::SoundLoadWave("Resources/Sound/Electro_Attack.wav");
+	player->SetStageNum(stageNumber);
+	sound = Audio::SoundLoadWave("Resources/Sound/stage.wav");
 	audio->SoundBGMPlayLoopWave(sound, audio->BGM);
 }
 
