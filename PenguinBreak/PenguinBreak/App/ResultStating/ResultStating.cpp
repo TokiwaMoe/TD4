@@ -217,7 +217,6 @@ void ResultStating::ClearMove()
 			if (clearMovePos[i] < moveMin)
 			{
 				clearMoveFlag[i] = true;
-
 			}
 		}
 	}
