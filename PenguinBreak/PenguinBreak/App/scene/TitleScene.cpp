@@ -24,6 +24,8 @@ void TitleScene::Init()
 	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
 	PostEffect::Get()->SetPipeline(static_cast<int>(PostEffectType::NORMAL));
 	sound = Audio::SoundLoadWave("Resources/Sound/uma.wav");
+	sound2 = Audio::SoundLoadWave("Resources/Sound/title.wav");
+	audio->SoundBGMPlayLoopWave(sound2, audio->BGM);
 }
 
 void TitleScene::Update()
@@ -34,12 +36,14 @@ void TitleScene::Update()
 	{
 		BaseScene* scene = new SelectScene();
 		sceneManager_->SetNextScene(scene);
+		audio->SoundStop(sound2,audio->BGM);
 	}
 	else if (Input::Get()->KeybordTrigger(DIK_E))
 	{
 		// エディター
 		BaseScene* scene = new EditerScene();
 		sceneManager_->SetNextScene(scene);
+		audio->SoundStop(sound2, audio->BGM);
 	}
 #endif // _DEBUG
 
@@ -129,6 +133,7 @@ void TitleScene::StageDecision()
 			audio->SoundSEPlayWave(sound);
 			BaseScene* scene = new SelectScene();
 			sceneManager_->SetNextScene(scene);
+			audio->SoundStop(sound2, audio->BGM);
 		}
 	}
 	hPos = Input::Get()->GetMousePos();

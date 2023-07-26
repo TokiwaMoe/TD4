@@ -31,8 +31,7 @@ void SelectScene::Init()
 	stageData[12] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectNum13.png");
 
 	selectGraph[0] = Sprite::Get()->SpriteCreate(L"Resources/Select/backButton.png");
-	selectGraph[1] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectRight.png");
-	selectGraph[2] = Sprite::Get()->SpriteCreate(L"Resources/Select/selectLeft.png");
+
 
 	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
 	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
@@ -40,14 +39,13 @@ void SelectScene::Init()
 	rule = Sprite::Get()->SpriteCreate(L"Resources/rule.png");
 
 	Vec2 size = {};
-	selectMax = 0;
 	for (int i = 0; i < Stage::STAGE_COUNT; i++)
 	{
-		if (i == 6) { selectMax++; }
-		stagePos[i] = { 430.0f + size.x * 200.0f + selectMax * window_width,300.0f + size.y * 140.0f };
+
+		stagePos[i] = { 230.0f + size.x * 200.0f ,300.0f + size.y * 140.0f };
 		size.x += 1.0f;
-		if (i % 3 == 2) { size.x = 0.0f, size.y++; }
-		if (i % 6 == 5) { size = {}; }
+
+		if (i == 4) { size.y++; size.x = {}; }
 	}
 
 	PostEffect::Get()->SetPipeline(static_cast<int>(PostEffectType::NORMAL));
@@ -79,12 +77,12 @@ void SelectScene::Draw()
 	{
 		if (scaleNumber == i)
 		{
-			Sprite::Get()->Draw(stageData[i], Vec2(stagePos[i].x - selectNum * window_width, stagePos[i].y),
+			Sprite::Get()->Draw(stageData[i], Vec2(stagePos[i].x, stagePos[i].y),
 				length * scale, length * scale, { 0.5f,0.5f });
 		}
 		else
 		{
-			Sprite::Get()->Draw(stageData[i], Vec2(stagePos[i].x - selectNum * window_width, stagePos[i].y),
+			Sprite::Get()->Draw(stageData[i], Vec2(stagePos[i].x, stagePos[i].y),
 				length, length, { 0.5f,0.5f });
 		}
 	}
@@ -99,32 +97,6 @@ void SelectScene::Draw()
 	{
 		Sprite::Get()->Draw(selectGraph[0], selectPos[0],
 			length, length, { 0.5f,0.5f });
-	}
-	if (selectNum != selectMax)
-	{
-		if (scaleNumber == RIGHTSELECT)
-		{
-			Sprite::Get()->Draw(selectGraph[1], selectPos[1],
-				length * scale, length * scale, { 0.5f,0.5f });
-		}
-		else
-		{
-			Sprite::Get()->Draw(selectGraph[1], selectPos[1],
-				length, length, { 0.5f,0.5f });
-		}
-	}
-	if (selectNum != SELECTONE)
-	{
-		if (scaleNumber == LEFTSELECT)
-		{
-			Sprite::Get()->Draw(selectGraph[2], selectPos[2],
-				length * scale, length * scale, { 0.5f,0.5f });
-		}
-		else
-		{
-			Sprite::Get()->Draw(selectGraph[2], selectPos[2],
-				length, length, { 0.5f,0.5f });
-		}
 	}
 
 	//Žè
@@ -186,16 +158,6 @@ void SelectScene::StageDecision()
 		if (Collision::BoxCollision(selectPos[0], Input::Get()->GetMousePos(), sSize, mSize)) {
 			BaseScene* scene = new TitleScene();
 			sceneManager_->SetNextScene(scene);
-		}
-		if (Collision::BoxCollision(selectPos[1], Input::Get()->GetMousePos(), sSize, mSize)
-			&& selectNum != selectMax) {
-
-			selectNum++;
-		}
-		if (Collision::BoxCollision(selectPos[2], Input::Get()->GetMousePos(), sSize, mSize)
-			&& selectNum != SELECTONE) {
-
-			selectNum--;
 		}
 	}
 }

@@ -68,7 +68,7 @@ public:
 	//setter
 	//スプライトサイズ
 	void SetSize(const Vec2& size);
-
+	void SetStageNum(int stageNum) { this->stageNum = stageNum; }
 private:
 	static const int DEATH_MAX = 30;
 
@@ -134,5 +134,7 @@ private:
 
 	Vec2 distance = {};
 	Vec2 size_num = {};
-
+	int stageNum = 0;
+	Vec4 color = { 1,1,1,1 };
+	Vec4 color2 = { 1,1,1,1 };
 };
