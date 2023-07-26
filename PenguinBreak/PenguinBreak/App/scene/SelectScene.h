@@ -60,7 +60,7 @@ private://定義
 	SpriteData stageData[20];            //ステージナンバー
 	Vec2 stagePos[20];                   //座標
 	SpriteData selectGraph[3] = {};			//右左
-	Vec2 selectPos[3] = { {60.0f,60.0f}, {1000.0f,380.0f},{220.0f,380.0f} };
+	Vec2 selectPos[1] = { {60.0f,60.0f}};
 
 	float scale = 0.8f;                  //選択時の大きさ演出用
 	int scaleNumber = -1;               //大きさを変える数字
