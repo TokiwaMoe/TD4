@@ -36,7 +36,7 @@ void ResultStating::Init()
 
 	houseHumanGraph = Sprite::Get()->SpriteCreate(L"Resources/uma.png");
 	houseHumanGraph.rotation = 90.0f;
-
+	sound = Audio::SoundLoadWave("Resources/Sound/uma.wav");
 	for (size_t i = 0; i < 4; i++)
 	{
 		clearMovePos[i] = i * 5.0f;
@@ -163,12 +163,14 @@ void ResultStating::StageDecision(const int nextStage)
 		//ステージセレクトへ
 		if (Collision::BoxCollision(selectPos, Input::Get()->GetMousePos(), selectSize / 2, mSize)) {
 			nextSceneStatus = BACK;
+			audio->SoundSEPlayWave(sound);
 		}
 		//次のステージへ
 		if (nextStage < Stage::STAGE_COUNT + 1)
 		{
 			if (Collision::BoxCollision(nextStagePos, Input::Get()->GetMousePos(), selectSize / 2, mSize)) {
 				nextSceneStatus = NEXT;
+				audio->SoundSEPlayWave(sound);
 			}
 		}
 	}
