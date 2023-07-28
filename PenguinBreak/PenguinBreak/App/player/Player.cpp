@@ -204,7 +204,7 @@ void Player::collide2Stage(Stage* stage)
 	if (!OutStage(position, stage, static_cast<int>(stage->GetGoal()))) {
 		goalFlag = true;
 	}
-
+	//ゴール後、死亡演出出さない
 	if (goalFlag)
 	{
 		effect = false;
