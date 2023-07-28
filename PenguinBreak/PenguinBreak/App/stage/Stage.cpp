@@ -125,12 +125,15 @@ void Stage::Update()
 	GimmickUpdate(boxes);
 }
 
-void Stage::Draw(float offsetX, float offsetY)
+void Stage::Draw(bool isBack, float offsetX, float offsetY)
 {
-	// 背景オブジェクトの描画
-	for (auto& i : backObjects)
+	if (isBack)
 	{
-		Sprite::Get()->Draw(i.GetSprite(), i.GetPos() + Vec2(offsetX, offsetY), i.size.x, i.size.y, Vec2(0.5f, 0.5f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), i.isFlipX, i.isFlipY);
+		// 背景オブジェクトの描画
+		for (auto& i : backObjects)
+		{
+			Sprite::Get()->Draw(i.GetSprite(), i.GetPos() + Vec2(offsetX, offsetY), i.size.x, i.size.y, Vec2(0.5f, 0.5f), Vec4(1.0f, 1.0f, 1.0f, 1.0f), i.isFlipX, i.isFlipY);
+		}
 	}
 
 	// 道の描画
@@ -708,6 +711,12 @@ bool Stage::IsDownOver(float* pos, float* size, float limit, float speed, float 
 
 void Stage::EditerInit(const Vec2& playerSize)
 {
+	if (boxes.size())
+	{
+		restartIndex = 0;
+		return;
+	}
+
 	Init(playerSize);
 	scale = 1;
 	ROAD_SIZE = (PLAYER_SIZE / scale) + (ROAD_OFFSET / scale);

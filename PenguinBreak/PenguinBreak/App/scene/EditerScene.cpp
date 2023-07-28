@@ -288,7 +288,7 @@ void EditerScene::Draw()
 		OperationDraw();
 	}
 
-	stage->Draw();
+	stage->Draw(false);
 	DebugText::Get()->Print(16.0f, 16.0f, 2, "Scale:%d", scale);
 
 	if (editerState == EditerScene::SAVE || editerState == EditerState::LOAD)
@@ -351,6 +351,8 @@ void EditerScene::OperationDraw()
 
 void EditerScene::Finalize()
 {
+	Texture::Get()->Delete();
+	Sprite::Get()->Delete();
 }
 
 bool EditerScene::GetEffect()

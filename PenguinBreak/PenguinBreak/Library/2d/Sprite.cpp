@@ -312,7 +312,6 @@ void Sprite::Update(SpriteData& sprite, const Vec2& position, float width, float
 		constMap->time = 0;
 		constBuffer[spriteNum]->constBuff->Unmap(0, nullptr);
 	}
-
 }
 
 //スプライト単体描画
