@@ -11,6 +11,7 @@ TitleScene::TitleScene()
 TitleScene::~TitleScene()
 {
 	audio->SoundUnload(&sound);
+	audio->SoundUnload(&sound2);
 }
 
 void TitleScene::Init()
