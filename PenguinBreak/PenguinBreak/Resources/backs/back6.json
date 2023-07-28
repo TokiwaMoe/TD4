@@ -30,12 +30,68 @@
             850.0,
             0.0
           ],
-          "speed": 15.0
+          "speed": 30.0
         }
       ],
       "pos": [
         -500.0,
         320.0
+      ],
+      "size": [
+        556.0,
+        250.0
+      ],
+      "offset": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "back": 14,
+      "flipX": true,
+      "flipY": false,
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": false,
+          "limit": [
+            850.0,
+            0.0
+          ],
+          "speed": 30.0
+        }
+      ],
+      "pos": [
+        1540.0,
+        125.0
+      ],
+      "size": [
+        556.0,
+        250.0
+      ],
+      "offset": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "back": 14,
+      "flipX": true,
+      "flipY": false,
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": false,
+          "limit": [
+            850.0,
+            0.0
+          ],
+          "speed": 30.0
+        }
+      ],
+      "pos": [
+        1540.0,
+        595.0
       ],
       "size": [
         556.0,
