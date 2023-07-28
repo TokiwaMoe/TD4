@@ -67,7 +67,7 @@ public: //サブクラス
 
 public: //定数
 	static const int STAGE_COUNT = 8; //ステージの数
-	static const int BACK_COUNT = 8;  //背景の数
+	static const int BACK_COUNT = 10;  //背景の数
 	static const Vec2 ROAD_OFFSET; //道の余白分
 
 private: //静的メンバ変数
