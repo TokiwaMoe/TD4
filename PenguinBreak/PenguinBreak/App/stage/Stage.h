@@ -92,7 +92,7 @@ public: //メンバ関数
 	// ギミックの更新
 	void Update();
 	// 描画
-	void Draw(float offsetX = 0.0f, float offsetY = 0.0f);
+	void Draw(bool isBack = true, float offsetX = 0.0f, float offsetY = 0.0f);
 
 	// ステージの書き込み
 	void WriteStage(const std::string& stageName);

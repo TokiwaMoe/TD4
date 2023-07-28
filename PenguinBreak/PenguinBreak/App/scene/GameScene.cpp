@@ -63,8 +63,8 @@ void GameScene::Update()
 			BaseScene* scene = new ResultScene();
 			scene->nextStage = stageNumber + 1;
 			sceneManager_->SetNextScene(scene);
-			audio->SoundStop(sound, audio->BGM);
 		}
+		audio->SoundStop(sound, audio->BGM);
 	}
 	else
 	{//ゴールしたらプレイヤーが止まる処理
@@ -76,7 +76,7 @@ void GameScene::Draw()
 {
 	float width = 1280, height = 720;
 	Sprite::Get()->Draw(background, { 0,0 }, width, height);
-stage->Draw();
+	stage->Draw();
 	player->Draw();
 
 	if (isEditer == true)

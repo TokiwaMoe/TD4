@@ -59,7 +59,6 @@ private://’è‹`
 
 	float time = 0;
 
-
 	SpriteData blackOut;//ˆÃ“]—p‰æ‘œ
 	Vec3 blackPos[2] = {};
 	float blackOutTime = 0.0f;

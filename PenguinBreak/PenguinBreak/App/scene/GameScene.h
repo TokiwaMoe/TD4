@@ -45,6 +45,7 @@ public:
 	void Finalize()override;
 	bool GetEffect()override;
 
+	static bool GetEditer() { return isEditer; }
 	static void SetEditer() { isEditer = true; }
 
 private://定義
@@ -58,5 +59,4 @@ private://定義
 	int stageNumber = 1;
 	int backNumber = 1;
 	static bool isEditer;
-
 };
