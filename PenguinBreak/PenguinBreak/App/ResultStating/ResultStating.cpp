@@ -137,12 +137,10 @@ void ResultStating::StageDecision(const int nextStage)
 		scaleNumber = -1;//リセット数字
 		if (Collision::BoxCollision(selectPos, Input::Get()->GetMousePos(), selectSize / 2, mSize)) {
 			scaleNumber = BACK;
-			//audio->SoundSEPlayWave(sound);
 		}
 		//タイトル戻るボタン
 		if (Collision::BoxCollision(nextStagePos, Input::Get()->GetMousePos(), selectSize / 2, mSize)) {
 			scaleNumber = NEXT;
-			//audio->SoundSEPlayWave(sound);
 		}
 		//手のspを表示するか
 		isDraw = true;
@@ -152,12 +150,10 @@ void ResultStating::StageDecision(const int nextStage)
 		scaleNumber = -1;//リセット数字
 		if (Collision::BoxCollision(selectPos, Input::Get()->GetMousePos(), selectSize / 2, mSize)) {
 			scaleNumber = BACK;
-			//audio->SoundSEPlayWave(sound);
 		}
 		//タイトル戻るボタン
 		if (Collision::BoxCollision(nextStagePos, Input::Get()->GetMousePos(), selectSize / 2, mSize)) {
 			scaleNumber = NEXT;
-			//audio->SoundSEPlayWave(sound);
 		}
 		isDraw = false;
 	}
