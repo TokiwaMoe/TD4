@@ -1,5 +1,6 @@
 #pragma once
 #include <Sprite.h>
+#include"Audio.h"
 /// <summary>
 /// リザルト演出
 /// </summary>
@@ -47,6 +48,8 @@ private:
 	//ての回転
 	void HandRotation();
 private:
+	Audio* audio = Audio::Get();
+	SoundData sound = {};
 	SpriteData backGround;                      //背景
 	SpriteData selectGraph;                     //もどる画像
 	const Vec2 selectPos = { 461.0f,440.0f };   //位置

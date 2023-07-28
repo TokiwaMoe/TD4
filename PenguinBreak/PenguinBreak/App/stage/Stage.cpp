@@ -719,6 +719,7 @@ void Stage::EditerInit(const Vec2& playerSize)
 
 	Init(playerSize);
 	scale = 1;
+	restartIndex = 0;
 	ROAD_SIZE = (PLAYER_SIZE / scale) + (ROAD_OFFSET / scale);
 
 	boxes.clear();
@@ -751,6 +752,7 @@ void Stage::Delete(size_t num)
 {
 	if (num < 0 || num >= boxes.size()) return;
 
+	restartIndex = 0;
 	boxes.erase(boxes.begin() + num);
 }
 
