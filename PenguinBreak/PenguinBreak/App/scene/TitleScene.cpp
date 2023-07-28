@@ -16,9 +16,21 @@ TitleScene::~TitleScene()
 void TitleScene::Init()
 {
 	//スプライト作成の仕方
-	background = Sprite::Get()->SpriteCreate(L"Resources/stage/background.png");
+	background = Sprite::Get()->SpriteCreate(L"Resources/Title/title_back.png");
+	//手
+	hand = Sprite::Get()->SpriteCreate(L"Resources/Title/hand.png");
+	//馬
+	player = Sprite::Get()->SpriteCreate(L"Resources/Title/uma.png");
+	//なまけもの
+	lazy = Sprite::Get()->SpriteCreate(L"Resources/Title/lazy.png");
+	//猫
+	cat = Sprite::Get()->SpriteCreate(L"Resources/Title/cat.png");
+	//目
+	eye = Sprite::Get()->SpriteCreate(L"Resources/Title/eye.png");
+	//ふぐ
+	fugu = Sprite::Get()->SpriteCreate(L"Resources/Title/fugu.png");
 
-	titleGraph = Sprite::Get()->SpriteCreate(L"Resources/Title/title_test.png");
+	titleGraph = Sprite::Get()->SpriteCreate(L"Resources/Title/title.png");
 	button = Sprite::Get()->SpriteCreate(L"Resources/Title/start.png");
 	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
 	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
@@ -54,34 +66,49 @@ void TitleScene::Update()
 
 	DecisionScale();
 
+	ChangeScale();
+
 	//カーソル表示
 	Input::Get()->SetCursor(false);
 }
 
 void TitleScene::Draw()
 {
+	Vec2  anchorPoint = { 0.5f,0.5f };
 	//背景
 	const float width = 1280, height = 720;
 	Sprite::Get()->Draw(background, Vec2(), width, height);
+	//なまけ
+	Sprite::Get()->Draw(lazy, { 670,360 }, width * changeScale, height * changeScale, anchorPoint);
+	//タイトル
+	Sprite::Get()->Draw(titleGraph, { 640,360 }, width, height, anchorPoint);
+	//猫
+	Sprite::Get()->Draw(cat, { 600,390 }, width * changeScale, height * changeScale, anchorPoint);
+	//手
+	Sprite::Get()->Draw(hand, { 600,340 }, width * changeScale, height * changeScale, anchorPoint);
+	//ふぐ
+	Sprite::Get()->Draw(fugu, { 680,340 }, width * changeScale, height * changeScale, anchorPoint);
+	//馬人間
+	Sprite::Get()->Draw(player, { 620,340 }, width, height, anchorPoint);
+	//目
+	Sprite::Get()->Draw(eye, { 680,340 }, width * changeScale, height * changeScale, anchorPoint);
 
-	Vec2  anchorpoint = { 0.5f,0.5f };
-	Sprite::Get()->Draw(titleGraph, { 0,0 }, width, height);
 	if (isScale)
 	{
-		Sprite::Get()->Draw(button, bPos, bSize.x * scale, bSize.y * scale, anchorpoint);
+		Sprite::Get()->Draw(button, bPos, bSize.x * scale, bSize.y * scale, anchorPoint);
 	}
 	else
 	{
-		Sprite::Get()->Draw(button, bPos, bSize.x, bSize.y, anchorpoint);
+		Sprite::Get()->Draw(button, bPos, bSize.x, bSize.y, anchorPoint);
 	}
 	//手
 	if (isDraw)
 	{
-		Sprite::Get()->Draw(hand_g, hPos, 32, 32, anchorpoint);
+		Sprite::Get()->Draw(hand_g, hPos, 32, 32, anchorPoint);
 	}
 	else
 	{
-		Sprite::Get()->Draw(hand_p, hPos, 32, 32, anchorpoint);
+		Sprite::Get()->Draw(hand_p, hPos, 32, 32, anchorPoint);
 	}
 }
 
@@ -157,6 +184,28 @@ void TitleScene::DecisionScale()
 		if (scaleMin > scale)
 		{
 			decScaleFlag = true;
+		}
+	}
+}
+
+void TitleScene::ChangeScale()
+{
+	const float scaleMax = 1.0f;
+	const float scaleMin = 0.97f;
+	if (isChange)
+	{
+		changeScale += 0.01f;
+		if (scaleMax < changeScale)
+		{
+			isChange = false;
+		}
+	}
+	else
+	{
+		changeScale -= 0.01f;
+		if (scaleMin > changeScale)
+		{
+			isChange = true;
 		}
 	}
 }

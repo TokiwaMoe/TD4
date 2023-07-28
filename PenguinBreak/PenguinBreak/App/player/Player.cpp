@@ -50,7 +50,8 @@ void Player::Init(Stage* stage)
 		isDeathDraw[i] = false;
 	}
 	size = Vec2(width, height) / static_cast<float>(stage->GetScale());
-	SetSize(size);
+	out = Vec2(outX, outY) / static_cast<float>(stage->GetScale());
+	SetSize(size, out);
 	move = false;
 }
 
@@ -203,6 +204,11 @@ void Player::collide2Stage(Stage* stage)
 	if (!OutStage(position, stage, static_cast<int>(stage->GetGoal()))) {
 		goalFlag = true;
 	}
+	//ゴール後、死亡演出出さない
+	if (goalFlag)
+	{
+		effect = false;
+	}
 }
 
 int Player::CollisionCount(Stage* stage)
@@ -262,11 +268,11 @@ bool Player::OutStage(Vec2 position, Stage* stage, int num)
 	if (distance.x < 0.0f) { distance.x *= -1.0f; }
 	if (distance.y < 0.0f) { distance.y *= -1.0f; }
 	//2つの矩形の和を算出
-	const float outSize = 12.0f;
+	const Vec2 outSize = { 9.0f,12.0f };
 	size_num =
 	{
-		((stage->GetInstance()->GetSize(num).x) / 2.0f) - radius.x + outSize,
-		((stage->GetInstance()->GetSize(num).y) / 2.0f) - radius.y + outSize
+		((stage->GetInstance()->GetSize(num).x) / 2.0f) - radius.x + outX,
+		((stage->GetInstance()->GetSize(num).y) / 2.0f) - radius.y + outY
 	};
 	//距離がサイズの和より小さいor以下
 	if (distance.x <= size_num.x && distance.y <= size_num.y)
@@ -457,9 +463,11 @@ void Player::Draw()
 
 }
 
-void Player::SetSize(const Vec2& size)
+void Player::SetSize(const Vec2& size, const Vec2& out)
 {
 	width = size.x;
 	height = size.y;
+	outX = out.x;
+	outY = out.y;
 	radius = (size / 2) - Vec2(4.0f, 4.0f);
 }
