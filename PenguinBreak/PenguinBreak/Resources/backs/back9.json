@@ -1,0 +1,173 @@
+{
+  "name": "back",
+  "objects": [
+    {
+      "back": 15,
+      "flipX": false,
+      "flipY": false,
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": false,
+          "limit": [
+            10.0,
+            0.0
+          ],
+          "speed": 5.0
+        }
+      ],
+      "pos": [
+        250.0,
+        333.0
+      ],
+      "size": [
+        500.0,
+        667.0
+      ],
+      "offset": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "back": 15,
+      "flipX": false,
+      "flipY": false,
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": false,
+          "limit": [
+            10.0,
+            0.0
+          ],
+          "speed": 5.0
+        }
+      ],
+      "pos": [
+        750.0,
+        333.0
+      ],
+      "size": [
+        500.0,
+        667.0
+      ],
+      "offset": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "back": 15,
+      "flipX": false,
+      "flipY": false,
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": false,
+          "limit": [
+            10.0,
+            0.0
+          ],
+          "speed": 5.0
+        }
+      ],
+      "pos": [
+        1250.0,
+        333.0
+      ],
+      "size": [
+        500.0,
+        667.0
+      ],
+      "offset": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "back": 15,
+      "flipX": true,
+      "flipY": true,
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": true,
+          "limit": [
+            10.0,
+            0.0
+          ],
+          "speed": 5.0
+        }
+      ],
+      "pos": [
+        250.0,
+        387.0
+      ],
+      "size": [
+        500.0,
+        667.0
+      ],
+      "offset": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "back": 15,
+      "flipX": true,
+      "flipY": true,
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": true,
+          "limit": [
+            10.0,
+            0.0
+          ],
+          "speed": 5.0
+        }
+      ],
+      "pos": [
+        750.0,
+        387.0
+      ],
+      "size": [
+        500.0,
+        667.0
+      ],
+      "offset": [
+        0.5,
+        0.5
+      ]
+    },
+    {
+      "back": 15,
+      "flipX": true,
+      "flipY": true,
+      "gimmick": [
+        {
+          "type": 2,
+          "flag": true,
+          "limit": [
+            10.0,
+            0.0
+          ],
+          "speed": 5.0
+        }
+      ],
+      "pos": [
+        1250.0,
+        387.0
+      ],
+      "size": [
+        500.0,
+        667.0
+      ],
+      "offset": [
+        0.5,
+        0.5
+      ]
+    }
+  ]
+}
