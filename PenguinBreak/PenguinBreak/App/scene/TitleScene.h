@@ -44,8 +44,16 @@ private:
 	void StageDecision();
 	//‘I‘ğ‘å‚«‚³‚ª•Ï‚í‚éˆ—
 	void DecisionScale();
+	//‘å‚«‚³‚ª•Ï‚í‚éˆ—
+	void ChangeScale();
 private://’è‹`
 	SpriteData background = {};//”wŒi
+	SpriteData hand = {};
+	SpriteData player = {};
+	SpriteData lazy = {};
+	SpriteData cat = {};
+	SpriteData eye = {};
+	SpriteData fugu = {};
 	SpriteData titleGraph = {};
 	SpriteData button = {};
 	Audio *audio = Audio::Get();
@@ -61,6 +69,9 @@ private://’è‹`
 	SpriteData hand_p = {};
 	SpriteData hand_g = {};
 	Vec2 hPos = {};
+
+	bool isChange = false;
+	float changeScale = 1.0f;
 };
 
 
