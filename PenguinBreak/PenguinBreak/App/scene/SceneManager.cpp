@@ -8,6 +8,7 @@
 #include"TitleScene.h"
 #include"SelectScene.h"
 #include"ResultScene.h"
+#include"EditerScene.h"
 #include<Easing.h>
 SceneManager::SceneManager()
 {}
@@ -77,7 +78,7 @@ void SceneManager::Initialize()
 void SceneManager::Update()
 {
 	Input::Get()->Update();
-	time += 0.01f;
+	if (typeid(*scene_).name() != typeid(EditerScene).name()) time += 0.01f;
 	BlackOut();
 	//Ÿ‚ÌƒV[ƒ“‚Ì—\–ñ‚ª‚ ‚é‚È‚ç
 	if (nextScene_ && blackOutFlag == Stand_By)
