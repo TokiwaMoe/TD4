@@ -28,13 +28,14 @@ void EditerScene::Init()
 	//手
 	hand_p = Sprite::Get()->SpriteCreate(L"Resources/hand_pa.png");
 	hand_g = Sprite::Get()->SpriteCreate(L"Resources/hand_g.png");
-	// デバッグテキスト
+	// ヘルプ
 	operationText.push_back("Drag:Move");
-	operationText.push_back("C:Create");
 	operationText.push_back("drag corner:Size Change");
-	operationText.push_back("Arrow Up/Down:Change Scale");
+	operationText.push_back("C:Create");
+	operationText.push_back("T:Type Change");
 	operationText.push_back("D:Delete");
 	operationText.push_back("R:Reset");
+	operationText.push_back("Arrow Up/Down:Change Scale");
 	operationText.push_back("S:Save");
 	operationText.push_back("L:Load");
 	operationText.push_back("P:Clear Check");
@@ -43,39 +44,9 @@ void EditerScene::Init()
 
 void EditerScene::Update()
 {
-	if (isSave || isLoad)
+	switch (editerState)
 	{
-		if (Input::Get()->KeybordTrigger(DIK_RIGHT) && fileNumber + 1 <= 32)
-		{
-			fileNumber++;
-		}
-		if (Input::Get()->KeybordTrigger(DIK_LEFT) && fileNumber - 1 >= 1)
-		{
-			fileNumber--;
-		}
-		if (Input::Get()->KeybordTrigger(DIK_RETURN))
-		{
-			if (isSave)
-			{
-				stage->WriteStage("stage" + std::to_string(fileNumber));
-			}
-			else if (isLoad)
-			{
-				auto file = stage->LoadStage("stage" + std::to_string(fileNumber));
-				stage->ChangeStage(file);
-				stage->SetIndex();
-				delete file;
-			}
-			isSave = false;
-			isLoad = false;
-		}
-		if (Input::Get()->KeybordTrigger(DIK_BACK))
-		{
-			isSave = false;
-			isLoad = false;
-		}
-	}
-	else
+	case EditerScene::EDIT:
 	{
 		//シーンの変更の仕方
 		if (Input::Get()->KeybordTrigger(DIK_ESCAPE))
@@ -133,7 +104,8 @@ void EditerScene::Update()
 
 			if (roadIndex != -1)
 			{
-				stage->BringForefront(roadIndex);
+				roadIndex = static_cast<int>(stage->BringForefront(roadIndex));
+				type = stage->GetType(roadIndex);
 			}
 		}
 		else if (Input::Get()->MousePushLeft())
@@ -156,9 +128,20 @@ void EditerScene::Update()
 		// 道の削除
 		if (Input::Get()->KeybordTrigger(DIK_D))
 		{
-			stage->Delete(roadIndex);
-			roadIndex = -1;
-			cursorState = CursorState::NONE;
+			if (type != Road::RoadType::START && type != Road::RoadType::GOAL)
+			{
+				stage->Delete(roadIndex);
+				roadIndex = -1;
+				cursorState = CursorState::NONE;
+			}
+		}
+		// 
+		if (Input::Get()->KeybordTrigger(DIK_T))
+		{
+			if (roadIndex != -1)
+			{
+				type = stage->ChangeType(roadIndex);
+			}
 		}
 		// ステージサイズ
 		if (Input::Get()->KeybordTrigger(DIK_UP))
@@ -186,14 +169,59 @@ void EditerScene::Update()
 		// ステージ出力
 		if (Input::Get()->KeybordTrigger(DIK_S))
 		{
-			isSave = true;
+			editerState = EditerScene::SAVE;
 		}
 		// ステージ読み込み
 		if (Input::Get()->KeybordTrigger(DIK_L))
 		{
-			isLoad = true;
+			editerState = EditerScene::LOAD;
 		}
+		break;
 	}
+	case EditerScene::SAVE:
+	case EditerScene::LOAD:
+	{
+		if (Input::Get()->KeybordTrigger(DIK_RIGHT) && fileNumber + 1 <= 32)
+		{
+			fileNumber++;
+		}
+		if (Input::Get()->KeybordTrigger(DIK_LEFT) && fileNumber - 1 >= 1)
+		{
+			fileNumber--;
+		}
+		if (Input::Get()->KeybordTrigger(DIK_RETURN))
+		{
+			if (editerState == EditerScene::SAVE)
+			{
+				stage->WriteStage("stage" + std::to_string(fileNumber));
+			}
+			else if (editerState == EditerScene::LOAD)
+			{
+				auto file = stage->LoadStage("stage" + std::to_string(fileNumber));
+				stage->ChangeStage(file);
+				stage->SetIndex();
+				delete file;
+			}
+			editerState = EditerScene::EDIT;
+		}
+		if (Input::Get()->KeybordTrigger(DIK_BACK))
+		{
+			editerState = EditerScene::EDIT;
+		}
+		break;
+	}
+	case EditerScene::HELP:
+	{
+		if (Input::Get()->KeybordTrigger(DIK_RETURN))
+		{
+			editerState = EditerScene::EDIT;
+		}
+		break;
+	}
+	default:
+		break;
+	}
+
 	//手の表示
 	if (Input::Get()->MousePushLeft()) {
 		//パーティクルだす
@@ -207,10 +235,14 @@ void EditerScene::Update()
 
 void EditerScene::Draw()
 {
-	DebugText::Get()->Print(100.0f, 100.0f, 5, "Editer");
+	DebugText::Get()->Print(window_width - 300.0f, 100.0f, 5, "Editer");
 
-	if (isSave == false && isLoad == false)
+	if (editerState == EditerState::EDIT)
 	{
+		if (roadIndex != -1)
+		{
+			DebugText::Get()->Print(16.0f, 48.0f, 2, "Type:%d", type);
+		}
 		if (cursorState == CursorState::MOVE)
 		{
 			Sprite::Get()->Draw(frame,
@@ -259,9 +291,9 @@ void EditerScene::Draw()
 	stage->Draw();
 	DebugText::Get()->Print(16.0f, 16.0f, 2, "Scale:%d", scale);
 
-	if (isSave || isLoad)
+	if (editerState == EditerScene::SAVE || editerState == EditerState::LOAD)
 	{
-		std::string text = isSave ? "Save" : "Load";
+		std::string text = (editerState == EditerScene::SAVE) ? "Save" : "Load";
 		std::string numText;
 		if (fileNumber <= 1)
 		{
@@ -291,6 +323,7 @@ void EditerScene::Draw()
 		DebugText::Get()->Print(16.0f, window_height - 16.0f, 2, "Enter:" + text);
 		DebugText::Get()->Print(16.0f, window_height - 48.0f, 2, "Back Space:Cancel");
 	}
+
 	//ポインタ
 	if (isDraw)
 	{
