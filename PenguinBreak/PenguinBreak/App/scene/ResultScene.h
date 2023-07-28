@@ -41,6 +41,8 @@ public:
 	void Finalize()override;
 	bool GetEffect()override;
 private:
+	Audio* audio = Audio::Get();
+	SoundData sound = {};
 	//ƒŠƒUƒ‹ƒg‰‰o
 	ResultStating resultStating;
 };

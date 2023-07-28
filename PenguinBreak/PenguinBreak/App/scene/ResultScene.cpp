@@ -8,11 +8,15 @@
 ResultScene::ResultScene()
 {}
 ResultScene::~ResultScene()
-{}
+{
+	audio->SoundUnload(&sound);
+}
 void ResultScene::Init()
 {	
 	PostEffect::Get()->SetPipeline(static_cast<int>(PostEffectType::NORMAL));
 	resultStating.Init();
+	sound = Audio::SoundLoadWave("Resources/Sound/retrogamecenter.wav");
+	audio->SoundBGMPlayLoopWave(sound, audio->BGM);
 }
 
 void ResultScene::Update()
@@ -24,12 +28,14 @@ void ResultScene::Update()
 	if (resultStating.NextSceneStatus() == ResultStating::BACK) {
 		BaseScene* scene = new SelectScene();
 		sceneManager_->SetNextScene(scene);
+		audio->SoundStop(sound, audio->BGM);
 	}
 	//次のステージへ
 	if (resultStating.NextSceneStatus() == ResultStating::NEXT) {
 		BaseScene* scene = new GameScene();
 		scene->nextStage = nextStage;
 		sceneManager_->SetNextScene(scene);
+		audio->SoundStop(sound, audio->BGM);
 	}
 
 	//カーソル表示

@@ -102,7 +102,7 @@ private:
 	//スプライトサイズ
 	Vec2 size = {};
 	float width = 64.0f, height = 128.0f;
-	float outX = 9.0f, outY = 12.0f;
+	float outX = 10.0f, outY = 15.0f;
 	Vec2 out = {};
 	bool flipFlag = false;
 	//半径 
