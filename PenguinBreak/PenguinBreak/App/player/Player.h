@@ -67,7 +67,7 @@ public:
 	int GetDeathCount() { return deathCount; }
 	//setter
 	//スプライトサイズ
-	void SetSize(const Vec2& size);
+	void SetSize(const Vec2& size, const Vec2& out);
 	void SetStageNum(int stageNum) { this->stageNum = stageNum; }
 private:
 	static const int DEATH_MAX = 30;
@@ -102,6 +102,8 @@ private:
 	//スプライトサイズ
 	Vec2 size = {};
 	float width = 64.0f, height = 128.0f;
+	float outX = 9.0f, outY = 12.0f;
+	Vec2 out = {};
 	bool flipFlag = false;
 	//半径 
 	Vec2 radius = {};
