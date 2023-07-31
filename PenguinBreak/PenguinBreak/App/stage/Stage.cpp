@@ -217,9 +217,9 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		objectData.pos = Vec2(object["pos"][0], object["pos"][1]);
 		objectData.size = Vec2(object["size"][0], object["size"][1]);
 		objectData.offset = Vec2(object["offset"][0], object["offset"][1]);
-		objectData.pos += objectData.offset;
 
 		objectData.Init();
+		objectData.pos += objectData.offset;
 
 		// ギミックの読み込み
 		if (object.contains("gimmick"))
@@ -313,12 +313,12 @@ Stage::JsonData* Stage::LoadBack(const std::string& jsonFile)
 		objectData.pos = Vec2(object["pos"][0], object["pos"][1]);
 		objectData.size = Vec2(object["size"][0], object["size"][1]);
 		objectData.offset = Vec2(object["offset"][0], object["offset"][1]);
-		objectData.pos += objectData.offset;
 		objectData.back = object["back"];
 		objectData.isFlipX = object["flipX"];
 		objectData.isFlipY = object["flipY"];
 
 		objectData.Init();
+		objectData.pos += objectData.offset;
 
 		// ギミック用のパラメータの読み込み
 		if (object.contains("gimmick"))
@@ -665,7 +665,7 @@ void Stage::LoopMoveGimmick(Road& road)
 		(moveDir.y > 0 && (road.pos.y >= limit.y)) ||
 		(moveDir.y < 0 && (road.pos.y <= limit.y)))
 	{
-		road.pos = road.GetInitPos() - road.GetGimmickParameter(switchCount).GetLimit();
+		road.pos = road.GetInitPos();
 	}
 }
 
