@@ -693,6 +693,29 @@ void Stage::OnlyMoveGimmick(Road& road)
 	}
 }
 
+void Stage::OnlyScaleGimmick(Road& road)
+{
+	if (road.GetGimmickParameter(switchCount).GetFlag()) return;
+
+	Vec2 limit = road.GetInitSize() + road.GetGimmickParameter(switchCount).GetLimit();
+	// 軸単位で動かすかどうか
+	Vec2 moveDir = {};
+	if (road.GetGimmickParameter(switchCount).GetLimit().x > 0) { moveDir.x = +1.0f; }
+	else if (road.GetGimmickParameter(switchCount).GetLimit().x < 0) { moveDir.x = -1.0f; }
+	if (road.GetGimmickParameter(switchCount).GetLimit().y > 0) { moveDir.y = +1.0f; }
+	else if (road.GetGimmickParameter(switchCount).GetLimit().y < 0) { moveDir.y = -1.0f; }
+
+	road.size += moveDir * road.GetGimmickParameter(switchCount).GetSpeed();
+
+	if ((moveDir.x > 0 && (road.size.x >= limit.x)) ||
+		(moveDir.x < 0 && (road.size.x <= limit.x)) ||
+		(moveDir.y > 0 && (road.size.y >= limit.y)) ||
+		(moveDir.y < 0 && (road.size.y <= limit.y)))
+	{
+		road.GetGimmickParameter(switchCount).ChangeFlag();
+	}
+}
+
 bool Stage::IsUpOver(float* pos, float* size, float limit, float speed, float scale)
 {
 	*pos += speed;
