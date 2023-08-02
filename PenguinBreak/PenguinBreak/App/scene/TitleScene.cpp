@@ -61,7 +61,7 @@ void TitleScene::Update()
 #endif // _DEBUG
 
 #ifdef _DEBUG
-	DebugText::Get()->Print(16.0f, window_height - 16.0f, 2, "E:Editer");
+	//DebugText::Get()->Print(16.0f, window_height - 16.0f, 2, "E:Editer");
 #endif // _DEBUG
 	StageDecision();
 
