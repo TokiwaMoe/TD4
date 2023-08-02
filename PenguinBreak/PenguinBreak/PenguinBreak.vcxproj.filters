@@ -414,6 +414,7 @@
     <ClInclude Include="App\stage\Road.h">
       <Filter>ソース ファイル\Stage</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -563,5 +564,15 @@
     <ClCompile Include="App\stage\Road.cpp">
       <Filter>ソース ファイル\Stage</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PenguinBreak.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\uma.ico">
+      <Filter>リソース ファイル</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -217,9 +217,9 @@ Stage::JsonData* Stage::LoadStage(const std::string& jsonFile)
 		objectData.pos = Vec2(object["pos"][0], object["pos"][1]);
 		objectData.size = Vec2(object["size"][0], object["size"][1]);
 		objectData.offset = Vec2(object["offset"][0], object["offset"][1]);
-		objectData.pos += objectData.offset;
 
 		objectData.Init();
+		objectData.pos += objectData.offset;
 
 		// ギミックの読み込み
 		if (object.contains("gimmick"))
@@ -313,12 +313,12 @@ Stage::JsonData* Stage::LoadBack(const std::string& jsonFile)
 		objectData.pos = Vec2(object["pos"][0], object["pos"][1]);
 		objectData.size = Vec2(object["size"][0], object["size"][1]);
 		objectData.offset = Vec2(object["offset"][0], object["offset"][1]);
-		objectData.pos += objectData.offset;
 		objectData.back = object["back"];
 		objectData.isFlipX = object["flipX"];
 		objectData.isFlipY = object["flipY"];
 
 		objectData.Init();
+		objectData.pos += objectData.offset;
 
 		// ギミック用のパラメータの読み込み
 		if (object.contains("gimmick"))
@@ -665,7 +665,7 @@ void Stage::LoopMoveGimmick(Road& road)
 		(moveDir.y > 0 && (road.pos.y >= limit.y)) ||
 		(moveDir.y < 0 && (road.pos.y <= limit.y)))
 	{
-		road.pos = road.GetInitPos() - road.GetGimmickParameter(switchCount).GetLimit();
+		road.pos = road.GetInitPos();
 	}
 }
 
@@ -690,6 +690,29 @@ void Stage::OnlyMoveGimmick(Road& road)
 	{
 		road.GetGimmickParameter(switchCount).ChangeFlag();
 		road.ResetInitPos();
+	}
+}
+
+void Stage::OnlyScaleGimmick(Road& road)
+{
+	if (road.GetGimmickParameter(switchCount).GetFlag()) return;
+
+	Vec2 limit = road.GetInitSize() + road.GetGimmickParameter(switchCount).GetLimit();
+	// 軸単位で動かすかどうか
+	Vec2 moveDir = {};
+	if (road.GetGimmickParameter(switchCount).GetLimit().x > 0) { moveDir.x = +1.0f; }
+	else if (road.GetGimmickParameter(switchCount).GetLimit().x < 0) { moveDir.x = -1.0f; }
+	if (road.GetGimmickParameter(switchCount).GetLimit().y > 0) { moveDir.y = +1.0f; }
+	else if (road.GetGimmickParameter(switchCount).GetLimit().y < 0) { moveDir.y = -1.0f; }
+
+	road.size += moveDir * road.GetGimmickParameter(switchCount).GetSpeed();
+
+	if ((moveDir.x > 0 && (road.size.x >= limit.x)) ||
+		(moveDir.x < 0 && (road.size.x <= limit.x)) ||
+		(moveDir.y > 0 && (road.size.y >= limit.y)) ||
+		(moveDir.y < 0 && (road.size.y <= limit.y)))
+	{
+		road.GetGimmickParameter(switchCount).ChangeFlag();
 	}
 }
 

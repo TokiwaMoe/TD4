@@ -66,8 +66,8 @@ public: //サブクラス
 	};
 
 public: //定数
-	static const int STAGE_COUNT = 7; //ステージの数
-	static const int BACK_COUNT = 8;  //背景の数
+	static const int STAGE_COUNT = 8; //ステージの数
+	static const int BACK_COUNT = 10; //背景の数
 	static const Vec2 ROAD_OFFSET; //道の余白分
 
 private: //静的メンバ変数
@@ -174,6 +174,8 @@ private:
 	void LoopMoveGimmick(Road& road);
 	// 道が移動するギミック（一回きり）
 	void OnlyMoveGimmick(Road& road);
+	// 道が狭まるギミック（一回きり）
+	void OnlyScaleGimmick(Road& road);
 
 	// 上限を超えたかどうか
 	bool IsUpOver(float* pos, float* size, float limit, float speed, float scale);
@@ -204,6 +206,9 @@ inline void Stage::GimmickUpdate(std::vector<T>& object)
 			break;
 		case Road::Gimmick::ONLY_MOVE:
 			OnlyMoveGimmick(i);
+			break;
+		case Road::Gimmick::ONLY_SCALE:
+			OnlyScaleGimmick(i);
 			break;
 		default:
 			continue;
