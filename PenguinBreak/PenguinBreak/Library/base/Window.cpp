@@ -1,5 +1,5 @@
 #include "Window.h"
-
+#include"../resource.h"
 //ウィンドウプロシージャ
 LRESULT WindowProce(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -22,7 +22,8 @@ void Window::CreateGameWindow()
 	m_w.lpszClassName = L"馬い棒"; // ウィンドウクラス名
 	m_w.hInstance = GetModuleHandle(nullptr); // ウィンドウハンドル
 	m_w.hCursor = LoadCursor(NULL, IDC_ARROW); // カーソル指定
-
+	m_w.hIcon = LoadIcon(m_w.hInstance, MAKEINTRESOURCE(IDI_ICON1));
+	m_w.hIconSm = LoadIcon(m_w.hInstance, MAKEINTRESOURCE(IDI_ICON1));
 	// ウィンドウクラスをOSに登録
 	RegisterClassEx(&m_w);
 

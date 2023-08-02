@@ -46,12 +46,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)lib\fbx_sdk\include;$(ProjectDir)Library\2d\;$(ProjectDir)Library\3d\;$(ProjectDir)Library\base\;$(ProjectDir)Library\Pipeline\;$(ProjectDir)Library\Helper\;$(ProjectDir)Library\Collision\;$(ProjectDir)Library\Input\;$(ProjectDir)Library\Audio\;$(ProjectDir)Library\Texture\;$(ProjectDir)Library\imgui\;$(ProjectDir)Scene\;$(ProjectDir)lib\DirectXTex\include;$(ProjectDir)lib\nlohmann\;$(ProjectDir)App\player\;$(ProjectDir)App\stage</IncludePath>
+    <IncludePath>$(ProjectDir)lib\fbx_sdk\include;$(ProjectDir)Library\2d\;$(ProjectDir)Library\3d\;$(ProjectDir)Library\base\;$(ProjectDir)Library\Pipeline\;$(ProjectDir)Library\Helper\;$(ProjectDir)Library\Collision\;$(ProjectDir)Library\Input\;$(ProjectDir)Library\Audio\;$(ProjectDir)Library\Texture\;$(ProjectDir)Library\imgui\;$(ProjectDir)Scene\;$(ProjectDir)lib\DirectXTex\include;$(ProjectDir)lib\nlohmann\;$(ProjectDir)App\player\;$(ProjectDir)App\stage;;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjecctDir)lib\fbx_sdk\lib;$(ProjectDir)lib\DirectXTex\DirectTexlib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)lib\fbx_sdk\include;$(ProjectDir)Library\2d\;$(ProjectDir)Library\3d\;$(ProjectDir)Library\base\;$(ProjectDir)Library\Pipeline\;$(ProjectDir)Library\Helper\;$(ProjectDir)Library\Collision\;$(ProjectDir)Library\Input\;$(ProjectDir)Library\Audio\;$(ProjectDir)Library\Texture\;$(ProjectDir)Library\imgui\;$(ProjectDir)Scene\;$(ProjectDir)lib\DirectXTex\include;$(ProjectDir)lib\nlohmann\;$(ProjectDir)App\player\;$(ProjectDir)App\stage</IncludePath>
+    <IncludePath>$(ProjectDir)lib\fbx_sdk\include;$(ProjectDir)Library\2d\;$(ProjectDir)Library\3d\;$(ProjectDir)Library\base\;$(ProjectDir)Library\Pipeline\;$(ProjectDir)Library\Helper\;$(ProjectDir)Library\Collision\;$(ProjectDir)Library\Input\;$(ProjectDir)Library\Audio\;$(ProjectDir)Library\Texture\;$(ProjectDir)Library\imgui\;$(ProjectDir)Scene\;$(ProjectDir)lib\DirectXTex\include;$(ProjectDir)lib\nlohmann\;$(ProjectDir)App\player\;$(ProjectDir)App\stage;$(IncludePath);$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjecctDir)lib\fbx_sdk\lib;$(ProjectDir)lib\DirectXTex\DirectTexlib\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -422,6 +422,9 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PenguinBreak.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\uma.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
